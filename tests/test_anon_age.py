@@ -25,6 +25,7 @@ def test_calculate_age(dob, days, months, years, testdate):
     assert (age.get_months() == months)
     assert (age.get_years() == years)
 
+
 @pytest.mark.parametrize("dob, testdate, anon_age", [
     ('2000-2-10', '2000-2-20', 1),
     ('2000-2-10', '2000-6-20', 19),
@@ -46,10 +47,8 @@ def test_calculate_age(dob, days, months, years, testdate):
     ('2000-2-10', '2098-3-20', 98),
     ('2000-2-10', '2099-3-20', 100),
     ('2000-2-10', '2099-1-20', 99),
-
 ])
 def test_anonymise_age(dob, testdate, anon_age):
     age = Age(dob)
     age.anonymise_age_for_testing(testdate)
     assert(age.get_anon_age() == anon_age)
-

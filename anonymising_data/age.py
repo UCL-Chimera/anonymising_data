@@ -1,9 +1,9 @@
-from datetime import date, datetime
+from datetime import datetime
 
 days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 
-#todo note need to record date used to anon
+# todo note need to record date used to anon
 
 class Age:
     """
@@ -15,7 +15,8 @@ class Age:
         self.months = 0
         self.years = 0
         self.total_days = 0
-        self.anon_age = self.__anonymise_age()
+        self.anon_age = 0
+        self.__anonymise_age()
 
     def get_anon_age(self):
         """
@@ -30,7 +31,6 @@ class Age:
         :return:
         """
         return self.days
-
 
     def get_months(self):
         """
@@ -86,7 +86,7 @@ class Age:
                 self.months = today.month - self.dob.month
             else:
                 self.days = self._end_of_last_month(today.month - 1, today.year, self.dob.day) + today.day
-                self.months = today.month - self.dob.month -1
+                self.months = today.month - self.dob.month - 1
         else:
             if reached_day_of_birthday:
                 self.months = 12 + today.month - self.dob.month
@@ -141,5 +141,3 @@ class Age:
             self.anon_age = self.years + round_up_months
         else:
             self.anon_age = 100
-
-
