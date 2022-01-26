@@ -1,4 +1,5 @@
 from datetime import datetime
+from anonymising_data.helpers import is_leap_year
 
 days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -107,18 +108,9 @@ class Age:
         :return: number of days in last month from day of birth e.g. 4 in example
         """
         days = days_in_months[month-1] - day
-        if self._is_leap_year(year) and month == 2:
+        if is_leap_year(year) and month == 2:
             days = days + 1
         return days
-
-    @staticmethod
-    def _is_leap_year(year):
-        """
-        Predicate indicating that a year is a leap year of not
-        :param year: year
-        :return: True if leap year, False otherwise
-        """
-        return (year % 4) == 0
 
     def __anonymise_age(self, testdate=None):
         """

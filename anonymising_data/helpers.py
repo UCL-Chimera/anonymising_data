@@ -27,3 +27,20 @@ def get_value_from_user(name):
     """
     username = input(f'Enter a value for {name}:')
     return username
+
+
+def is_leap_year(year):
+    """
+    Predicate indicating that a year is a leap year of not
+    :param year: year
+    :return: True if leap year, False otherwise
+    """
+    # divided by 100 means century year (ending with 00)
+    # century year divided by 400 is leap year
+    if (year % 400 == 0) and (year % 100 == 0):
+        return True
+    # not a century year divided by 4 is a leap year
+    elif (year % 4 == 0) and (year % 100 != 0):
+        return True
+    else:
+        return False
