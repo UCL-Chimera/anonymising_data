@@ -19,6 +19,16 @@ from anonymising_data.age import Age
     ('2000-2-10', 10, 0, 20, '2020-2-20'),
 ])
 def test_calculate_age(dob, days, months, years, testdate):
+    """
+    Tests that the calculate age function works as expected
+
+    :param dob: date of birth
+    :param testdate: date to calculate age
+
+    :param days: expected age days
+    :param months: expected age months
+    :param years: expected age years
+    """
     age = Age(dob)
     age.calculate_age_for_testing(testdate)
     assert (age.get_days() == days)
@@ -49,6 +59,13 @@ def test_calculate_age(dob, days, months, years, testdate):
     ('2000-2-10', '2099-1-20', 99),
 ])
 def test_anonymise_age(dob, testdate, anon_age):
+    """
+    Test to check anonymise age works as expected
+    :param dob: date of birth
+    :param testdate: date to calculate age
+    :param anon_age: expected anonymised age
+    :return:
+    """
     age = Age(dob)
     age.anonymise_age_for_testing(testdate)
     assert(age.get_anon_age() == anon_age)
