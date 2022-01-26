@@ -11,11 +11,11 @@ class Age:
     """
     def __init__(self, dob):
         self.dob = datetime.strptime(dob, '%Y-%m-%d')
-        self.days = 0
-        self.months = 0
-        self.years = 0
-        self.total_days = 0
-        self.anon_age = 0
+        self.days = -1
+        self.months = -1
+        self.years = -1
+        self.total_days = -1
+        self.anon_age = -1
         self.__anonymise_age()
 
     def get_anon_age(self):
