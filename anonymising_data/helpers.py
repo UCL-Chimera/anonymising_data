@@ -2,7 +2,7 @@
 
 class FileManager:
     """
-    Class to manage read and write from files
+    Class to manage read from and write to files
     """
     def __init__(self, filename, mode):
         self.filename = filename
@@ -14,6 +14,7 @@ class FileManager:
         return self.file
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
+        # note might we want to save and flush
         self.file.close()
 
 
