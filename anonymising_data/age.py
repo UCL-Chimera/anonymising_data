@@ -66,34 +66,34 @@ class Age:
         :param testdate dummy date used as 'today' for tests
         """
         if not testdate:
-            today = datetime.today()
+            reference_date = datetime.today()
         else:
-            today = datetime.strptime(testdate, '%Y-%m-%d')
+            reference_date = datetime.strptime(testdate, '%Y-%m-%d')
 
         # work out whether we have had a birthday this year
         # i.e. your dob is xxx-07-27 and today is xxx-02-16 you have not reached the 2nd month or the 27th
-        reached_month_of_birthday = (today.month >= self.dob.month)
-        birthday_this_month = today.month == self.dob.month
-        reached_day_of_birthday = (today.day >= self.dob.day)
+        reached_month_of_birthday = (reference_date.month >= self.dob.month)
+        birthday_this_month = reference_date.month == self.dob.month
+        reached_day_of_birthday = (reference_date.day >= self.dob.day)
         had_birthday_this_year = reached_day_of_birthday if birthday_this_month else reached_month_of_birthday
 
-        self.total_days = (today - self.dob).days
-        self.years = today.year - self.dob.year - (not had_birthday_this_year)
+        self.total_days = (reference_date - self.dob).days
+        self.years = reference_date.year - self.dob.year - (not had_birthday_this_year)
 
         if had_birthday_this_year:
             if reached_day_of_birthday:
-                self.days = today.day - self.dob.day
-                self.months = today.month - self.dob.month
+                self.days = reference_date.day - self.dob.day
+                self.months = reference_date.month - self.dob.month
             else:
-                self.days = self._end_of_last_month(today.month - 1, today.year, self.dob.day) + today.day
-                self.months = today.month - self.dob.month - 1
+                self.days = self._end_of_last_month(reference_date.month - 1, reference_date.year, self.dob.day) + reference_date.day
+                self.months = reference_date.month - self.dob.month - 1
         else:
             if reached_day_of_birthday:
-                self.months = 12 + today.month - self.dob.month
-                self.days = today.day - self.dob.day
+                self.months = 12 + reference_date.month - self.dob.month
+                self.days = reference_date.day - self.dob.day
             else:
-                self.months = 11 + today.month - self.dob.month
-                self.days = self._end_of_last_month(today.month - 1, today.year, self.dob.day) + today.day
+                self.months = 11 + reference_date.month - self.dob.month
+                self.days = self._end_of_last_month(reference_date.month - 1, reference_date.year, self.dob.day) + reference_date.day
 
     def _end_of_last_month(self, month, year, day):
         """
