@@ -6,10 +6,28 @@ days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 # todo note need to record date used to anon
 
+def _end_of_last_month(month, year, day):
+    """
+    Function to calculate days from last month when day of birth has not been reached in current month
+
+    e.g. dob is 1960-07-27 today is 2009-08-10
+    age is 49 yrs 0 months and 14 days(4 from end July + 10 from Aug)
+    :param month: index of month in array
+    :param year: todays year
+    :param day: dob day
+    :return: number of days in last month from day of birth e.g. 4 in example
+    """
+    days = days_in_months[month - 1] - day
+    if is_leap_year(year) and month == 2:
+        days = days + 1
+    return days
+
+
 class Age:
     """
     Class to calculate age and anonymise
     """
+
     def __init__(self, dob):
         self.dob = datetime.strptime(dob, '%Y-%m-%d')
         self.days = -1
@@ -86,7 +104,9 @@ class Age:
                 self.days = reference_date.day - self.dob.day
                 self.months = reference_date.month - self.dob.month
             else:
-                self.days = self._end_of_last_month(reference_date.month - 1, reference_date.year, self.dob.day) + reference_date.day
+                self.days = _end_of_last_month(reference_date.month - 1,
+                                               reference_date.year,
+                                               self.dob.day) + reference_date.day
                 self.months = reference_date.month - self.dob.month - 1
         else:
             if reached_day_of_birthday:
@@ -94,23 +114,9 @@ class Age:
                 self.days = reference_date.day - self.dob.day
             else:
                 self.months = 11 + reference_date.month - self.dob.month
-                self.days = self._end_of_last_month(reference_date.month - 1, reference_date.year, self.dob.day) + reference_date.day
-
-    def _end_of_last_month(self, month, year, day):
-        """
-        Function to calculate days from last month when day of birth has not been reached in current month
-
-        e.g. dob is 1960-07-27 today is 2009-08-10
-        age is 49 yrs 0 months and 14 days(4 from end July + 10 from Aug)
-        :param month: index of month in array
-        :param year: todays year
-        :param day: dob day
-        :return: number of days in last month from day of birth e.g. 4 in example
-        """
-        days = days_in_months[month-1] - day
-        if is_leap_year(year) and month == 2:
-            days = days + 1
-        return days
+                self.days = _end_of_last_month(reference_date.month - 1,
+                                               reference_date.year,
+                                               self.dob.day) + reference_date.day
 
     def __anonymise_age(self, testdate=None):
         """
@@ -123,7 +129,7 @@ class Age:
         """
         self.__calculate_age(testdate)
         if self.years == 0:
-            self.anon_age = round(self.total_days/7, 0)
+            self.anon_age = round(self.total_days / 7, 0)
         elif self.years < 18:
             round_up_days = self.days > 15
             self.anon_age = (self.years * 12) + self.months + round_up_days
