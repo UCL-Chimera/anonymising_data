@@ -10,10 +10,6 @@ class Age:
     """
 
     def __init__(self, dob):
-        """
-
-        :rtype: object
-        """
         self.dob = datetime.strptime(dob, '%Y-%m-%d')
         self._days = None
         self._months = None
