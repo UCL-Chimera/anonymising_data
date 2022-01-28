@@ -1,26 +1,7 @@
 from datetime import datetime
-from anonymising_data.helpers import is_leap_year
-
-days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
+from dateutil.relativedelta import *
 
 # todo note need to record date used to anon
-
-def _end_of_last_month(month, year, day):
-    """
-    Function to calculate days from last month when day of birth has not been reached in current month
-
-    e.g. dob is 1960-07-27 today is 2009-08-10
-    age is 49 yrs 0 months and 14 days(4 from end July + 10 from Aug)
-    :param month: index of month in array
-    :param year: todays year
-    :param day: dob day
-    :return: number of days in last month from day of birth e.g. 4 in example
-    """
-    days = days_in_months[month - 1] - day
-    if is_leap_year(year) and month == 2:
-        days = days + 1
-    return days
 
 
 class Age:
@@ -89,34 +70,12 @@ class Age:
         else:
             reference_date = datetime.strptime(testdate, '%Y-%m-%d')
 
-        # work out whether we have had a birthday this year
-        # i.e. your dob is xxx-07-27 and today is xxx-02-16 you have not reached the 2nd month or the 27th
-        reached_month_of_birthday = (reference_date.month >= self.dob.month)
-        birthday_this_month = reference_date.month == self.dob.month
-        reached_day_of_birthday = (reference_date.day >= self.dob.day)
-        had_birthday_this_year = reached_day_of_birthday if birthday_this_month else reached_month_of_birthday
-
         self.total_days = (reference_date - self.dob).days
-        self.years = reference_date.year - self.dob.year - (not had_birthday_this_year)
-
-        if had_birthday_this_year:
-            if reached_day_of_birthday:
-                self.days = reference_date.day - self.dob.day
-                self.months = reference_date.month - self.dob.month
-            else:
-                self.days = _end_of_last_month(reference_date.month - 1,
-                                               reference_date.year,
-                                               self.dob.day) + reference_date.day
-                self.months = reference_date.month - self.dob.month - 1
-        else:
-            if reached_day_of_birthday:
-                self.months = 12 + reference_date.month - self.dob.month
-                self.days = reference_date.day - self.dob.day
-            else:
-                self.months = 11 + reference_date.month - self.dob.month
-                self.days = _end_of_last_month(reference_date.month - 1,
-                                               reference_date.year,
-                                               self.dob.day) + reference_date.day
+        
+        rdiff = relativedelta(reference_date, self.dob)
+        self.years = rdiff.years
+        self.months = rdiff.months
+        self.days = rdiff.days
 
     def __anonymise_age(self, testdate=None):
         """
