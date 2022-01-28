@@ -10,41 +10,49 @@ class Age:
     """
 
     def __init__(self, dob):
+        """
+
+        :rtype: object
+        """
         self.dob = datetime.strptime(dob, '%Y-%m-%d')
-        self.days = -1
-        self.months = -1
-        self.years = -1
+        self._days = None
+        self._months = None
+        self._years = None
         self.total_days = -1
-        self.anon_age = -1
+        self._anon_age = None
         self.__anonymise_age()
 
-    def get_anon_age(self):
+    @property
+    def anon_age(self):
         """
         Function to return anonymsied age
         :return: self.anon_age
         """
-        return self.anon_age
+        return self._anon_age
 
-    def get_days(self):
+    @property
+    def days(self):
         """
         Funcion to return age in days
         :return:
         """
-        return self.days
+        return self._days
 
-    def get_months(self):
+    @property
+    def months(self):
         """
         Funcion to return age in months
         :return:
         """
-        return self.months
+        return self._months
 
-    def get_years(self):
+    @property
+    def years(self):
         """
         Funcion to return age in years
         :return:
         """
-        return self.years
+        return self._years
 
     def calculate_age_for_testing(self, strdate):
         """
@@ -71,11 +79,11 @@ class Age:
             reference_date = datetime.strptime(testdate, '%Y-%m-%d')
 
         self.total_days = (reference_date - self.dob).days
-        
+
         rdiff = relativedelta(reference_date, self.dob)
-        self.years = rdiff.years
-        self.months = rdiff.months
-        self.days = rdiff.days
+        self._years = rdiff.years
+        self._months = rdiff.months
+        self._days = rdiff.days
 
     def __anonymise_age(self, testdate=None):
         """
@@ -88,13 +96,13 @@ class Age:
         """
         self.__calculate_age(testdate)
         if self.years == 0:
-            self.anon_age = round(self.total_days / 7, 0)
+            self._anon_age = round(self.total_days / 7, 0)
         elif self.years < 18:
             round_up_days = self.days > 15
-            self.anon_age = (self.years * 12) + self.months + round_up_days
+            self._anon_age = (self.years * 12) + self.months + round_up_days
         elif self.years < 99:
             round_up_days = self.days > 15
             round_up_months = (self.months + round_up_days) > 5
-            self.anon_age = self.years + round_up_months
+            self._anon_age = self.years + round_up_months
         else:
-            self.anon_age = 100
+            self._anon_age = 100
