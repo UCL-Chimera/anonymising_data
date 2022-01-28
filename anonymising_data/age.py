@@ -1,5 +1,5 @@
 from datetime import datetime
-from dateutil.relativedelta import *
+from dateutil.relativedelta import relativedelta
 
 # todo note need to record date used to anon
 
