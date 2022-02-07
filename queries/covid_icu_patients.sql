@@ -36,19 +36,7 @@ SELECT DISTINCT
 
     AND dept.speciality like '%ICU'
 
--- was ventilated
 
-  INNER JOIN star_a.visit_observation vo
-
-  ON hv.hospital_visit_id = vo.hospital_visit_id
-
-INNER JOIN star_a.visit_observation_type AS vot  
-
-  ON vo.visit_observation_type_id = vot.visit_observation_type_id  
-
-  AND vot.id_in_application = '3040102607'  
-
-  -- check for live mrn
 INNER JOIN  star_a.mrn original_mrn  
 
   ON hv.mrn_id = original_mrn.mrn_id 
