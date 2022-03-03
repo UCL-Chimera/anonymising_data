@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 
-def well_formatted(date_str):
+def has_expected_date_format(date_str):
     """
     Checks that the string used is as expected i.e. YYYY-MM-DD
 
@@ -26,7 +26,7 @@ class RecordedDate:
     Class to shift the date and time by prescribed amount
     """
     def __init__(self, original):
-        if not well_formatted(original):
+        if not has_expected_date_format(original):
             raise ValueError
         self.original = original
         self.offset = 0
@@ -46,7 +46,6 @@ class RecordedDate:
         Function to set the original date
         """
         self._original = datetime.strptime(value, '%Y-%m-%d')
-        print('ss')
 
     @property
     def shifted_date(self):
@@ -75,14 +74,12 @@ class RecordedDate:
     def offset(self, value):
         """
         Function to set the offset period in days
+        if value not an integer set to 0
         """
-        self._offset = value
+        self._offset = value if isinstance(value, int) else 0
 
     def shift_date(self):
         """
         Function to shift date by the offset period
         """
-        if not self._offset:
-            self._shifted_date = self._original
-        else:
-            self._shifted_date = self._original + timedelta(days=self._offset)
+        self._shifted_date = self._original + timedelta(days=self._offset)
