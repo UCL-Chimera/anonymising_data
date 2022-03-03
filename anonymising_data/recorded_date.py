@@ -64,7 +64,3 @@ class RecordedDate:
             self._shifted_date = self._original
         else:
             self._shifted_date = self._original + timedelta(days=self._offset)
-
-
-
-
