@@ -1,11 +1,33 @@
 from datetime import datetime, timedelta
 
 
+def well_formatted(date_str):
+    """
+    Checks that the string used is as expected i.e. YYYY-MM-DD
+
+    :param date_str: string representing date
+    :return: True if string is formatted as expected, False otherwise
+    """
+    has_expected_format = True
+    if len(date_str) != 10:
+        return False
+    year = date_str[0:3]
+    month = date_str[5:6]
+    day = date_str[8:9]
+    if not year.isdigit() or not month.isdigit() or not day.isdigit():
+        return False
+    if date_str[4] != '-' or date_str[7] != '-':
+        return False
+    return has_expected_format
+
+
 class RecordedDate:
     """
     Class to shift the date and time by prescribed amount
     """
     def __init__(self, original):
+        if not well_formatted(original):
+            raise ValueError
         self.original = original
         self.offset = 0
         self.shifted_date = original

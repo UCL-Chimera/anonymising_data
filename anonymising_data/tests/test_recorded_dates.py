@@ -20,3 +20,20 @@ def test_shift_date(testdate, offset, shifted):
     start.offset = offset
     start.shift_date()
     assert(start.shifted_date == datetime.strptime(shifted, '%Y-%m-%d'))
+
+
+@pytest.mark.parametrize("testdate", [
+    '1066',
+    '10-02-2000',
+    '2000-03-x4',
+    '1999-03/23',
+    '1999/02/10',
+    '2000-3-10',
+    '10-2-67',
+])
+def test_bad_format(testdate):
+    try:
+        start = RecordedDate(testdate)
+    except ValueError:
+        start = None
+    assert (not start)
