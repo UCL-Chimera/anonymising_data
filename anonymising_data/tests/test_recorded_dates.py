@@ -1,6 +1,6 @@
 import pytest
-from datetime import datetime
 from anonymising_data.recorded_date import RecordedDate
+from anonymising_data.helpers import create_date
 
 
 @pytest.mark.parametrize("testdate, offset, shifted", [
@@ -19,10 +19,10 @@ def test_shift_date(testdate, offset, shifted):
     :return:    """
     start = RecordedDate(testdate)
     start.offset = offset
-    assert start.original == datetime.strptime(testdate, '%Y-%m-%d')
+    assert start.original == create_date(testdate)
     assert start.offset == offset
     start.shift_date()
-    assert start.shifted_date == datetime.strptime(shifted, '%Y-%m-%d')
+    assert start.shifted_date == create_date(shifted)
 
 
 @pytest.mark.parametrize("testdate", [
@@ -62,7 +62,7 @@ def test_bad_offset_value(testdate, offset):
     assert start
     start.offset = offset
 
-    assert start.original == datetime.strptime(testdate, '%Y-%m-%d')
+    assert start.original == create_date(testdate)
     assert start.offset == 0
     start.shift_date()
-    assert start.shifted_date == datetime.strptime(testdate, '%Y-%m-%d')
+    assert start.shifted_date == create_date(testdate)

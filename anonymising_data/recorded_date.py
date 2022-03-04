@@ -1,24 +1,5 @@
-from datetime import datetime, timedelta
-
-
-def has_expected_date_format(date_str):
-    """
-    Checks that the string used is as expected i.e. YYYY-MM-DD
-
-    :param date_str: string representing date
-    :return: True if string is formatted as expected, False otherwise
-    """
-    has_expected_format = True
-    if len(date_str) != 10:
-        return False
-    year = date_str[0:3]
-    month = date_str[5:6]
-    day = date_str[8:9]
-    if not year.isdigit() or not month.isdigit() or not day.isdigit():
-        return False
-    if date_str[4] != '-' or date_str[7] != '-':
-        return False
-    return has_expected_format
+from datetime import timedelta
+from anonymising_data.helpers import create_date, has_expected_date_format
 
 
 class RecordedDate:
@@ -45,7 +26,7 @@ class RecordedDate:
         """
         Function to set the original date
         """
-        self._original = datetime.strptime(value, '%Y-%m-%d')
+        self._original = create_date(value)
 
     @property
     def shifted_date(self):
@@ -60,7 +41,7 @@ class RecordedDate:
         """
         Function to set the shifted date
         """
-        self._shifted_date = datetime.strptime(value, '%Y-%m-%d')
+        self._shifted_date = create_date(value)
 
     @property
     def offset(self):
