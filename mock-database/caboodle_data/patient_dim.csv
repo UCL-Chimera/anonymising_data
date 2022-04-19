@@ -1,0 +1,4 @@
+DurableKey,Sex,BirthDate,IsCurrent,PrimaryMrn
+91,'Male','1999-02-07',1,'12345678'
+92,'Female','2002-03-15',1,'987654321'
+93,'Male','1997-09-20',1,'54SR678/3'
