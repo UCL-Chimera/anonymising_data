@@ -32,13 +32,13 @@ def close_connection(conn):
 
 def get_paths_for_database(dbn):
     """
-    Get the full path to database eg ./test-database/test-{dbn}.sqlite
+    Get the full path to database eg ./mock-database/mock-{dbn}.sqlite
     and the path for the ddl and data files
     :param dbn: name of database
     :return: [full path to database, ddl_dir, data_dir]
     """
     this_dir = Path(__file__).parent.resolve()
-    db = Path.joinpath(this_dir, f'test-{dbn}.sqlite')
+    db = Path.joinpath(this_dir, f'mock-{dbn}.sqlite')
     ddl = Path.joinpath(this_dir, f'{dbn}_ddl')
     data = Path.joinpath(this_dir, f'{dbn}_data')
     return[db, ddl, data]
@@ -114,6 +114,9 @@ def create_and_populate_tables(conn, ddl, data):
 
 
 def remove_existing_databases():
+    """
+    remove databases
+    """
     for dbn in database_names:
         [db, a, b] = get_paths_for_database(dbn)
         Path.unlink(db, missing_ok=True)
