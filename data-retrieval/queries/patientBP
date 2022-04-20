@@ -1,0 +1,7 @@
+SELECT fvf.Value, pd.BirthDate
+FROM FlowsheetValueFact AS fvf
+JOIN FlowsheetRowDim AS frd
+ON fvf.FlowsheetRowKey = frd.FlowsheetRowKey
+JOIN PatientDim AS pd
+ON pd.DurableKey = fvf.PatientDurableKey
+WHERE frd.FlowsheetRowEpicId = 5
