@@ -2,6 +2,19 @@ import sqlite3
 from pathlib import Path
 
 
+def get_query(query_file):
+    """
+    Get the sql for the query from txt file
+    :param query_file: name of file to get
+    :return: sql content of file
+    """
+    this_dir = Path(__file__).parent.resolve()
+    q_file = Path.joinpath(this_dir, 'queries', f'{query_file}')
+    fo = open(q_file, 'r')
+    sql = fo.read()
+    return sql
+
+
 def get_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -35,9 +48,25 @@ def get_path_for_mock_database(dbn):
     return db
 
 
+def get_data(query_file, conn):
+    """
+
+    :param query_file:
+    :param conn:
+    :return:
+    """
+    sql = get_query(query_file)
+    cur = conn.cursor()
+    cur.execute(sql)
+    data = cur.fetchall()
+    return data
+
+
 def main():
-    db = get_path_for_mock_database()
+    db = get_path_for_mock_database('caboodle')
     conn = get_connection(db)
+    data = get_data('patientTemp', conn)
+    print(data)
 
 
 if __name__ == '__main__':

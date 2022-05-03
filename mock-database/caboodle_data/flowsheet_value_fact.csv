@@ -1,4 +1,4 @@
 FlowsheetValueKey,PatientDurableKey,EncounterKey,FlowsheetRowKey,Value,NumericValue,TakenInstant
-1,91,912,1,'1:10',NULL,1617712200
-2,91,912,2,'120/80',NULL,1614303832
-3,91,912,3,'',3.2,1621088614
+1,91,912,1,NULL,37.1,'2022-05-03 08:30:02'
+2,91,912,1,NULL,38.6,'2022-05-03 20:30:02'
+3,91,912,1,NULL,36.6,'2022-04-13 12:46:02'
