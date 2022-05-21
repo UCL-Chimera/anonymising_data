@@ -1,5 +1,6 @@
-import sqlite3
 from pathlib import Path
+
+from myconnection.myconnection import MyConnection
 
 
 def get_query(query_file):
@@ -15,28 +16,6 @@ def get_query(query_file):
     return sql
 
 
-def get_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by the db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except sqlite3.Error as e:
-        print(e)
-    return conn
-
-
-def close_connection(conn):
-    """
-    Close the database connection
-    :param conn: the db connection
-    """
-    conn.close()
-
-
 def get_path_for_mock_database(dbn):
     """
     Get the full path to database eg ./mock-database/mock-{dbn}.sqlite
@@ -50,21 +29,18 @@ def get_path_for_mock_database(dbn):
 
 def get_data(query_file, conn):
     """
-
-    :param query_file:
-    :param conn:
-    :return:
+    Function to run query and get data
+    :param query_file: name of file containing the sql query
+    :param conn: connection to database
+    :return: data from query
     """
     sql = get_query(query_file)
-    cur = conn.cursor()
-    cur.execute(sql)
-    data = cur.fetchall()
-    return data
+    return conn.get_data_query(sql)
 
 
 def main():
     db = get_path_for_mock_database('caboodle')
-    conn = get_connection(db)
+    conn = MyConnection(db)
     data = get_data('patientTemp', conn)
     print(data)
 

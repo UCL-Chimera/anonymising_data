@@ -1,33 +1,10 @@
-import sqlite3
 from pathlib import Path
-
+from myconnection.myconnection import MyConnection
 
 database_names = ['caboodle']
 """
 names of test databases to create
 """
-
-
-def get_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by the db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except sqlite3.Error as e:
-        print(e)
-    return conn
-
-
-def close_connection(conn):
-    """
-    Close the database connection
-    :param conn: the db connection
-    """
-    conn.close()
 
 
 def get_paths_for_database(dbn):
@@ -50,10 +27,8 @@ def create_table(conn, ddlfile):
     :param conn: connection to db
     :param ddlfile: file containing create sql ddl
     """
-    cur = conn.cursor()
     sql = Path(ddlfile).read_text()
-    cur.execute(sql)
-    conn.commit()
+    conn.execute_query(sql)
 
 
 def get_table_name(ddlfile):
@@ -77,7 +52,6 @@ def populate_table(conn, datafile, tablename):
     :param datafile: path to datafile
     :param tablename name of table to populate
     """
-    cur = conn.cursor()
     fin = open(datafile, 'r')
     lines = fin.readlines()
     fin.close()
@@ -85,8 +59,7 @@ def populate_table(conn, datafile, tablename):
     newlines = lines[1:]
     for line in newlines:
         sql = f'INSERT INTO {tablename} VALUES ({line})'
-        cur.execute(sql)
-        conn.commit()
+        conn.execute_query(sql)
 
 
 def get_corresponding_datafile(ddlfile, data):
@@ -126,9 +99,9 @@ def main():
     remove_existing_databases()
     for dbn in database_names:
         [db, ddl, data] = get_paths_for_database(dbn)
-        conn = get_connection(db)
+        conn = MyConnection(db)
         create_and_populate_tables(conn, ddl, data)
-        close_connection(conn)
+        conn.close_connection()
 
 
 if __name__ == '__main__':
