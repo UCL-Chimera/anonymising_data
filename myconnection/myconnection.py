@@ -31,12 +31,16 @@ class MyConnection:
     def get_data_query(self, sql):
         """
         Function to run an sql query to fetch data
-        :param sql:
-        :return:
-        """
+        :param sql: sql to execute
+        :return: data
+       """
         return self.cur.get_data_query(sql)
 
     def execute_query(self, sql):
+        """
+        Function to execute a query that returns nothing
+        :param sql: sql to execute
+        """
         self.cur.execute_query(sql)
         self.conn.commit()
 
@@ -48,18 +52,19 @@ class MyCursor:
     def __init__(self, conn):
         self.cur = conn.cursor()
 
-    def cursor(self):
-        return self.cur
-
     def get_data_query(self, sql):
         """
         Function to run an sql query to fetch data
-        :param sql:
-        :return:
+        :param sql: sql to execute
+        :return: data
         """
         self.cur.execute(sql)
         data = self.cur.fetchall()
         return data
 
     def execute_query(self, sql):
+        """
+        Function to execute a query that returns nothing
+        :param sql: sql to execute
+        """
         self.cur.execute(sql)
