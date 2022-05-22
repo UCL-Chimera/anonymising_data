@@ -15,11 +15,12 @@ class MyConnection:
             specified by the db_file
         :return: Connection object or None
         """
+        conn = None
         try:
-            self.conn = sqlite3.connect(self.db_file)
+            conn = sqlite3.connect(self.db_file)
         except sqlite3.Error as e:
             print(e)
-        return self.conn
+        return conn
 
     def close_connection(self):
         """

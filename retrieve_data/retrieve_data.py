@@ -33,7 +33,7 @@ class RetrieveData:
         """
         this_dir = Path(__file__).parent.resolve()
         if testing:
-            q_file = Path.joinpath(this_dir, '..', 'tests','resources', f'{self.query_file}')
+            q_file = Path.joinpath(this_dir, '..', 'tests', 'resources', f'{self.query_file}')
         else:
             q_file = Path.joinpath(this_dir, 'queries', f'{self.query_file}')
         fo = open(q_file, 'r')
@@ -57,9 +57,8 @@ class RetrieveData:
         """
         if self.is_mock:
             this_dir = Path(__file__).parent.resolve()
-            db = Path.joinpath(this_dir, '..', 'mock-database', f'mock-{self.db}.sqlite')
+            db = Path.joinpath(this_dir, '..', 'resources', 'mock-database', f'mock-{self.db}.sqlite')
             return db
         else:
             # needs customising for whatever we are using
             return None
-

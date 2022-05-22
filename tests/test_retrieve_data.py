@@ -1,4 +1,3 @@
-from retrieve_data.retrieve_data import RetrieveData
 
 
 def test_get_query(retrieval):
