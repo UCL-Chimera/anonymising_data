@@ -34,7 +34,7 @@ jobs:
     - name: Create fake database
       run: |
        PWD = pwd()
-       export PYTHONPATH=$PYTHONPATH:${{ PWD }
+       export PYTHONPATH=$PYTHONPATH:${{ PWD }}
        cd resources/mock-database
        python mock-database.py
        cd ..
