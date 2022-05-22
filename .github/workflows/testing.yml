@@ -33,6 +33,7 @@ jobs:
     
     - name: Create fake database
       run: |
+       export PYTHONPATH=$PYTHONPATH:$(pwd)
        cd resources/mock-database
        python mock-database.py
        cd ..
