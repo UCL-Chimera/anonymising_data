@@ -31,10 +31,21 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
-    - name: Create fake database
+    - name: Create fake database for Linux/Mac
+      if: ${{ matrix.platform}} != 'windows-latest'
       shell: bash
       run: |
        export PYTHONPATH=$PYTHONPATH:$(pwd)
+       cd resources/mock-database
+       python mock-database.py
+       cd ..
+       cd ..
+
+    - name: Create fake database for Eindows
+      if: ${{ matrix.platform}} == 'windows-latest'
+      shell: powershell
+      run: |
+       $env:PYTHONPATH=${pwd}
        cd resources/mock-database
        python mock-database.py
        cd ..
