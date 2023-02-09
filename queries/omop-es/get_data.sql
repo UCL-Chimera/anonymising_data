@@ -18,8 +18,9 @@ ON c.concept_id = m.measurement_concept_id
 INNER JOIN hic_cc_002.visit_occurrence AS v
 ON v.visit_occurrence_id = m.visit_occurrence_id
 WHERE 
-m.measurement_concept_id = 4302666  -- TEMPERATURE
-OR
-m.measurement_concept_id = 3010421 -- pH
+-- 4302666  -- Body temperature
+-- 3010421  -- pH of Blood
+
+m.measurement_concept_id IN (3010421, 4302666)
 ORDER BY m.person_id 
 --LIMIT 10
