@@ -1,9 +1,12 @@
+-- create table of measurement_type with measurement value and time
+-- for patient, with age, gender and ethnicity
 SELECT
     c.concept_name AS measurement_type,
     m.person_id,
     v.visit_occurrence_id AS visit,
     m.measurement_datetime,
     m.value_as_number,
+	m.unit_source_value AS units,
     -- if value is not a number it lists the concept_id
     -- look up name if there is a value
     (
