@@ -9,7 +9,7 @@ class Config:
     """
 
     def __init__(self):
-        self.filename = os.getcwd() + '..' + os.sep + \
+        self.filename = os.getcwd() + os.sep + '..' + os.sep + \
                         '..' + os.sep + 'config.yml'
         self._year = None
         self._concept_file = ''
