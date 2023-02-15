@@ -69,4 +69,3 @@ def test_anonymise_age(dob, testdate, anon_age):
     age = Age(dob)
     age.anonymise_age_for_testing(testdate)
     assert (anon_age == age.anon_age)
-
