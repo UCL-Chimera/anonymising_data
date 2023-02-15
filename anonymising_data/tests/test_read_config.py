@@ -9,7 +9,7 @@ def test_create_config():
 
 
 def test_read_config():
-    cfg = Config()
+    cfg = Config(True)
     cfg.read_yaml()
     assert (cfg.year == 2023)
     assert (cfg.concept_file ==

@@ -8,9 +8,14 @@ class Config:
     Class to assign config variables
     """
 
-    def __init__(self):
-        self.filename = os.getcwd() + os.sep + '..' + os.sep + \
-                        '..' + os.sep + 'config.yml'
+    def __init__(self, test=False):
+        if test:
+            self.filename = os.getcwd() + os.sep + \
+                            '..' + os.sep + 'config.yml'
+        else:
+            self.filename = os.getcwd() + os.sep + ''\
+                            + os.sep + '..' + os.sep + 'config.yml'
+
         self._year = None
         self._concept_file = ''
         self._query_file = ''
