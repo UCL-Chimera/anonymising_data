@@ -1,6 +1,6 @@
 import pytest
-from anonymising_data.recorded_date import RecordedDate
-from anonymising_data.helpers import create_date
+from anonymising_data.anonymise.recorded_date import RecordedDate
+from anonymising_data.utils.helpers import create_date
 
 
 @pytest.mark.parametrize("testdate, offset, shifted", [

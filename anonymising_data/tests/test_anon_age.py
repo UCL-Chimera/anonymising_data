@@ -1,5 +1,5 @@
 import pytest
-from anonymising_data.age import Age
+from anonymising_data.anonymise.age import Age
 
 
 @pytest.mark.parametrize("dob, days, months, years, testdate", [
@@ -69,3 +69,4 @@ def test_anonymise_age(dob, testdate, anon_age):
     age = Age(dob)
     age.anonymise_age_for_testing(testdate)
     assert (anon_age == age.anon_age)
+

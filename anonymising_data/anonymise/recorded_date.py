@@ -1,5 +1,5 @@
 from datetime import timedelta
-from anonymising_data.helpers import create_date, has_expected_date_format
+from anonymising_data.utils.helpers import create_date, has_expected_date_format
 
 
 class RecordedDate:
