@@ -1,0 +1,7 @@
+year: 2023
+
+files:
+  concept_mapping:
+    C:\Development\CHIMERA\data-pipeline-project\230214_concept_codes.csv
+  db_query:
+    C:\Development\CHIMERA\anonymising_data\queries\omop-es\get-data.sql
