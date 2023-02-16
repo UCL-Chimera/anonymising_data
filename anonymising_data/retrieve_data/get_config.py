@@ -10,7 +10,6 @@ class Config:
 
     def __init__(self, test=False):
         if test:
-            print(os.getcwd())
             self.filename = os.path.join(os.getcwd(), 'tests',
                                          'resources', 'test_config.yml')
         else:
