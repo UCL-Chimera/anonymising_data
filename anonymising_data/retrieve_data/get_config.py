@@ -10,6 +10,7 @@ class Config:
 
     def __init__(self, test=False):
         if test:
+            print(os.getcwd())
             self.filename = os.getcwd() + os.sep + \
                             '..' + os.sep + 'config.yml'
         else:
