@@ -11,11 +11,10 @@ class Config:
     def __init__(self, test=False):
         if test:
             print(os.getcwd())
-            self.filename = os.getcwd() + os.sep + \
-                            '..' + os.sep + 'config.yml'
+            self.filename = os.path.join(os.getcwd(), 'tests',
+                                         'resources', 'test_config.yml')
         else:
-            self.filename = os.getcwd() + os.sep + ''\
-                            + os.sep + '..' + os.sep + 'config.yml'
+            self.filename = os.path.join(os.getcwd(),  '..', 'config.yml')
 
         self._year = None
         self._concept_file = ''
