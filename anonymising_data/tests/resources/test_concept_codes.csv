@@ -1,0 +1,3 @@
+concept_code,vocabulary_id,concept_id,concept_name,domain_id,Comment
+400,SNOMED,432,Body temperature,Measurement,
+12-Jul,LOINC,543,Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood,Measurement,

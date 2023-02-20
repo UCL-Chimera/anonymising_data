@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import yaml
 
@@ -8,12 +8,13 @@ class Config:
     Class to assign config variables
     """
 
-    def __init__(self, test=False):
-        if test:
-            self.filename = os.path.join(os.getcwd(), 'tests',
-                                         'resources', 'test_config.yml')
+    def __init__(self, testing=False):
+        if testing:
+            self.filename = Path(__file__).parent.parent.joinpath('tests',
+                                                                  'resources',
+                                                                  'test_config.yml')
         else:
-            self.filename = os.path.join(os.getcwd(),  '..', 'config.yml')
+            self.filename = Path(__file__).parent.parent.parent.joinpath('config.yml')
 
         self._year = None
         self._concept_file = ''
@@ -50,6 +51,7 @@ class Config:
         """
         with open(self.filename, 'r') as f:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
+        f.close()
         self._year = cfg['year']
-        self._concept_file = cfg['files']['concept_mapping']
-        self._query_file = cfg['files']['db_query']
+        self._concept_file = Path(cfg['files']['concept_mapping'])
+        self._query_file = Path(cfg['files']['db_query'])
