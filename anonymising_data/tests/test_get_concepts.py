@@ -16,8 +16,8 @@ def concept_file():
 def test_create_concepts(concept_file):
     con = Concepts(concept_file)
     assert (con is not None)
-    assert (con.filename == Path('C:/Development/CHIMERA/anonymising_data/'
-                                 'anonymising_data/tests/resources/test_concept_codes.csv'))
+    assert (con.filename == Path(__file__).parent.parent.
+            joinpath('tests/resources/test_concept_codes.csv'))
 
 
 @pytest.mark.parametrize("line, concept_id", [

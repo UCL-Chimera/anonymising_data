@@ -53,5 +53,5 @@ class Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         self._year = cfg['year']
-        self._concept_file = Path(cfg['files']['concept_mapping'])
-        self._query_file = Path(cfg['files']['db_query'])
+        self._concept_file = Path(__file__).parent.parent.joinpath(cfg['files']['concept_mapping'])
+        self._query_file = Path(__file__).parent.parent.joinpath(cfg['files']['db_query'])

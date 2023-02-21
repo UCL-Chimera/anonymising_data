@@ -16,7 +16,7 @@ def test_read_config():
     # fails on GHA and I need new eyes
     cfg.read_yaml()
     assert (cfg.year == 2000)
-    assert (cfg.concept_file == Path('C:/Development/CHIMERA/anonymising_data/'
-                                     'anonymising_data/tests/resources/test_concept_codes.csv'))
-    assert (cfg.query_file == Path('C:/Development/CHIMERA/anonymising_data/'
-                                   'anonymising_data/tests/resources/test_query.sql'))
+    assert (cfg.concept_file == Path(__file__).parent.parent.
+            joinpath('tests/resources/test_concept_codes.csv'))
+    assert (cfg.query_file == Path(__file__).parent.parent.
+            joinpath('tests/resources/test_query.sql'))
