@@ -9,4 +9,3 @@ class Query:
         self._concepts = concepts
 
 #    def create_query_file(self):
-

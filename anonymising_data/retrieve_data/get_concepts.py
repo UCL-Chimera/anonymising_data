@@ -1,6 +1,3 @@
-from anonymising_data.utils.helpers import FileManager
-
-
 def get_concept_id(line):
     """
     Function to read concept id from csv line
@@ -35,10 +32,9 @@ class Concepts:
         """
         with open(self.filename, 'r') as f:
             lines = f.readlines()
-        f.close
-            # put in error checking
-#            if not lines[0].startswith('concept_code'):
+        f.close()
+        # put in error checking
+        # if not lines[0].startswith('concept_code'):
         num_concepts = len(lines)
         for i in range(1, num_concepts):
             self._concepts.append(get_concept_id(lines[i]))
-
