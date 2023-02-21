@@ -2,6 +2,6 @@ year: 2000
 
 files:
   concept_mapping:
-    'C:\Development\CHIMERA\anonymising_data\anonymising_data\tests\resources\test_concept_codes.csv'
+    C:/Development/CHIMERA/anonymising_data/anonymising_data/tests/resources/test_concept_codes.csv
   db_query:
-    'C:\Development\CHIMERA\anonymising_data\anonymising_data\tests\resources\test_query.sql'
+    C:/Development/CHIMERA/anonymising_data/anonymising_data/tests/resources/test_query.sql
