@@ -1,24 +1,6 @@
 from datetime import datetime
 
 
-class FileManager:
-    """
-    Class to manage read from and write to files
-    """
-    def __init__(self, filename, mode):
-        self.filename = filename
-        self.mode = mode
-        self.file = None
-
-    def __enter__(self):
-        self.file = open(self.filename, self.mode)
-        return self.file
-
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        # note might we want to save and flush
-        self.file.close()
-
-
 def get_value_from_user(name):
     """
     Function to get user input
@@ -54,3 +36,18 @@ def has_expected_date_format(date_str):
     except ValueError:
         has_expected_format = False
     return has_expected_format
+
+
+def rreplace(s, old, new, occurrence):
+    """
+    Function to replace parts of string from right
+    :param s: string
+    :param old: substring to replace
+    :param new: replacement substring
+    :param occurrence: no of replacements
+    :return: string with replacements
+
+    e.g. rreplace('this is it.', 'i', 'REP', 2) = 'this REPs REPt.'
+    """
+    li = s.rsplit(old, occurrence)
+    return new.join(li)

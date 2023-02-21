@@ -1,6 +1,6 @@
 SELECT
     c.concept_name AS measurement_type,
-    2023 - p.year_of_birth AS age
+    2000 - p.year_of_birth AS age
 FROM hic_cc_002.measurement AS m
 
 INNER JOIN hic_cc_002.person AS p

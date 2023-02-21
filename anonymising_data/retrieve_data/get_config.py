@@ -16,9 +16,11 @@ class Config:
         else:
             self.filename = Path(__file__).parent.parent.parent.joinpath('config.yml')
 
+        self._testing = testing
         self._year = None
         self._concept_file = ''
         self._query_file = ''
+        self._output_query_file = ''
 
     @property
     def year(self):
@@ -44,6 +46,14 @@ class Config:
         """
         return self._query_file
 
+    @property
+    def output_query_file(self):
+        """
+        Funcion to return filename of output query file
+        :return:
+        """
+        return self._output_query_file
+
     def read_yaml(self):
         """
         Function to read config and populate variables
@@ -53,5 +63,15 @@ class Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         self._year = cfg['year']
-        self._concept_file = Path(__file__).parent.parent.joinpath(cfg['files']['concept_mapping'])
-        self._query_file = Path(__file__).parent.parent.joinpath(cfg['files']['db_query'])
+        if self._testing:
+            self._concept_file = Path(__file__).parent.parent.\
+                joinpath(cfg['files']['concept_mapping'])
+            self._query_file = Path(__file__).parent.parent.\
+                joinpath(cfg['files']['db_query'])
+            self._output_query_file = Path(__file__).parent.parent. \
+                joinpath(cfg['files']['output_query'])
+        else:
+            self._concept_file = Path(__file__).parent.parent.\
+                parent.parent.joinpath(cfg['files']['concept_mapping'])
+            self._query_file = Path(__file__).parent.parent.\
+                parent.parent.joinpath(cfg['files']['db_query'])

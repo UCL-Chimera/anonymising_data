@@ -5,3 +5,5 @@ files:
     tests/resources/test_concept_codes.csv
   db_query:
     tests/resources/test_query.sql
+  output_query:
+    tests/output/get_data.sql
