@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from anonymising_data.utils.helpers import rreplace
 
 
@@ -13,6 +15,7 @@ class Query:
         self._yr_str = ''
         self._concepts = concepts
         self._con_str = '('
+        self._testing = config.testing
         self.create_strings()
 
     def create_strings(self):
@@ -32,6 +35,11 @@ class Query:
             lines = f.readlines()
         f.close()
         num_lines = len(lines)
+
+        # MAKE output dir if necessary
+        if self._testing:
+            Path(self._output_query).parent.mkdir(parents=True, exist_ok=True)
+
         with open(self._output_query, 'w') as out:
             for i in range(0, num_lines):
                 out.write(self.adjust_line(lines[i]))

@@ -25,7 +25,7 @@ class Config:
     @property
     def year(self):
         """
-        Funcion to return the year
+        Function to return the year
         :return: year
         """
         return self._year
@@ -33,7 +33,7 @@ class Config:
     @property
     def concept_file(self):
         """
-        Funcion to return filename of concept file
+        Function to return filename of concept file
         :return:
         """
         return self._concept_file
@@ -41,7 +41,7 @@ class Config:
     @property
     def query_file(self):
         """
-        Funcion to return filename of query file
+        Function to return filename of query file
         :return:
         """
         return self._query_file
@@ -49,10 +49,18 @@ class Config:
     @property
     def output_query_file(self):
         """
-        Funcion to return filename of output query file
+        Function to return filename of output query file
         :return:
         """
         return self._output_query_file
+
+    @property
+    def testing(self):
+        """
+        Function to return the value of testing variable
+        :return: year
+        """
+        return self._testing
 
     def read_yaml(self):
         """
@@ -63,7 +71,7 @@ class Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         self._year = cfg['year']
-        if self._testing:
+        if self.testing:
             self._concept_file = Path(__file__).parent.parent.\
                 joinpath(cfg['files']['concept_mapping'])
             self._query_file = Path(__file__).parent.parent.\

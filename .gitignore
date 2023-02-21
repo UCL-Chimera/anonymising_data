@@ -130,3 +130,5 @@ dmypy.json
 
 # pycharm
 .idea/
+
+anonymising_data/tests/output/*.*
