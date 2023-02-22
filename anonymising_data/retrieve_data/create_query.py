@@ -39,7 +39,6 @@ class Query:
         # MAKE output dir if necessary
         if self._testing:
             Path(self._output_query).parent.mkdir(parents=True, exist_ok=True)
-            print(' in testing')
 
         with open(self._output_query, 'w') as out:
             for i in range(0, num_lines):
