@@ -13,7 +13,6 @@ def test_create_config():
 def test_read_config():
     cfg = Config(testing=True)
     assert (cfg is not None)
-    # fails on GHA and I need new eyes
     cfg.read_yaml()
     assert (cfg.year == 2000)
     assert (cfg.concept_file == Path(__file__).parent.parent.
