@@ -37,8 +37,8 @@ class Query:
         num_lines = len(lines)
 
         # MAKE output dir if necessary
-        if self._testing:
-            Path(self._output_query).parent.mkdir(parents=True, exist_ok=True)
+
+        Path(self._output_query).parent.mkdir(parents=True, exist_ok=True)
 
         with open(self._output_query, 'w') as out:
             for i in range(0, num_lines):

@@ -132,3 +132,5 @@ dmypy.json
 .idea/
 
 anonymising_data/tests/output/*.*
+
+output/

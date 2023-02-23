@@ -37,4 +37,6 @@ class Concepts:
         # if not lines[0].startswith('concept_code'):
         num_concepts = len(lines)
         for i in range(1, num_concepts):
-            self._concepts.append(get_concept_id(lines[i]))
+            con_id = get_concept_id(lines[i])
+            if con_id != '':
+                self._concepts.append(con_id)

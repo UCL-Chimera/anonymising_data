@@ -14,7 +14,7 @@ SELECT
         WHERE cc.concept_id = m.value_as_concept_id
             AND cc.concept_name NOT LIKE 'No matching concept'
     ) AS value_as_string,
-    2023 - p.year_of_birth AS age,
+    :FILL_YEAR: - p.year_of_birth AS age,
     p.gender_source_value AS gender,
     p.race_source_value AS ethnicity
 FROM hic_cc_002.measurement AS m
@@ -28,10 +28,8 @@ INNER JOIN hic_cc_002.concept AS c
 INNER JOIN hic_cc_002.visit_occurrence AS v
     ON v.visit_occurrence_id = m.visit_occurrence_id
 WHERE
--- 4302666  -- Body temperature
--- 3010421  -- pH of Blood
 
-    m.measurement_concept_id IN (3010421, 4302666)
+    m.measurement_concept_id IN :FILL_CONCEPT:
 
 ORDER BY m.person_id
 --LIMIT 10
