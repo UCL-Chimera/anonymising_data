@@ -7,3 +7,7 @@ files:
     tests/resources/test_query.sql
   output_query:
     tests/output/get_data.sql
+  omop_data:
+    tests/resources/test_data.csv
+  final_data:
+    tests/output/final_data.csv

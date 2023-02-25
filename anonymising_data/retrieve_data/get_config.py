@@ -21,6 +21,8 @@ class Config:
         self._concept_file = ''
         self._query_file = ''
         self._output_query_file = ''
+        self._omop_data_file = ''
+        self._final_data_file = ''
 
     @property
     def year(self):
@@ -55,6 +57,22 @@ class Config:
         return self._output_query_file
 
     @property
+    def omop_data_file(self):
+        """
+        Function to return filename of omop data file
+        :return:
+        """
+        return self._omop_data_file
+
+    @property
+    def final_data_file(self):
+        """
+        Function to return filename of final data file
+        :return:
+        """
+        return self._final_data_file
+
+    @property
     def testing(self):
         """
         Function to return the value of testing variable
@@ -78,6 +96,10 @@ class Config:
                 joinpath(cfg['files']['db_query'])
             self._output_query_file = Path(__file__).parent.parent. \
                 joinpath(cfg['files']['output_query'])
+            self._final_data_file = Path(__file__).parent.parent. \
+                joinpath(cfg['files']['final_data'])
+            self._omop_data_file = Path(__file__).parent.parent. \
+                joinpath(cfg['files']['omop_data'])
         else:
             self._concept_file = Path(__file__).parent.parent.\
                 parent.parent.joinpath(cfg['files']['concept_mapping'])
@@ -85,4 +107,7 @@ class Config:
                 parent.parent.joinpath(cfg['files']['db_query'])
             self._output_query_file = Path(__file__).parent.parent. \
                 parent.parent.joinpath(cfg['files']['output_query'])
-
+            self._final_data_file = Path(__file__).parent.parent. \
+                parent.parent.joinpath(cfg['files']['final_data'])
+            self._omop_data_file = Path(__file__).parent.parent. \
+                parent.parent.joinpath(cfg['files']['omop_data'])

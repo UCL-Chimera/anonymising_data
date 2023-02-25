@@ -21,3 +21,7 @@ def test_read_config():
             joinpath('tests/resources/test_query.sql'))
     assert (cfg.output_query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_data.sql'))
+    assert (cfg.omop_data_file == Path(__file__).parent.parent.
+            joinpath('tests/resources/test_data.csv'))
+    assert (cfg.final_data_file == Path(__file__).parent.parent.
+            joinpath('tests/output/final_data.csv'))
