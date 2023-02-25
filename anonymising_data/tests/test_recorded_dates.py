@@ -23,6 +23,7 @@ def test_shift_date(testdate, offset, shifted):
     assert start.offset == offset
     start.shift_date()
     assert start.shifted_date == create_date(shifted)
+    assert start.get_shifted_date_str() == shifted
 
 
 @pytest.mark.parametrize("testdate", [

@@ -23,4 +23,19 @@ def test_create_query(config):
             joinpath('tests/output/final_data.csv'))
 
 
+@pytest.mark.parametrize("testdate, shifted", [
+    ('2000-02-10 03:21', '2001-02-09 03:21'),
+    ('1999-02-10 22:16', '2000-02-10 22:16'),
+])
+def test_shift_date(config, testdate, shifted):
+    d = Data(config)
+    assert(d.adjust_date_time(testdate) == shifted)
 
+
+@pytest.mark.parametrize("testdate, shifted", [
+    ('0,1,2,2000-02-10 03:21,4,5,6', '0,1,2,2001-02-09 03:21,4,5,6'),
+    ('a,b,c,1999-02-10 22:16,d,e,f', 'a,b,c,2000-02-10 22:16,d,e,f'),
+])
+def test_adjust_line(config, testdate, shifted):
+    d = Data(config)
+    assert (d.adjust_line(testdate) == shifted)

@@ -60,6 +60,12 @@ class RecordedDate:
         """
         self._offset = value if isinstance(value, int) else 0
 
+    def get_shifted_date_str(self):
+        """
+        Function to set the shifted date
+        """
+        return self._shifted_date.__str__()[0:10]
+
     def shift_date(self):
         """
         Function to shift date by the offset period
