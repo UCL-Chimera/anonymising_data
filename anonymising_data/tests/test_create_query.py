@@ -21,16 +21,6 @@ def concept_file(config):
 
 
 @pytest.fixture(scope="session")
-def year(config):
-    return config.year
-
-
-@pytest.fixture(scope="session")
-def query_file(config):
-    return config.query_file
-
-
-@pytest.fixture(scope="session")
 def concepts(concept_file):
     con = Concepts(concept_file)
     con.populate_concepts()
