@@ -1,9 +1,9 @@
 SELECT
     c.concept_name AS measurement_type,
     :FILL_YEAR: - p.year_of_birth AS age
-FROM hic_cc_002.measurement AS m
+FROM :FILL_SCHEMA:.measurement AS m
 
-INNER JOIN hic_cc_002.person AS p
+INNER JOIN :FILL_SCHEMA:.person AS p
     ON m.person_id = p.person_id
 
 WHERE

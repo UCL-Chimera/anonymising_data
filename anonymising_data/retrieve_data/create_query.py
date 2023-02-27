@@ -15,6 +15,9 @@ class Query:
         self._yr_str = ''
         self._concepts = concepts
         self._con_str = '('
+        self._schema = config.schema
+        self._offset = config.date_offset
+        self._offset_str = ''
         self._testing = config.testing
         self.create_strings()
 
@@ -26,6 +29,7 @@ class Query:
         for c in self._concepts:
             self._con_str = self._con_str + str(c) + ', '
         self._con_str = rreplace(self._con_str, ', ', ')', 1)
+        self._offset_str = str(self._offset)
 
     def create_query_file(self):
         """
@@ -57,6 +61,8 @@ class Query:
             newline = line.replace(':FILL_YEAR:', self._yr_str)
         elif line.find(':FILL_CONCEPT:') != -1:
             newline = line.replace(':FILL_CONCEPT:', self._con_str)
+        elif line.find(':FILL_SCHEMA:') != -1:
+            newline = line.replace(':FILL_SCHEMA:', self._schema)
         else:
             newline = line
         return newline
