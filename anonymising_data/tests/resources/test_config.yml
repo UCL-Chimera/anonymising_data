@@ -11,3 +11,7 @@ files:
     tests/resources/test_data.csv
   final_data:
     tests/output/final_data.csv
+
+schema: hic_cc_002
+
+date_offset: 365

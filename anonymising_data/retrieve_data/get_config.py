@@ -23,6 +23,8 @@ class Config:
         self._output_query_file = ''
         self._omop_data_file = ''
         self._final_data_file = ''
+        self._schema = ''
+        self._date_offset = None
 
     @property
     def year(self):
@@ -73,10 +75,26 @@ class Config:
         return self._final_data_file
 
     @property
+    def schema(self):
+        """
+        Function to return the schema
+        :return: schema
+        """
+        return self._schema
+
+    @property
+    def date_offset(self):
+        """
+        Function to return the offset_date
+        :return: date_offset
+        """
+        return self._date_offset
+
+    @property
     def testing(self):
         """
         Function to return the value of testing variable
-        :return: year
+        :return: testing
         """
         return self._testing
 
@@ -89,6 +107,8 @@ class Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         self._year = cfg['year']
+        self._schema = cfg['schema']
+        self._date_offset = cfg['date_offset']
         if self._testing:
             self._concept_file = Path(__file__).parent.parent.\
                 joinpath(cfg['files']['concept_mapping'])
