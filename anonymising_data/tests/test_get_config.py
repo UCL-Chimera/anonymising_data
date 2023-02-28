@@ -19,7 +19,6 @@ def test_create_config():
     assert (cfg.date_offset is None)
 
 
-
 def test_read_config():
     """
     Tests the Config class reads correctly from test_config.yml

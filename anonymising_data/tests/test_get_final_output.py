@@ -30,7 +30,7 @@ def test_create_query(config):
 ])
 def test_shift_date(config, testdate, shifted):
     d = Data(config)
-    assert(d.adjust_date_time(testdate) == shifted)
+    assert (d.adjust_date_time(testdate) == shifted)
 
 
 @pytest.mark.parametrize("testdate, shifted", [
