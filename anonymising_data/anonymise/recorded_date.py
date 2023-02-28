@@ -1,6 +1,6 @@
 from datetime import timedelta
 from anonymising_data.utils.helpers \
-    import create_date, has_expected_date_format
+    import create_date, has_expected_date_format, determine_date_format
 
 
 class RecordedDate:
@@ -10,9 +10,20 @@ class RecordedDate:
     def __init__(self, original):
         if not has_expected_date_format(original):
             raise ValueError
+        self._original_str = original
+
         self.original = original
         self.offset = 0
         self.shifted_date = original
+        self._date_format = determine_date_format(self._original_str)
+
+    @property
+    def original_str(self):
+        """
+        Function to retrieve the original date string
+        :return: _original_str
+        """
+        return self._original_str
 
     @property
     def original(self):
@@ -64,7 +75,18 @@ class RecordedDate:
         """
         Function to set the shifted date
         """
-        return self._shifted_date.__str__()[0:10]
+        month_str = f'{self._shifted_date.month}' \
+            if self._shifted_date.month > 9 else f'0{self._shifted_date.month}'
+        day_str = f'{self._shifted_date.day}' \
+            if self._shifted_date.day > 9 else f'0{self._shifted_date.day}'
+        if self._date_format == 0:
+            return f'{self._shifted_date.year}/{month_str}/{day_str}'
+        elif self._date_format == 1:
+            return f'{day_str}/{month_str}/{self._shifted_date.year}'
+        elif self._date_format == 2:
+            return f'{self._shifted_date.year}-{month_str}-{day_str}'
+        elif self._date_format == 3:
+            return f'{day_str}-{month_str}-{self._shifted_date.year}'
 
     def shift_date(self):
         """

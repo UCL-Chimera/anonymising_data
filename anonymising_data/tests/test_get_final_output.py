@@ -1,3 +1,4 @@
+import filecmp
 from pathlib import Path
 
 from anonymising_data.retrieve_data.final_output import Data
@@ -39,3 +40,11 @@ def test_shift_date(config, testdate, shifted):
 def test_adjust_line(config, testdate, shifted):
     d = Data(config)
     assert (d.adjust_line(testdate) == shifted)
+
+
+def test_write_data(config):
+    d = Data(config)
+    d.create_final_output()
+    newfile = Path(__file__).parent.parent.joinpath('tests/output/final_data.csv')
+    testfile = Path(__file__).parent.parent.joinpath('tests/resources/test_expected_data.csv')
+    assert (filecmp.cmp(newfile, testfile, shallow=False))

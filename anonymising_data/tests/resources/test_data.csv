@@ -1,11 +1,4 @@
 ﻿measurement_type,person_id,visit,measurement_datetime,value_as_number,units,value_as_string,age,gender,ethnicity
 pH of Blood,1,3042,29/08/2022 22:16,7.338,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,03/09/2022 10:35,7.307,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,03/09/2022 18:01,7.358,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,03/09/2022 18:07,7.364,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,26/08/2022 23:59,7.193,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,28/08/2022 16:11,7.294,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,26/08/2022 13:58,7.288,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,09/09/2022 20:44,7.398,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,26/08/2022 10:11,7.302,,NULL,62,Male,Black Caribbean
-pH of Blood,1,3042,26/08/2022 07:43,7.27,,NULL,62,Male,Black Caribbean
+Body temperature,7341,34,08/11/2021 14:15,37.3,,NULL,41,Male,Other White Background
+ABO group [Type] in Blood,6327,1097,10/06/2021 14:19,NULL,NULL,Group O,68,Female,Not Yet Asked

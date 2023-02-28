@@ -1,6 +1,9 @@
 from datetime import datetime
 
 
+YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH = range(4)
+
+
 def get_value_from_user(name):
     """
     Function to get user input
@@ -29,7 +32,6 @@ def create_date(date_string):
             except ValueError:
                 d = datetime.strptime(date_string, '%d/%m/%Y')
     return d
-
 
 
 def has_expected_date_format(date_str):
@@ -62,3 +64,17 @@ def rreplace(s, old, new, occurrence):
     """
     li = s.rsplit(old, occurrence)
     return new.join(li)
+
+
+def determine_date_format(date_str):
+    if date_str[0:4].isnumeric():
+        if date_str[4] == '/':
+            date_format = YEAR_SLASH
+        else:
+            date_format = YEAR_DASH
+    else:
+        if date_str[2] == '/':
+            date_format = DAY_SLASH
+        else:
+            date_format = DAY_DASH
+    return date_format

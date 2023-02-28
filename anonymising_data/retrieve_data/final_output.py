@@ -48,7 +48,7 @@ class Data:
                 out.write(f.readline())
                 for i in range(1, num_lines):
                     line = f.readline()
-                    newline = self.adjust_date_time(line)
+                    newline = self.adjust_line(line)
                     out.write(newline)
 
     def adjust_line(self, line):

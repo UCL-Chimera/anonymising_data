@@ -1,6 +1,18 @@
+import datetime
+
 import pytest
 from anonymising_data.anonymise.recorded_date import RecordedDate
 from anonymising_data.utils.helpers import create_date
+
+
+def test_create_recorded_date():
+    dd = datetime.datetime(2023, 11, 10, 0, 0)
+    d = RecordedDate('10/11/2023')
+    assert (d is not None)
+    assert (d.original_str == '10/11/2023')
+    assert (d.original == dd)
+    assert (d.shifted_date == dd)
+    assert (d.offset == 0)
 
 
 @pytest.mark.parametrize("testdate, offset, shifted", [
