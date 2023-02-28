@@ -18,7 +18,18 @@ def create_date(date_string):
     :param date_string: string to be used
     :return: datetime of format 'YYYY-MM-DD'
     """
-    return datetime.strptime(date_string, '%Y-%m-%d')
+    try:
+        d = datetime.strptime(date_string, '%Y-%m-%d')
+    except ValueError:
+        try:
+            d = datetime.strptime(date_string, '%d-%m-%Y')
+        except ValueError:
+            try:
+                d = datetime.strptime(date_string, '%Y/%m/%d')
+            except ValueError:
+                d = datetime.strptime(date_string, '%d/%m/%Y')
+    return d
+
 
 
 def has_expected_date_format(date_str):
