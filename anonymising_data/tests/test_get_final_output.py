@@ -15,7 +15,7 @@ def config():
     return cfg
 
 
-def test_create_query(config):
+def test_create_data(config):
     d = Data(config)
     assert (d is not None)
     assert (d.omop_data_file == Path(__file__).parent.parent.
