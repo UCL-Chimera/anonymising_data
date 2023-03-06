@@ -5,6 +5,8 @@ files:
     tests/resources/test_concept_codes.csv
   db_query:
     tests/resources/test_query.sql
+  database:
+    tests/resources/mock-database/mock_omop_es.db
   output_query:
     tests/output/get_data.sql
   omop_data:
@@ -12,6 +14,6 @@ files:
   final_data:
     tests/output/final_data.csv
 
-schema: mock-omop-es
+schema: mock_omop_es
 
 date_offset: 365

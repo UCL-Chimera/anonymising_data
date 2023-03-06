@@ -20,6 +20,7 @@ class Config:
         self._year = None
         self._concept_file = ''
         self._query_file = ''
+        self._database = ''
         self._output_query_file = ''
         self._omop_data_file = ''
         self._final_data_file = ''
@@ -49,6 +50,14 @@ class Config:
         :return:
         """
         return self._query_file
+
+    @property
+    def database(self):
+        """
+        Function to return filename of database
+        :return:
+        """
+        return self._database
 
     @property
     def output_query_file(self):
@@ -114,6 +123,8 @@ class Config:
                 joinpath(cfg['files']['concept_mapping'])
             self._query_file = Path(__file__).parent.parent.\
                 joinpath(cfg['files']['db_query'])
+            self._database = Path(__file__).parent.parent.\
+                joinpath(cfg['files']['database'])
             self._output_query_file = Path(__file__).parent.parent. \
                 joinpath(cfg['files']['output_query'])
             self._final_data_file = Path(__file__).parent.parent. \
@@ -125,6 +136,8 @@ class Config:
                 parent.parent.joinpath(cfg['files']['concept_mapping'])
             self._query_file = Path(__file__).parent.parent.\
                 parent.parent.joinpath(cfg['files']['db_query'])
+            self._database = Path(__file__).parent.parent.\
+                parent.parent.joinpath(cfg['files']['database'])
             self._output_query_file = Path(__file__).parent.parent. \
                 parent.parent.joinpath(cfg['files']['output_query'])
             self._final_data_file = Path(__file__).parent.parent. \
