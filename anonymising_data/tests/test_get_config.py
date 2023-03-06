@@ -38,5 +38,5 @@ def test_read_config():
             joinpath('tests/resources/test_data.csv'))
     assert (cfg.final_data_file == Path(__file__).parent.parent.
             joinpath('tests/output/final_data.csv'))
-    assert (cfg.schema == 'hic_cc_002')
+    assert (cfg.schema == 'mock-omop-es')
     assert (cfg.date_offset == 365)

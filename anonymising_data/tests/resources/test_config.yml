@@ -12,6 +12,6 @@ files:
   final_data:
     tests/output/final_data.csv
 
-schema: hic_cc_002
+schema: mock-omop-es
 
 date_offset: 365
