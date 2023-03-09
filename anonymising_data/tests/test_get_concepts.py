@@ -31,4 +31,4 @@ def test_get_concept(line, concept_id):
 def test_get_concepts(concept_file):
     con = Concepts(concept_file)
     con.populate_concepts()
-    assert (con.concepts == ['432', '543'])
+    assert (con.concepts == ['1', '23', '5872'])

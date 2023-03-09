@@ -6,7 +6,7 @@ class MyConnection:
     connection to a database
     """
     def __init__(self, config):
-        self.db_file = config.schema
+        self.db_file = config.database
         self.conn = self.create_connection()
         self.cur = MyCursor(self.conn)
 

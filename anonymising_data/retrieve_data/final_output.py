@@ -11,6 +11,7 @@ class Data:
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file
         self._offset = 365
+        self._testing = config.testing
 
     @property
     def omop_data_file(self):
@@ -56,12 +57,16 @@ class Data:
         # columns are
         # measurement_type,person_id,visit,measurement_datetime,
         # value_as_number,units,value_as_string,age,gender,ethnicity
-        parts[3] = self.adjust_date_time(parts[3])
+        if self._testing:
+            parts[2] = self.adjust_date_time(parts[2])
+        else:
+            parts[3] = self.adjust_date_time(parts[3])
         return ','.join(parts)
 
     def adjust_date_time(self, line):
-        [this_date, this_time] = line.split(' ')
+        this_date = line[0:10]
+        this_time = line[10:]
         new_date = RecordedDate(this_date)
         new_date.offset = self._offset
         new_date.shift_date()
-        return f'{new_date.get_shifted_date_str()} {this_time}'
+        return f'{new_date.get_shifted_date_str()}{this_time}'

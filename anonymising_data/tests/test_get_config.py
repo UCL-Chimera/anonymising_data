@@ -34,11 +34,11 @@ def test_read_config():
     assert (cfg.query_file == Path(__file__).parent.parent.
             joinpath('tests/resources/test_query.sql'))
     assert (cfg.database == Path(__file__).parent.parent.
-            joinpath('tests/resources/mock-database/mock_omop_es.db'))
+            joinpath('tests/resources/mock-database/test_omop_es.sqlite3'))
     assert (cfg.output_query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_data.sql'))
     assert (cfg.omop_data_file == Path(__file__).parent.parent.
-            joinpath('tests/resources/test_data.csv'))
+            joinpath('tests/output/omop_data.csv'))
     assert (cfg.final_data_file == Path(__file__).parent.parent.
             joinpath('tests/output/final_data.csv'))
     assert (cfg.schema == 'mock_omop_es')

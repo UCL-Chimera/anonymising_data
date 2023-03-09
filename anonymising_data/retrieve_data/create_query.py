@@ -62,7 +62,10 @@ class Query:
         elif line.find(':FILL_CONCEPT:') != -1:
             newline = line.replace(':FILL_CONCEPT:', self._con_str)
         elif line.find(':FILL_SCHEMA:') != -1:
-            newline = line.replace(':FILL_SCHEMA:', self._schema)
+            if self._testing:
+                newline = line.replace(':FILL_SCHEMA:', '')
+            else:
+                newline = line.replace(':FILL_SCHEMA:', self._schema + '.')
         else:
             newline = line
         return newline

@@ -1,4 +1,4 @@
-﻿measurement_type,person_id,visit,measurement_datetime,value_as_number,units,value_as_string,age,gender,ethnicity
-pH of Blood,1,3042,29/08/2022 22:16,7.338,,NULL,62,Male,Black Caribbean
-Body temperature,7341,34,08/11/2021 14:15,37.3,,NULL,41,Male,Other White Background
-ABO group [Type] in Blood,6327,1097,10/06/2021 14:19,NULL,NULL,Group O,68,Female,Not Yet Asked
+measurement_type,person_id,measurement_datetime,value_as_number,units,value_as_string,age,gender,ethnicity
+pH of Blood,1,29/08/2023  22:16:00,7.338,None,None,39,Male,Black Caribbean,
+Body temperature,6327,08/11/2022  14:15:00,37.3,None,None,45,Female,Not Yet Asked,
+ABO group [Type] in Blood,7341,10/06/2022  14:19:00,,None,Group O,18,Male,Other White Background,
