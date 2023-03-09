@@ -35,6 +35,8 @@ def test_create_query(config, concepts):
 def test_write_query(config, concepts):
     q = Query(config, concepts)
     q.create_query_file()
-    newfile = Path(__file__).parent.parent.joinpath('tests/output/get_data.sql')
-    testfile = Path(__file__).parent.parent.joinpath('tests/resources/test_query_expected.sql')
+    newfile = Path(__file__).parent.parent.\
+        joinpath('tests/output/get_data.sql')
+    testfile = Path(__file__).parent.parent.\
+        joinpath('tests/resources/test_query_expected.sql')
     assert (filecmp.cmp(newfile, testfile, shallow=False))

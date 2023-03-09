@@ -10,11 +10,11 @@ class Config:
 
     def __init__(self, testing=False):
         if testing:
-            self.filename = Path(__file__).parent.parent.joinpath('tests',
-                                                                  'resources',
-                                                                  'test_config.yml')
+            self.filename = Path(__file__).parent.\
+                parent.joinpath('tests', 'resources', 'test_config.yml')
         else:
-            self.filename = Path(__file__).parent.parent.parent.joinpath('config.yml')
+            self.filename = Path(__file__).parent.\
+                parent.parent.joinpath('config.yml')
 
         self._testing = testing
         self._year = None

@@ -60,7 +60,7 @@ def test_bad_date_format(testdate):
 @pytest.mark.parametrize("testdate, offset", [
     ('2000-02-10', 36.7),
     ('1999-02-10', '36%'),
-    ('2000-03-10', 5/3),
+    ('2000-03-10', 5 / 3),
     ('2000-03-10', -1.0),
 ])
 def test_bad_offset_value(testdate, offset):

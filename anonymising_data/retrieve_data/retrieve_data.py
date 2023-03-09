@@ -1,5 +1,4 @@
 from os import error
-from pathlib import Path
 
 from anonymising_data.retrieve_data.myconnection import MyConnection
 
@@ -48,9 +47,9 @@ class RetrieveData:
         dt = self.get_data()
         fo = open(self.output, 'w')
         fo.write('measurement_type,person_id,measurement_datetime,'
-                 'value_as_number,units,value_as_string,age,gender,ethnicity\n')
+                 'value_as_number,units,value_as_string,age,gender,'
+                 'ethnicity\n')
         for row in dt:
             for col in row:
                 fo.write(f'{col},')
             fo.write('\n')
-
