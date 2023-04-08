@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from anonymising_data.anonymise.age import Age
 from anonymising_data.anonymise.recorded_date import RecordedDate
 
 
@@ -53,14 +54,17 @@ class Data:
                     out.write(newline)
 
     def adjust_line(self, line):
-        parts = line.split(',', 4)
+        parts = line.split(',')
         # columns are
         # measurement_type,person_id,visit,measurement_datetime,
         # value_as_number,units,value_as_string,age,gender,ethnicity
         if self._testing:
             parts[2] = self.adjust_date_time(parts[2])
+            if len(parts) > 6:
+                parts[6] = self.find_age(parts[6])
         else:
             parts[3] = self.adjust_date_time(parts[3])
+            parts[6] = self.find_age(parts[6])
         return ','.join(parts)
 
     def adjust_date_time(self, line):
@@ -70,3 +74,7 @@ class Data:
         new_date.offset = self._offset
         new_date.shift_date()
         return f'{new_date.get_shifted_date_str()}{this_time}'
+
+    def find_age(self, dob):
+        age = Age(dob)
+        return f'{age.anon_age}'
