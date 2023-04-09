@@ -117,7 +117,7 @@ class Config:
         f.close()
         self._year = cfg['year']
         self._schema = cfg['schema']
-        self._date_offset = cfg['date_offset']
+        self._date_offset = cfg['anonymisation']['date_offset']
         if self._testing:
             self._concept_file = Path(__file__).parent.parent.\
                 joinpath(cfg['files']['concept_mapping'])

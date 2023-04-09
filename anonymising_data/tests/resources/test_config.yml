@@ -16,4 +16,5 @@ files:
 
 schema: mock_omop_es
 
-date_offset: 365
+anonymisation:
+  date_offset: 365

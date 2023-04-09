@@ -11,7 +11,7 @@ class Data:
     def __init__(self, config):
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file
-        self._offset = 365
+        self._offset = config.date_offset
         self._testing = config.testing
 
     @property
