@@ -106,31 +106,17 @@ class Config:
         with open(self.filename, 'r') as f:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
-        self._schema = cfg['schema']
+        self._schema = cfg['database']['schema']
         self._date_offset = cfg['anonymisation']['date_offset']
-        if self._testing:
-            self._concept_file = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['concept_mapping'])
-            self._query_file = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['db_query'])
-            self._database = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['database'])
-            self._output_query_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['output_query'])
-            self._final_data_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['final_data'])
-            self._omop_data_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['omop_data'])
-        else:
-            self._concept_file = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['concept_mapping'])
-            self._query_file = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['db_query'])
-            self._database = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['database'])
-            self._output_query_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['output_query'])
-            self._final_data_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['final_data'])
-            self._omop_data_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['omop_data'])
+        self._concept_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['concept_mapping'])
+        self._query_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['db_query'])
+        self._database = Path(__file__).parent.parent.\
+            joinpath(cfg['database']['path'])
+        self._output_query_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['query'])
+        self._final_data_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['final_data'])
+        self._omop_data_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['omop_data'])
