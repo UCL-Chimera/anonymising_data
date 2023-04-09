@@ -11,8 +11,6 @@ class Query:
     def __init__(self, config, concepts):
         self._query_filename = config.query_file
         self._output_query = config.output_query_file
-        self._year = config.year
-        self._yr_str = ''
         self._concepts = concepts
         self._con_str = '('
         self._schema = config.schema
@@ -25,7 +23,6 @@ class Query:
         """
         Function to create the strings to be substituted
         """
-        self._yr_str = str(self._year)
         for c in self._concepts:
             self._con_str = self._con_str + str(c) + ', '
         self._con_str = rreplace(self._con_str, ', ', ')', 1)

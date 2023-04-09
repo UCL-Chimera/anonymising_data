@@ -1,5 +1,3 @@
-year: 2000
-
 files:
   concept_mapping:
     tests/resources/test_concept_codes.csv
