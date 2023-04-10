@@ -54,9 +54,7 @@ class Query:
         :param line:
         :return: line with substitutions if any
         """
-        if line.find(':FILL_YEAR:') != -1:
-            newline = line.replace(':FILL_YEAR:', self._yr_str)
-        elif line.find(':FILL_CONCEPT:') != -1:
+        if line.find(':FILL_CONCEPT:') != -1:
             newline = line.replace(':FILL_CONCEPT:', self._con_str)
         elif line.find(':FILL_SCHEMA:') != -1:
             if self._testing:
