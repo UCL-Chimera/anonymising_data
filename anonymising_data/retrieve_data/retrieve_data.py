@@ -24,7 +24,7 @@ class RetrieveData:
             error('could not find {self.db} database')
             exit(2)
         else:
-            return MyConnection(config)
+            return MyConnection.create_valid_connection(self.db)
 
     def get_query(self):
         """
@@ -45,6 +45,7 @@ class RetrieveData:
 
     def write_data(self):
         dt = self.get_data()
+        self.conn.close_connection()
         fo = open(self.output, 'w')
         fo.write('measurement_type,person_id,measurement_datetime,'
                  'value_as_number,units,value_as_string,age,gender,'
