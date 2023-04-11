@@ -1,20 +1,11 @@
 import filecmp
 from pathlib import Path
 
-from anonymising_data.retrieve_data.get_config import Config
 from anonymising_data.retrieve_data.retrieve_data import RetrieveData
-
-import pytest
-
-
-@pytest.fixture(scope="session")
-def config():
-    cfg = Config(testing=True)
-    cfg.read_yaml()
-    return cfg
 
 
 def test_create_retrieve_data(config):
+    config.read_yaml()
     d = RetrieveData(config)
     assert (d is not None)
     assert (d._query_file == Path(__file__).parent.parent.
@@ -48,6 +39,7 @@ def test_get_query(config):
 
 
 def test_get_data(config):
+    config.read_yaml()
     d = RetrieveData(config)
     dt = d.get_data()
     assert (len(dt) == 3)

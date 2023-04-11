@@ -6,13 +6,6 @@ from anonymising_data.retrieve_data.myconnection import MyConnection
 import pytest
 
 
-@pytest.fixture(scope="session")
-def config():
-    cfg = Config(testing=True)
-    cfg.read_yaml()
-    return cfg
-
-
 def test_create_connection(config):
     conn = MyConnection.create_valid_connection(config._database)
     assert (conn is not None)

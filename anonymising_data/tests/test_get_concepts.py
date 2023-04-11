@@ -7,13 +7,6 @@ from anonymising_data.retrieve_data.get_concepts import get_concept_id
 import pytest
 
 
-@pytest.fixture
-def concept_file():
-    cfg = Config(testing=True)
-    cfg.read_yaml()
-    return cfg.concept_file
-
-
 def test_create_concepts(concept_file):
     con = Concepts(concept_file)
     assert (con is not None)
