@@ -17,11 +17,9 @@ def config():
 def test_create_retrieve_data(config):
     d = RetrieveData(config)
     assert (d is not None)
-    assert (d.query_file == Path(__file__).parent.parent.
+    assert (d._query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_data.sql'))
-    assert (d.db == Path(__file__).parent.parent.
-            joinpath('tests/resources/mock-database/test_omop_es.sqlite3'))
-    assert (d.conn is not None)
+    assert (d._conn is not None)
 
 
 def test_get_query(config):
@@ -52,11 +50,11 @@ def test_get_query(config):
 def test_get_data(config):
     d = RetrieveData(config)
     dt = d.get_data()
-    print(dt)
     assert (len(dt) == 3)
 
 
-def test_write_data(config):
+def test_z_write_data(config):
+    config.read_yaml()
     d = RetrieveData(config)
     d.write_data()
     newfile = Path(__file__).parent.parent.\
@@ -64,3 +62,35 @@ def test_write_data(config):
     testfile = Path(__file__).parent.parent.\
         joinpath('tests/resources/test_expected_omop.csv')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
+    fo = open(d._output_file, 'r')
+    line1 = fo.readline()
+    parts = line1.split(',')
+    assert (len(parts) == 9)
+
+
+def test_write_data_non_test(config):
+    d = RetrieveData(config)
+    dt = d.get_data()
+    d._testing = False
+    d.write_data()
+    fo = open(d._output_file, 'r')
+    line1 = fo.readline()
+    parts = line1.split(',')
+    assert (len(parts) == 10)
+
+
+def test_get_data_fail(config):
+    config._testing = True
+    config.read_yaml()
+    config._database = None
+    d = RetrieveData(config)
+    dt = d.get_data()
+    assert (dt is None)
+
+
+def test_write_data_fail(config):
+    config.read_yaml()
+    d = RetrieveData(config)
+    d._conn = None
+    d.write_data()
+    assert (d._data is None)

@@ -7,6 +7,7 @@ from anonymising_data.retrieve_data.final_output import Data
 import pytest
 
 from anonymising_data.retrieve_data.get_config import Config
+from anonymising_data.retrieve_data.retrieve_data import RetrieveData
 
 
 @pytest.fixture(scope="session")
@@ -53,6 +54,11 @@ def test_find_age(config, testdata, shifted):
 
 
 def test_write_data(config):
+    # need correct testing data in our output file
+    config.read_yaml()
+    rd = RetrieveData(config)
+    rd.write_data()
+    # now do test
     d = Data(config)
     d.create_final_output()
     newfile = Path(__file__).parent.parent.\

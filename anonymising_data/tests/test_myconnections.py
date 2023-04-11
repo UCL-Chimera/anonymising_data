@@ -25,3 +25,10 @@ def test_failed_connection(config):
     config._database = None
     conn = MyConnection.create_valid_connection(config._database)
     assert (conn is None)
+
+
+def test_failed_connection1(config):
+    config._database = ''
+    conn = MyConnection.create_valid_connection(config._database)
+    assert (conn is None)
+

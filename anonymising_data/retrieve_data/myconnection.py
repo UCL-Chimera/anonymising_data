@@ -12,6 +12,8 @@ class MyConnection:
 
     @classmethod
     def create_valid_connection(cls, db_file):
+        if db_file == '':
+            return None
         try:
             conn = sqlite3.connect(db_file)
         except (sqlite3.Error, TypeError):

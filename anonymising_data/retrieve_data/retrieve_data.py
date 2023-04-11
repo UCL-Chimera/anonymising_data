@@ -8,31 +8,25 @@ class RetrieveData:
     Class to retrieve data
     """
     def __init__(self, config):
-        self.db = config.database
-        self.query_file = config.output_query_file
-        self.is_mock = config.testing
-        self.conn = self.get_connection(config)
-        self.output = config.omop_data_file
+        self._query_file = config.output_query_file
+        self._testing = config.testing
+        self._conn = MyConnection.create_valid_connection(config.database)
+        self._output_file = config.omop_data_file
+        self._query = None
+        self._data = None
 
-    def get_connection(self, config):
-        """
-        Get a connection to the database
-        :param: config - config object
-        :return: connection to db or exits if the database does not exist
-        """
-        if self.db is None:
-            error('could not find {self.db} database')
-            exit(2)
-        else:
-            return MyConnection.create_valid_connection(self.db)
+    @property
+    def query(self):
+        return self._query
 
     def get_query(self):
         """
         Get the sql for the query from txt file
         :return: sql content of file
         """
-        fo = open(self.query_file, 'r')
+        fo = open(self._query_file, 'r')
         sql = fo.read()
+        self._query = sql
         return sql
 
     def get_data(self):
@@ -40,17 +34,31 @@ class RetrieveData:
             Function to run query and get data`
         :return: data from query
         """
-        sql = self.get_query()
-        return self.conn.get_data_query(sql)
+        if self._conn is not None:
+            sql = self._query if self._query is not None else self.get_query()
+            data = self._conn.get_data_query(sql)
+            self._data = data
+            return data
+        else:
+            return None
 
     def write_data(self):
-        dt = self.get_data()
-        self.conn.close_connection()
-        fo = open(self.output, 'w')
-        fo.write('measurement_type,person_id,measurement_datetime,'
-                 'value_as_number,units,value_as_string,age,gender,'
-                 'ethnicity\n')
-        for row in dt:
-            for col in row:
-                fo.write(f'{col},')
-            fo.write('\n')
+        dt = self._data if self._data is not None else self.get_data()
+        if dt is not None:
+            self._conn.close_connection()
+            fo = open(self._output_file, 'w')
+            if self._testing:
+                fo.write('measurement_type,person_id,measurement_datetime,'
+                         'value_as_number,units,value_as_string,age,gender,'
+                         'ethnicity\n')
+            else:
+                fo.write('measurement_type,person_id,visit,measurement_datetime,'
+                         'value_as_number,units,value_as_string,age,gender,'
+                         'ethnicity\n')
+            for row in dt:
+                for col in row:
+                    fo.write(f'{col},')
+                fo.write('\n')
+            fo.close()
+        else:
+            print('A connection to database failed.')
