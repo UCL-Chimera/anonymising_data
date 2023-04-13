@@ -1,5 +1,3 @@
-from os import error
-
 from anonymising_data.retrieve_data.myconnection import MyConnection
 
 

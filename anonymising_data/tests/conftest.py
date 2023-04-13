@@ -21,5 +21,3 @@ def concepts(concept_file):
     con = Concepts(concept_file)
     con.populate_concepts()
     return con.concepts
-
-
