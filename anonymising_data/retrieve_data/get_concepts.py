@@ -20,7 +20,7 @@ class Concepts:
     @property
     def concepts(self):
         """
-        Funcion to return the concepts
+        Function to return the concepts
         :return: year
         """
         return self._concepts

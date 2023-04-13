@@ -3,19 +3,24 @@ import sqlite3
 
 class MyConnection:
     """
-    connection to a database
+    Connection to a database.
     """
     def __init__(self, config):
         self.db_file = config.database
         self.conn = self.create_connection()
         self.cur = MyCursor(self.conn)
 
-    def create_connection(self):
-        """ create a database connection to the SQLite database
-            specified by the db_file
-        :return: Connection object or None
+    @classmethod
+    def create_valid_connection(cls, db_file):
         """
-        conn = None
+        Function to create a valid connection.
+        This allows for error trapping when creating the connection
+        and facilitates descriptive error messages.
+        :param db_file: Path to the database for which the connection should be made.
+        :return: An object MyConnection if a valid connection is made, None otherwise.
+        """
+        if db_file == '':
+            return None
         try:
             conn = sqlite3.connect(self.db_file)
         except sqlite3.Error as e:
@@ -24,14 +29,14 @@ class MyConnection:
 
     def close_connection(self):
         """
-        Close the database connection
+        Close the database connection.
         :param conn: the db connection
         """
         self.conn.close()
 
     def get_data_query(self, sql):
         """
-        Function to run an sql query to fetch data
+        Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
        """
@@ -48,14 +53,14 @@ class MyConnection:
 
 class MyCursor:
     """
-    class for the connection cursor
+    Class for the connection cursor.
     """
     def __init__(self, conn):
         self.cur = conn.cursor()
 
     def get_data_query(self, sql):
         """
-        Function to run an sql query to fetch data
+        Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
         """
