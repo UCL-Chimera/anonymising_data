@@ -1,9 +1,6 @@
 from pathlib import Path
 
-from anonymising_data.retrieve_data.get_config import Config
 from anonymising_data.retrieve_data.myconnection import MyConnection
-
-import pytest
 
 
 def test_create_connection(config):

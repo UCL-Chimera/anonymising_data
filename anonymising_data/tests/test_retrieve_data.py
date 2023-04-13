@@ -62,7 +62,7 @@ def test_z_write_data(config):
 
 def test_write_data_non_test(config):
     d = RetrieveData(config)
-    dt = d.get_data()
+    d.get_data()
     d._testing = False
     d.write_data()
     fo = open(d._output_file, 'r')
