@@ -1,19 +1,23 @@
-year: 2000
-
+#paths to files
 files:
-  concept_mapping:
-    tests/resources/test_concept_codes.csv
-  db_query:
-    tests/resources/test_query.sql
-  database:
+  # input files necessary
+  input:
+    concept_mapping:
+      tests/resources/test_concept_codes.csv
+    db_query:
+      tests/resources/test_query.sql
+  output:
+    query:
+      tests/output/get_data.sql
+    omop_data:
+      tests/output/omop_data.csv
+    final_data:
+      tests/output/final_data.csv
+
+database:
+  path:
     tests/resources/mock-database/test_omop_es.sqlite3
-  output_query:
-    tests/output/get_data.sql
-  omop_data:
-    tests/output/omop_data.csv
-  final_data:
-    tests/output/final_data.csv
+  schema: mock_omop_es
 
-schema: mock_omop_es
-
-date_offset: 365
+anonymisation:
+  date_offset: 365
