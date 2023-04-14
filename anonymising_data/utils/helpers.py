@@ -4,17 +4,6 @@ from datetime import datetime
 YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH = range(4)
 
 
-def get_value_from_user(name):
-    """
-    Function to get user input
-
-    :param name: name of value
-    :return: name
-    """
-    username = input(f'Enter a value for {name}:')
-    return username
-
-
 def create_date(date_string):
     """
     Function to return a datetime object of the required format

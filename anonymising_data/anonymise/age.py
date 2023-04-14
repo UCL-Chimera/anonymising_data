@@ -2,6 +2,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 # todo note need to record date used to anon
+from anonymising_data.utils.helpers import create_date
 
 
 class Age:
@@ -10,7 +11,7 @@ class Age:
     """
 
     def __init__(self, dob):
-        self.dob = datetime.strptime(dob, '%Y-%m-%d')
+        self.dob = create_date(dob)
         self._days = None
         self._months = None
         self._years = None

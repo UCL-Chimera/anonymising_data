@@ -1,7 +1,6 @@
 import filecmp
 from pathlib import Path
 
-
 from anonymising_data.retrieve_data.create_query import Query
 
 

@@ -17,7 +17,6 @@ class Config:
                 parent.parent.joinpath('config.yml')
 
         self._testing = testing
-        self._year = None
         self._concept_file = ''
         self._query_file = ''
         self._database = ''
@@ -26,14 +25,6 @@ class Config:
         self._final_data_file = ''
         self._schema = ''
         self._date_offset = None
-
-    @property
-    def year(self):
-        """
-        Function to return the year
-        :return: year
-        """
-        return self._year
 
     @property
     def concept_file(self):
@@ -115,32 +106,17 @@ class Config:
         with open(self.filename, 'r') as f:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
-        self._year = cfg['year']
-        self._schema = cfg['schema']
-        self._date_offset = cfg['date_offset']
-        if self._testing:
-            self._concept_file = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['concept_mapping'])
-            self._query_file = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['db_query'])
-            self._database = Path(__file__).parent.parent.\
-                joinpath(cfg['files']['database'])
-            self._output_query_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['output_query'])
-            self._final_data_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['final_data'])
-            self._omop_data_file = Path(__file__).parent.parent. \
-                joinpath(cfg['files']['omop_data'])
-        else:
-            self._concept_file = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['concept_mapping'])
-            self._query_file = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['db_query'])
-            self._database = Path(__file__).parent.parent.\
-                parent.parent.joinpath(cfg['files']['database'])
-            self._output_query_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['output_query'])
-            self._final_data_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['final_data'])
-            self._omop_data_file = Path(__file__).parent.parent. \
-                parent.parent.joinpath(cfg['files']['omop_data'])
+        self._schema = cfg['database']['schema']
+        self._date_offset = cfg['anonymisation']['date_offset']
+        self._concept_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['concept_mapping'])
+        self._query_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['db_query'])
+        self._database = Path(__file__).parent.parent.\
+            joinpath(cfg['database']['path'])
+        self._output_query_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['query'])
+        self._final_data_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['final_data'])
+        self._omop_data_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['omop_data'])

@@ -1,17 +1,7 @@
 import filecmp
 from pathlib import Path
 
-from anonymising_data.retrieve_data.get_config import Config
 from anonymising_data.retrieve_data.retrieve_data import RetrieveData
-
-import pytest
-
-
-@pytest.fixture(scope="session")
-def config():
-    cfg = Config(testing=True)
-    cfg.read_yaml()
-    return cfg
 
 
 def test_create_retrieve_data(config):
@@ -22,11 +12,9 @@ def test_create_retrieve_data(config):
     config.read_yaml()
     d = RetrieveData(config)
     assert (d is not None)
-    assert (d.query_file == Path(__file__).parent.parent.
+    assert (d._query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_data.sql'))
-    assert (d.db == Path(__file__).parent.parent.
-            joinpath('tests/resources/mock-database/test_omop_es.sqlite3'))
-    assert (d.conn is not None)
+    assert (d._conn is not None)
 
 
 def test_get_query(config):
@@ -45,7 +33,7 @@ def test_get_query(config):
                    '            AND cc.concept_name NOT LIKE '
                    '\'No matching concept\'\n'
                    '    ) AS value_as_string,\n'
-                   '    2000 - p.year_of_birth AS age,\n'
+                   '    p.date_of_birth AS age,\n'
                    '    p.gender_source_value AS gender,\n'
                    '    p.race_source_value AS ethnicity\n'
                    'FROM measurement AS m\n\n'
@@ -66,7 +54,6 @@ def test_get_data(config):
     config.read_yaml()
     d = RetrieveData(config)
     dt = d.get_data()
-    print(dt)
     assert (len(dt) == 3)
 
 
@@ -83,6 +70,10 @@ def test_z_write_data(config):
     testfile = Path(__file__).parent.parent.\
         joinpath('tests/resources/test_expected_omop.csv')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
+    fo = open(d._output_file, 'r')
+    line1 = fo.readline()
+    parts = line1.split(',')
+    assert (len(parts) == 9)
 
 
 def test_write_data_non_test(config):

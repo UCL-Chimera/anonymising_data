@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from anonymising_data.anonymise.age import Age
 from anonymising_data.anonymise.recorded_date import RecordedDate
 
 
@@ -10,7 +11,7 @@ class Data:
     def __init__(self, config):
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file
-        self._offset = 365
+        self._offset = config.date_offset
         self._testing = config.testing
 
     @property
@@ -64,8 +65,11 @@ class Data:
         # value_as_number,units,value_as_string,age,gender,ethnicity
         if self._testing:
             parts[2] = self.adjust_date_time(parts[2])
+            if len(parts) > 6:
+                parts[6] = self.find_age(parts[6])
         else:
             parts[3] = self.adjust_date_time(parts[3])
+            parts[7] = self.find_age(parts[7])
         return ','.join(parts)
 
     def adjust_date_time(self, line):
