@@ -69,10 +69,19 @@ def test_write_data(config):
 
 
 @pytest.mark.parametrize("testdata, shifted", [
-    ('0,1,1,2000-02-10 03:21,4,5,6,1991-03-10', '0,1,1,2001-02-09 03:21,4,5,6,32'),
-    ('a,c,c,1999-02-10 22:16,d,e,f,1966-07-05', 'a,c,c,2000-02-10 22:16,d,e,f,57'),
+    ('0,1,1,2000-02-10 03:21,4,5,6,1991-03-10',
+     '0,1,1,2001-02-09 03:21,4,5,6,32'),
+    ('a,c,c,1999-02-10 22:16,d,e,f,1966-07-05',
+     'a,c,c,2000-02-10 22:16,d,e,f,57'),
 ])
 def test_adjust_line_not_test(config, testdata, shifted):
+    """
+
+    :param config:
+    :param testdata:
+    :param shifted:
+    :return:
+    """
     d = Data(config)
     d._testing = False
     assert (d.adjust_line(testdata) == shifted)

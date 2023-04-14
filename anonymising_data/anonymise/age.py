@@ -6,9 +6,7 @@ from anonymising_data.utils.helpers import create_date
 
 
 class Age:
-    """
-    Class to calculate age and anonymise
-    """
+    """ Class to calculate age and anonymise."""
 
     def __init__(self, dob):
         self.dob = create_date(dob)

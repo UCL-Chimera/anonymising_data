@@ -14,6 +14,14 @@ import pytest
 
 ])
 def test_has_expected_format(date_str, correct_format):
+    """
+    Function to test a date string is correctly formatted.
+
+    :param date_str: date as string
+    :param correct_format: boolean indicating whether string is correctly
+    formatted
+    :return:
+    """
     assert (has_expected_date_format(date_str) is correct_format)
 
 
@@ -24,6 +32,12 @@ def test_has_expected_format(date_str, correct_format):
     ('21/12/3090', 1)
 ])
 def test_get_date_format(date_str, correct_format):
+    """
+    Function to test we get correct format enum for date string.
+
+    :param date_str: date as string
+    :param correct_format: value of format enum
+    """
     assert (determine_date_format(date_str) == correct_format)
 
 
@@ -37,7 +51,8 @@ def test_get_date_format(date_str, correct_format):
 ])
 def test_rreplace(original, old, new, occurrences, produced):
     """
-    Function to test rreplace function
+    Function to test rreplace function.
+
     :param original: original string
     :param old: string to be replaced
     :param new: string replacement

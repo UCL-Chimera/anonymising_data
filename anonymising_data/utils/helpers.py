@@ -6,7 +6,8 @@ YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH = range(4)
 
 def create_date(date_string):
     """
-    Function to return a datetime object of the required format
+    Function to return a datetime object of the required format.
+
     :param date_string: string to be used
     :return: datetime of format 'YYYY-MM-DD'
     """
@@ -25,7 +26,7 @@ def create_date(date_string):
 
 def has_expected_date_format(date_str):
     """
-    Checks that the string used is as expected i.e. YYYY-MM-DD
+    Checks that the string used is as expected i.e. YYYY-MM-DD.
 
     :param date_str: string representing date
     :return: True if string is formatted as expected, False otherwise
@@ -42,7 +43,8 @@ def has_expected_date_format(date_str):
 
 def rreplace(s, old, new, occurrence):
     """
-    Function to replace parts of string from right
+    Function to replace parts of string from right.
+
     :param s: string
     :param old: substring to replace
     :param new: replacement substring
@@ -56,6 +58,18 @@ def rreplace(s, old, new, occurrence):
 
 
 def determine_date_format(date_str):
+    """
+    Function to determine format of a date string.
+
+    Formats are:
+    YEAR_SLASH YYYY/MM/DD
+    DAY_SLASH  DD/MM/YYYY
+    YEAR_DASH  YYYY-MM-DD
+    DAY_DASH   DD-MM-YYYY
+
+    :param date_str: date as string
+    :return: format of string
+    """
     if date_str[0:4].isnumeric():
         if date_str[4] == '/':
             date_format = YEAR_SLASH
