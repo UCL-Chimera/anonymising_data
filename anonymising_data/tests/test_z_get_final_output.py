@@ -10,14 +10,12 @@ from anonymising_data.retrieve_data.get_config import Config
 from anonymising_data.retrieve_data.retrieve_data import RetrieveData
 
 
-@pytest.fixture(scope="session")
-def config():
-    cfg = Config(testing=True)
-    cfg.read_yaml()
-    return cfg
-
-
 def test_create_data(config):
+    """
+    Function to test Data class is created.
+
+    :param config: Configuration class from Pytest fixtures
+    """
     d = Data(config)
     assert (d is not None)
     assert (d.omop_data_file == Path(__file__).parent.parent.
@@ -31,6 +29,13 @@ def test_create_data(config):
     ('1999-02-10 22:16', '2000-02-10 22:16'),
 ])
 def test_shift_date(config, testdate, shifted):
+    """
+
+    :param config:
+    :param testdate:
+    :param shifted:
+    :return:
+    """
     d = Data(config)
     assert (d.adjust_date_time(testdate) == shifted)
 
@@ -40,6 +45,13 @@ def test_shift_date(config, testdate, shifted):
     ('a,c,1999-02-10 22:16,d,e', 'a,c,2000-02-10 22:16,d,e'),
 ])
 def test_adjust_line(config, testdata, shifted):
+    """
+
+    :param config:
+    :param testdata:
+    :param shifted:
+    :return:
+    """
     d = Data(config)
     assert (d.adjust_line(testdata) == shifted)
 
@@ -49,11 +61,23 @@ def test_adjust_line(config, testdata, shifted):
     ('a,c,1999-02-10 22:16,d,e,f,1966-07-05', 'a,c,2000-02-10 22:16,d,e,f,57'),
 ])
 def test_find_age(config, testdata, shifted):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :param testdata:
+    :param shifted:
+    :return:
+    """
     d = Data(config)
     assert (d.adjust_line(testdata) == shifted)
 
 
 def test_write_data(config):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :return:
+    """
     # need correct testing data in our output file
     config.read_yaml()
     rd = RetrieveData(config)
@@ -73,6 +97,13 @@ def test_write_data(config):
     ('a,c,c,1999-02-10 22:16,d,e,f,1966-07-05', 'a,c,c,2000-02-10 22:16,d,e,f,57'),
 ])
 def test_adjust_line_not_test(config, testdata, shifted):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :param testdata:
+    :param shifted:
+    :return:
+    """
     d = Data(config)
     d._testing = False
     assert (d.adjust_line(testdata) == shifted)
