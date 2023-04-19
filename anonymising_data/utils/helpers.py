@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH = range(4)
+YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH, YEAR_COLON = range(5)
 
 
 def create_date(date_string):
@@ -56,11 +56,25 @@ def rreplace(s, old, new, occurrence):
 
 
 def determine_date_format(date_str):
+    """
+    Determines the format of a date string.
+
+    :param date_str:
+    :return: format
+    YEAR_SLASH  yyyy/mm/dd,
+    DAY_SLASH   dd/mm/yyyy,
+    YEAR_DASH   yyyy-mm-dd,
+    DAY_DASH    dd-mm-yyyy,
+    YEAR_COLON  yyyy:mm:dd
+
+    """
     if date_str[0:4].isnumeric():
         if date_str[4] == '/':
             date_format = YEAR_SLASH
-        else:
+        elif date_str[4] == '-':
             date_format = YEAR_DASH
+        else:
+            date_format = YEAR_COLON
     else:
         if date_str[2] == '/':
             date_format = DAY_SLASH
