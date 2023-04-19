@@ -25,7 +25,7 @@ def test_get_query(config):
                    '            AND cc.concept_name NOT LIKE '
                    '\'No matching concept\'\n'
                    '    ) AS value_as_string,\n'
-                   '    p.date_of_birth AS age,\n'
+                   '    p.birth_datetime AS age,\n'
                    '    p.gender_source_value AS gender,\n'
                    '    p.race_source_value AS ethnicity\n'
                    'FROM measurement AS m\n\n'

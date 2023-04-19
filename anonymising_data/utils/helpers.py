@@ -19,7 +19,10 @@ def create_date(date_string):
             try:
                 d = datetime.strptime(date_string, '%Y/%m/%d')
             except ValueError:
-                d = datetime.strptime(date_string, '%d/%m/%Y')
+                try:
+                    d = datetime.strptime(date_string, '%d/%m/%Y')
+                except ValueError:
+                    d = datetime.strptime(date_string, '%Y:%m:%d')
     return d
 
 

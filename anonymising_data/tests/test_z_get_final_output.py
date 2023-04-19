@@ -45,7 +45,7 @@ def test_adjust_line(config, testdata, shifted):
 
 
 @pytest.mark.parametrize("testdata, shifted", [
-    ('0,1,2000-02-10 03:21,4,5,6,1991-03-10', '0,1,2001-02-09 03:21,4,5,6,32'),
+    ('0,1,2000-02-10 03:21,4,5,6,1991:03:10 00:00:00', '0,1,2001-02-09 03:21,4,5,6,32'),
     ('a,c,1999-02-10 22:16,d,e,f,1966-07-05', 'a,c,2000-02-10 22:16,d,e,f,57'),
 ])
 def test_find_age(config, testdata, shifted):
