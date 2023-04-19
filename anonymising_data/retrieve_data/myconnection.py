@@ -14,13 +14,10 @@ class MyConnection:
     def create_valid_connection(cls, db_file):
         """
         Function to create a valid connection.
-
         This allows for error trapping when creating the connection
         and facilitates descriptive error messages.
-        :param db_file: Path to the database for which the
-                connection should be made.
-        :return: An object MyConnection if a valid connection
-                is made, None otherwise.
+        :param db_file: Path to the database for which the connection should be made.
+        :return: An object MyConnection if a valid connection is made, None otherwise.
         """
         if db_file == '':
             return None

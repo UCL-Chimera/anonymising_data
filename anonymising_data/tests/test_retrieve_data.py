@@ -78,13 +78,11 @@ def test_z_write_data(config):
 
 def test_write_data_non_test(config):
     """
-    Function to test the write_data function when the
-    configuration specifies testing equals false.
-
+    Function to test the write_data function when the configuration specifies testing equals false.
     :param config: Configuration class from Pytest fixtures
     """
     d = RetrieveData(config)
-    d.get_data()
+    dt = d.get_data()
     d._testing = False
     d.write_data()
     fo = open(d._output_file, 'r')
@@ -95,9 +93,7 @@ def test_write_data_non_test(config):
 
 def test_get_data_fail(config):
     """
-    Function to test the get_data function fails gracefully
-    if no database is supplied.
-
+    Function to test the get_data function fails gracefully if no database is supplied.
     :param config: Configuration class from Pytest fixtures
     """
     config._testing = True
@@ -110,9 +106,7 @@ def test_get_data_fail(config):
 
 def test_write_data_fail(config):
     """
-    Function to test the write_data function fails gracefully
-    if there is no connection to a database.
-
+    Function to test the write_data function fails gracefully if there is no connection to a database.
     :param config: Configuration class from Pytest fixtures
     """
     config.read_yaml()

@@ -6,10 +6,6 @@ from anonymising_data.utils.helpers import create_date
 
 
 def test_create_recorded_date():
-    """
-    Function to test RecordedDate class is setup.
-
-    """
     dd = datetime.datetime(2023, 11, 10, 0, 0)
     d = RecordedDate('10/11/2023')
     assert (d is not None)
@@ -31,12 +27,11 @@ def test_create_recorded_date():
 ])
 def test_shift_date(testdate, offset, shifted):
     """
-    Test to check shift date function works as expected.
-
+    Test to check shift date function works as expected
     :param testdate: original date
     :param offset: days to shift by
     :param shifted: shifted date
-    """
+    :return:    """
     start = RecordedDate(testdate)
     start.offset = offset
     assert start.original == create_date(testdate)
@@ -55,8 +50,7 @@ def test_shift_date(testdate, offset, shifted):
 ])
 def test_bad_date_format(testdate):
     """
-    Test that incorrect date formats do not populate class.
-
+    Test that incorrect date formats do not populate class
     :param testdate: date string
     """
     try:
@@ -74,8 +68,7 @@ def test_bad_date_format(testdate):
 ])
 def test_bad_offset_value(testdate, offset):
     """
-    Test to check incorrect offsets get caught.
-
+    Test to check incorrect offsets get caught
     :param testdate: original date
     :param offset: days to shift by
     """

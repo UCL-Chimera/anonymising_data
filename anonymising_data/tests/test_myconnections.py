@@ -17,9 +17,9 @@ def test_create_connection(config):
 
 def test_failed_connection(config):
     """
-    Function to test a failed connection.
 
-    :param config: Configuration class from Pytest fixtures
+    :param config:
+    :return:
     """
     config._database = None
     conn = MyConnection.create_valid_connection(config._database)
@@ -27,11 +27,7 @@ def test_failed_connection(config):
 
 
 def test_failed_connection1(config):
-    """
-    Function to test a failed connection.
-
-    :param config: Configuration class from Pytest fixtures
-    """
     config._database = ''
     conn = MyConnection.create_valid_connection(config._database)
     assert (conn is None)
+
