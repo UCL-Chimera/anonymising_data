@@ -5,6 +5,7 @@ class MyConnection:
     """
     Connection to a database.
     """
+
     def __init__(self, database, conn):
         self.db_file = database
         self.conn = conn
@@ -16,8 +17,10 @@ class MyConnection:
         Function to create a valid connection.
         This allows for error trapping when creating the connection
         and facilitates descriptive error messages.
-        :param db_file: Path to the database for which the connection should be made.
-        :return: An object MyConnection if a valid connection is made, None otherwise.
+        :param db_file: Path to the database for which the
+         connection should be made.
+        :return: An object MyConnection if a valid connection is made,
+         None otherwise.
         """
         if db_file == '':
             return None
@@ -40,7 +43,7 @@ class MyConnection:
         Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
-       """
+        """
         return self.cur.get_data(sql)
 
 
@@ -48,6 +51,7 @@ class MyCursor:
     """
     Class for the connection cursor.
     """
+
     def __init__(self, conn):
         self.cur = conn.cursor()
 

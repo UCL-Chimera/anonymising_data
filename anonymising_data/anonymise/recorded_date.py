@@ -7,6 +7,7 @@ class RecordedDate:
     """
     Class to shift the date and time by prescribed amount.
     """
+
     def __init__(self, original):
         if not has_expected_date_format(original):
             raise ValueError

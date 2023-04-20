@@ -8,6 +8,7 @@ class Query:
     Class to read template query file.
     and return file with template filled.
     """
+
     def __init__(self, config, concepts):
         self._query_filename = config.query_file
         self._output_query = config.output_query_file

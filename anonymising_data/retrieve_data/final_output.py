@@ -8,6 +8,7 @@ class Data:
     """
     Class to read omop data and do final data shifting.
     """
+
     def __init__(self, config):
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file

@@ -13,6 +13,7 @@ class Concepts:
     class to read concept mapping file
     and return the set of concepts to query
     """
+
     def __init__(self, filename):
         self.filename = filename
         self._concepts = []

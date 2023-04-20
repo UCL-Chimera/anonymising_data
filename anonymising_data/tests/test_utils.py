@@ -14,6 +14,12 @@ import pytest
     ('2000:02:10', True),
 ])
 def test_has_expected_format(date_str, correct_format):
+    """
+    Test date string has correct format.
+
+    :param date_str: date as string
+    :param correct_format: True if format correct, False otherwise
+    """
     assert (has_expected_date_format(date_str) is correct_format)
 
 
@@ -25,6 +31,12 @@ def test_has_expected_format(date_str, correct_format):
     ('2009:09:09', 4)
 ])
 def test_get_date_format(date_str, correct_format):
+    """
+    Test the format of date string is correct.
+
+    :param date_str: date as string
+    :param correct_format: 0-4 from format enum (range)
+    """
     assert (determine_date_format(date_str) == correct_format)
 
 

@@ -5,6 +5,7 @@ class RetrieveData:
     """
     Class to retrieve data.
     """
+
     def __init__(self, config):
         self._query_file = config.output_query_file
         self._testing = config.testing
@@ -15,6 +16,11 @@ class RetrieveData:
 
     @property
     def query(self):
+        """
+        Returns the name of the query file.
+
+        :return: The query file.
+        """
         return self._query
 
     def get_query(self):
@@ -43,7 +49,8 @@ class RetrieveData:
     def write_data(self):
         """
         A function to output the data retrieved from querying the database.
-        If the data has not been read and stored this function will call the get_data function.
+        If the data has not been read and stored
+         this function will call the get_data function.
         """
         dt = self._data if self._data is not None else self.get_data()
         if dt is not None:
@@ -54,7 +61,8 @@ class RetrieveData:
                          'value_as_number,units,value_as_string,age,gender,'
                          'ethnicity\n')
             else:
-                fo.write('measurement_type,person_id,visit,measurement_datetime,'
+                fo.write('measurement_type,person_id,'
+                         'visit,measurement_datetime,'
                          'value_as_number,units,value_as_string,age,gender,'
                          'ethnicity\n')
             for row in dt:
