@@ -1,14 +1,15 @@
-# concepts
+# Concepts
 
-the concepts are taken from the SNOMED vocabulary and use the concept ids available in the [ATHENA](https://athena.ohdsi.org/search-terms/start) vocabulary.
+The concepts are taken from the SNOMED vocabulary and use the concept ids available in the [ATHENA](https://athena.ohdsi.org/search-terms/start) vocabulary.
 
-in order to run the query the code needs to determine the ids of the measurements required. this is done using CSV file which uses concept_id as one of the colums.
+In order to run the query the code needs to determine the ids of the measurements required. This is done using CSV file which uses concept_id as one of the colums.
 
-## example file
+## Example file
 
-| concept_code | vocabulary_id | concept_id | concept_name | domain_id | Comment |
+| concept_code | vocabulary_id | concept_id | concept_name | domain_id | Project|Comment |
+| --- | --- | --- | --- | --- | --- | --- |
+|1963-8|LOINC|3016293|Bicarbonate [Moles/volume] in Serum or Plasma|Measurement|ABG|bicarb POC This is also pulling in lab Bicarbonate at the moment|
+|386725007|SNOMED|4302666|Body temperature|Measurement|ABG|
 
-| ---| ---| ---| ---| ---|
-| 400| SNOMED| 1| Body temperature| Measurement| 
 
-note that in this case the concept id is in the third colum. at present this is hard coded.
+**NOTE** that in this case the concept id is in the third column. At present this is hard coded.
