@@ -6,6 +6,11 @@ from anonymising_data.retrieve_data.retrieve_data import RetrieveData
 
 
 def main():
+    """
+    Main function to run the whole pipeline to anonymise data.
+
+    :return: A csv file containing the anonymised data
+    """
     cfg = Config(testing=False)
     cfg.read_yaml()
 

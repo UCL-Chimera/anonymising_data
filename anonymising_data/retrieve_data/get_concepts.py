@@ -13,6 +13,7 @@ class Concepts:
     class to read concept mapping file
     and return the set of concepts to query
     """
+
     def __init__(self, filename):
         self.filename = filename
         self._concepts = []
@@ -20,7 +21,7 @@ class Concepts:
     @property
     def concepts(self):
         """
-        Funcion to return the concepts
+        Function to return the concepts
         :return: year
         """
         return self._concepts

@@ -5,6 +5,10 @@ from anonymising_data.retrieve_data.retrieve_data import RetrieveData
 
 
 def test_create_retrieve_data(config):
+    """
+    Function to test the creation of the RetrieveData class object.
+    :param config: Configuration class from Pytest fixtures
+    """
     config.read_yaml()
     d = RetrieveData(config)
     assert (d is not None)
@@ -14,6 +18,10 @@ def test_create_retrieve_data(config):
 
 
 def test_get_query(config):
+    """
+    Function to test the get_query function.
+    :param config: Configuration class from Pytest fixtures
+    """
     d = RetrieveData(config)
     sql = d.get_query()
     assert (sql == 'SELECT\n    c.concept_name AS measurement_type,\n'
@@ -39,6 +47,10 @@ def test_get_query(config):
 
 
 def test_get_data(config):
+    """
+    Function to test the get_data function.
+    :param config: Configuration class from Pytest fixtures
+    """
     config.read_yaml()
     d = RetrieveData(config)
     dt = d.get_data()
@@ -46,6 +58,10 @@ def test_get_data(config):
 
 
 def test_z_write_data(config):
+    """
+    Functions to test the write_data function.
+    :param config: Configuration class from Pytest fixtures
+    """
     config.read_yaml()
     d = RetrieveData(config)
     d.write_data()
@@ -61,6 +77,12 @@ def test_z_write_data(config):
 
 
 def test_write_data_non_test(config):
+    """
+    Function to test the write_data function when the
+    configuration specifies testing equals false.
+
+    :param config: Configuration class from Pytest fixtures
+    """
     d = RetrieveData(config)
     d.get_data()
     d._testing = False
@@ -72,6 +94,12 @@ def test_write_data_non_test(config):
 
 
 def test_get_data_fail(config):
+    """
+    Function to test the get_data function fails gracefully
+    if no database is supplied.
+
+    :param config: Configuration class from Pytest fixtures
+    """
     config._testing = True
     config.read_yaml()
     config._database = None
@@ -81,6 +109,12 @@ def test_get_data_fail(config):
 
 
 def test_write_data_fail(config):
+    """
+    Function to test the write_data function fails gracefully
+    if there is no connection to a database.
+
+    :param config: Configuration class from Pytest fixtures
+    """
     config.read_yaml()
     d = RetrieveData(config)
     d._conn = None

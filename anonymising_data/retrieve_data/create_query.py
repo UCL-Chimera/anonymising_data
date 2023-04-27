@@ -5,9 +5,10 @@ from anonymising_data.utils.helpers import rreplace
 
 class Query:
     """
-    class to read template query file
-    and return file with template filled
+    Class to read template query file.
+    and return file with template filled.
     """
+
     def __init__(self, config, concepts):
         self._query_filename = config.query_file
         self._output_query = config.output_query_file
@@ -21,7 +22,7 @@ class Query:
 
     def create_strings(self):
         """
-        Function to create the strings to be substituted
+        Function to create the strings to be substituted.
         """
         for c in self._concepts:
             self._con_str = self._con_str + str(c) + ', '
@@ -30,7 +31,7 @@ class Query:
 
     def create_query_file(self):
         """
-        Function to read template query and substitute values
+        Function to read template query and substitute values.
         """
         with open(self._query_filename, 'r') as f:
             lines = f.readlines()
@@ -48,9 +49,9 @@ class Query:
 
     def adjust_line(self, line):
         """
-        Function to take a line
-        perform any substitutions if required
-        and return
+        Function to take a line.
+        perform any substitutions if required.
+        and return.
         :param line:
         :return: line with substitutions if any
         """

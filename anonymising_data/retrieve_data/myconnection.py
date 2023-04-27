@@ -3,8 +3,9 @@ import sqlite3
 
 class MyConnection:
     """
-    connection to a database
+    Connection to a database.
     """
+
     def __init__(self, database, conn):
         self.db_file = database
         self.conn = conn
@@ -12,6 +13,15 @@ class MyConnection:
 
     @classmethod
     def create_valid_connection(cls, db_file):
+        """
+        Function to create a valid connection.
+        This allows for error trapping when creating the connection
+        and facilitates descriptive error messages.
+        :param db_file: Path to the database for which the
+         connection should be made.
+        :return: An object MyConnection if a valid connection is made,
+         None otherwise.
+        """
         if db_file == '':
             return None
         try:
@@ -23,30 +33,31 @@ class MyConnection:
 
     def close_connection(self):
         """
-        Close the database connection
+        Close the database connection.
         :param conn: the db connection
         """
         self.conn.close()
 
     def get_data_query(self, sql):
         """
-        Function to run an sql query to fetch data
+        Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
-       """
+        """
         return self.cur.get_data(sql)
 
 
 class MyCursor:
     """
-    class for the connection cursor
+    Class for the connection cursor.
     """
+
     def __init__(self, conn):
         self.cur = conn.cursor()
 
     def get_data(self, sql):
         """
-        Function to run an sql query to fetch data
+        Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
         """

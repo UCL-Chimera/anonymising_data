@@ -6,6 +6,10 @@ from anonymising_data.utils.helpers import create_date
 
 
 def test_create_recorded_date():
+    """
+    Test that the recorded date object is correctly created.
+
+    """
     dd = datetime.datetime(2023, 11, 10, 0, 0)
     d = RecordedDate('10/11/2023')
     assert (d is not None)
@@ -31,7 +35,7 @@ def test_shift_date(testdate, offset, shifted):
     :param testdate: original date
     :param offset: days to shift by
     :param shifted: shifted date
-    :return:    """
+    """
     start = RecordedDate(testdate)
     start.offset = offset
     assert start.original == create_date(testdate)

@@ -5,7 +5,7 @@ import yaml
 
 class Config:
     """
-    Class to assign config variables
+    Class to assign config variables.
     """
 
     def __init__(self, testing=False):
@@ -29,7 +29,7 @@ class Config:
     @property
     def concept_file(self):
         """
-        Function to return filename of concept file
+        Function to return filename of concept file.
         :return:
         """
         return self._concept_file
@@ -37,7 +37,7 @@ class Config:
     @property
     def query_file(self):
         """
-        Function to return filename of query file
+        Function to return filename of query file.
         :return:
         """
         return self._query_file
@@ -45,7 +45,7 @@ class Config:
     @property
     def database(self):
         """
-        Function to return filename of database
+        Function to return filename of database.
         :return:
         """
         return self._database
@@ -53,7 +53,7 @@ class Config:
     @property
     def output_query_file(self):
         """
-        Function to return filename of output query file
+        Function to return filename of output query file.
         :return:
         """
         return self._output_query_file
@@ -61,7 +61,7 @@ class Config:
     @property
     def omop_data_file(self):
         """
-        Function to return filename of omop data file
+        Function to return filename of omop data file.
         :return:
         """
         return self._omop_data_file
@@ -69,7 +69,7 @@ class Config:
     @property
     def final_data_file(self):
         """
-        Function to return filename of final data file
+        Function to return filename of final data file.
         :return:
         """
         return self._final_data_file
@@ -77,7 +77,7 @@ class Config:
     @property
     def schema(self):
         """
-        Function to return the schema
+        Function to return the schema.
         :return: schema
         """
         return self._schema
@@ -85,7 +85,7 @@ class Config:
     @property
     def date_offset(self):
         """
-        Function to return the offset_date
+        Function to return the offset_date.
         :return: date_offset
         """
         return self._date_offset
@@ -93,14 +93,14 @@ class Config:
     @property
     def testing(self):
         """
-        Function to return the value of testing variable
+        Function to return the value of testing variable.
         :return: testing
         """
         return self._testing
 
     def read_yaml(self):
         """
-        Function to read config and populate variables
+        Function to read config and populate variables.
         :return:
         """
         with open(self.filename, 'r') as f:
