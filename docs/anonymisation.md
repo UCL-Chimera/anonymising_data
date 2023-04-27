@@ -21,4 +21,7 @@ The date of the original measurement is then changed by the number of days speci
 
 > EXAMPLES
 >
-> offset specified 30  31/03/2023 becomes 01/03/2023
+> offset specified -30  
+> date is taken backwards by 30 days
+> 
+> 31/03/2023 becomes 01/03/2023
