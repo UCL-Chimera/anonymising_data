@@ -38,3 +38,16 @@ def concepts(concept_file):
     con = Concepts(concept_file)
     con.populate_concepts()
     return con.concepts
+
+
+@pytest.fixture(scope="session")
+def sources(concept_file):
+    """
+    Create an instance of concepts class and populate it.
+
+    :param concept_file: The name of the file containing the concepts
+    :return: The concepts attribute of the concepts class
+    """
+    con = Concepts(concept_file)
+    con.populate_concepts()
+    return con.source

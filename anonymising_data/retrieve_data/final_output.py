@@ -9,11 +9,12 @@ class Data:
     Class to read omop data and do final data shifting.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, sources):
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file
         self._offset = config.date_offset
         self._testing = config.testing
+        self._concepts = sources
 
     @property
     def omop_data_file(self):
@@ -62,15 +63,17 @@ class Data:
         """
         parts = line.split(',')
         # columns are
-        # measurement_type,person_id,visit,measurement_datetime,
+        # measurement_type,measurement_source,person_id,visit,measurement_datetime,
         # value_as_number,units,value_as_string,age,gender,ethnicity
         if self._testing:
-            parts[2] = self.adjust_date_time(parts[2])
-            if len(parts) > 6:
-                parts[6] = self.find_age(parts[6])
-        else:
+            parts[1] = self._concepts[parts[1]]
             parts[3] = self.adjust_date_time(parts[3])
-            parts[7] = self.find_age(parts[7])
+            if len(parts) > 7:
+                parts[7] = self.find_age(parts[7])
+        else:
+            parts[1] = self._concepts[parts[1]]
+            parts[4] = self.adjust_date_time(parts[4])
+            parts[8] = self.find_age(parts[8])
         return ','.join(parts)
 
     def adjust_date_time(self, line):
