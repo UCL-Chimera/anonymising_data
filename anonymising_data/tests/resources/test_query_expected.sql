@@ -1,5 +1,6 @@
 SELECT
     c.concept_name AS measurement_type,
+    c.concept_id AS measurement_source,
     m.person_id,
     m.measurement_datetime,
     m.value_as_number,

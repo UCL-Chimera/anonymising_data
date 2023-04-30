@@ -57,11 +57,12 @@ class RetrieveData:
             self._conn.close_connection()
             fo = open(self._output_file, 'w')
             if self._testing:
-                fo.write('measurement_type,person_id,measurement_datetime,'
+                fo.write('measurement_type,measurement_source,person_id,'
+                         'measurement_datetime,'
                          'value_as_number,units,value_as_string,age,gender,'
                          'ethnicity\n')
             else:
-                fo.write('measurement_type,person_id,'
+                fo.write('measurement_type,measurement_source, person_id,'
                          'visit,measurement_datetime,'
                          'value_as_number,units,value_as_string,age,gender,'
                          'ethnicity\n')
