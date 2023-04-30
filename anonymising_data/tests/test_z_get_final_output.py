@@ -22,8 +22,8 @@ def test_create_data(config, sources):
     assert (d.final_data_file == Path(__file__).parent.parent.
             joinpath('tests/output/final_data.csv'))
     assert (d._concepts == {'1': 'TEMPERATURE',
-                           '23': 'AQURE TEMPERATURE CORRECTED OXYGEN',
-                           '5872': 'Source'})
+                            '23': 'AQURE TEMPERATURE CORRECTED OXYGEN',
+                            '5872': 'Source'})
 
 
 @pytest.mark.parametrize("testdate, shifted", [

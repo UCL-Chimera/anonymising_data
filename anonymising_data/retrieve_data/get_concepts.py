@@ -52,4 +52,3 @@ class Concepts:
             if con_id != '':
                 self._concepts.append(con_id)
                 self._source[con_id] = source
-
