@@ -2,6 +2,7 @@
 -- for patient, with age, gender and ethnicity
 SELECT
     c.concept_name AS measurement_type,
+    c.concept_id AS measurement_source,
     m.person_id,
     v.visit_occurrence_id AS visit,
     m.measurement_datetime,
