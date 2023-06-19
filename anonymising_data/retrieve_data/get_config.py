@@ -25,6 +25,10 @@ class Config:
         self._final_data_file = ''
         self._schema = ''
         self._date_offset = None
+        self.vent = ''
+        self.final_vent = ''
+        self.vent_headers = []
+        self.date_fields = []
 
     @property
     def concept_file(self):
@@ -108,6 +112,7 @@ class Config:
         f.close()
         self._schema = cfg['database']['schema']
         self._date_offset = cfg['anonymisation']['date_offset']
+        self.date_fields =  cfg['anonymisation']['dates']
         self._concept_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['concept_mapping'])
         self._query_file = Path(__file__).parent.parent.\
@@ -120,3 +125,8 @@ class Config:
             joinpath(cfg['files']['output']['final_data'])
         self._omop_data_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['omop_data'])
+        self.final_vent = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['vent'])
+        self.vent = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['input']['vent'])
+        self.vent_headers = cfg['files']['output']['vent_headers']

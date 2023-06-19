@@ -15,6 +15,10 @@ class Data:
         self._offset = config.date_offset
         self._testing = config.testing
         self._concepts = sources
+        self.vent = config.vent
+        self.final_vent = config.final_vent
+        self.headers = config.vent_headers
+        self.date_cols = config.date_fields
 
     @property
     def omop_data_file(self):
@@ -82,6 +86,8 @@ class Data:
         :param line: A string representing a date/time.
         :return: A string with the date shifted but the time left as is.
         """
+        if not line or line == 'NULL' or line.startswith(' unspec'):
+            return line
         if line.startswith('"'):
             this_date = line[1:11]
             this_time = line[12:len(line)-1]
@@ -101,3 +107,35 @@ class Data:
         """
         age = Age(dob)
         return f'{age.anon_age}'
+
+    def final(self):
+        with open(self.vent, 'r') as f:
+            lines = f.readlines()
+        f.close()
+        num_lines = len(lines)
+
+        # MAKE output dir if necessary
+
+        Path(self.final_vent).parent.mkdir(parents=True, exist_ok=True)
+
+        with open(self.final_vent, 'w') as out:
+            with open(self.vent, 'r') as f:
+                # write out first line
+                out.write(f.readline())
+                for i in range(1, num_lines):
+                    line = f.readline()
+                    newline = self.adjustv_line(line)
+                    out.write(newline)
+
+    def adjustv_line(self, line):
+        """
+        Function to adjust the line with anonymised data.
+        :param line: Line with original data.
+        :return: The line with anonymised data.
+        """
+        parts = line.split(',')
+        nom = len(parts)
+        self.date_cols =[nom-3, nom-2]
+        for col in self.date_cols:
+            parts[col] = self.adjust_date_time(parts[col])
+        return ','.join(parts)
