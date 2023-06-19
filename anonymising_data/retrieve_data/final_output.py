@@ -82,12 +82,16 @@ class Data:
         :param line: A string representing a date/time.
         :return: A string with the date shifted but the time left as is.
         """
-        this_date = line[0:10]
-        this_time = line[10:]
+        if line.startswith('"'):
+            this_date = line[1:11]
+            this_time = line[12:len(line)-1]
+        else:
+            this_date = line[0:10]
+            this_time = line[10:]
         new_date = RecordedDate(this_date)
         new_date.offset = self._offset
         new_date.shift_date()
-        return f'{new_date.get_shifted_date_str()}{this_time}'
+        return f'{new_date.get_shifted_date_str()}  {this_time}'
 
     def find_age(self, dob):
         """
