@@ -2,6 +2,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 # todo note need to record date used to anon
+from anonymising_data.utils.helpers import create_date
 
 
 class Age:
@@ -10,7 +11,8 @@ class Age:
     """
 
     def __init__(self, dob):
-        self.dob = datetime.strptime(dob, '%Y-%m-%d')
+        # leave out time if present
+        self.dob = create_date(dob)
         self._days = None
         self._months = None
         self._years = None
@@ -21,7 +23,7 @@ class Age:
     @property
     def anon_age(self):
         """
-        Function to return anonymsied age
+        Function to return anonymsied age.
         :return: self.anon_age
         """
         return self._anon_age
@@ -29,7 +31,7 @@ class Age:
     @property
     def days(self):
         """
-        Funcion to return age in days
+        Function to return age in days.
         :return:
         """
         return self._days
@@ -37,7 +39,7 @@ class Age:
     @property
     def months(self):
         """
-        Funcion to return age in months
+        Function to return age in months.
         :return:
         """
         return self._months
@@ -45,28 +47,28 @@ class Age:
     @property
     def years(self):
         """
-        Funcion to return age in years
+        Function to return age in years.
         :return:
         """
         return self._years
 
     def calculate_age_for_testing(self, strdate):
         """
-        Function taking a dummy date as today for testing
+        Function taking a dummy date as today for testing.
         :param strdate: dummy date as string YYYY-M-D
         """
         self.__calculate_age(strdate)
 
     def anonymise_age_for_testing(self, strdate):
         """
-        Function taking a dummy date as today for testing
+        Function taking a dummy date as today for testing.
         :param strdate: dummy date as string YYYY-M-D
         """
         self.__anonymise_age(strdate)
 
     def __calculate_age(self, testdate=None):
         """
-        Function to calculate age using date of birth and todays date
+        Function to calculate age using date of birth and todays date.
         :param testdate dummy date used as 'today' for tests
         """
         if not testdate:
@@ -83,7 +85,7 @@ class Age:
 
     def __anonymise_age(self, testdate=None):
         """
-        Function to anonymise age
+        Function to anonymise age.
         :param testdate dummy date used as 'today' for tests
         :return: age in weeks if < 1 yr
                      in months if < 18 yrs
