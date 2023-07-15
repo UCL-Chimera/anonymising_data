@@ -97,7 +97,7 @@ class Data:
         new_date = RecordedDate(this_date)
         new_date.offset = self._offset
         new_date.shift_date()
-        return f'{new_date.get_shifted_date_str()}  {this_time}'
+        return f'{new_date.get_shifted_date_str()}{this_time}'
 
     def find_age(self, dob):
         """
