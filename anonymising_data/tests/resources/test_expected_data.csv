@@ -1,4 +1,4 @@
 measurement_type,measurement_source,person_id,measurement_datetime,value_as_number,units,value_as_string,age,gender,ethnicity
 pH of Blood,TEMPERATURE,1,28/08/2024  22:16:00,7.338,None,None,62,Male,Black Caribbean,
 Body temperature,AQURE TEMPERATURE CORRECTED OXYGEN,6327,08/11/2023  14:15:00,37.3,None,None,68,Female,Not Yet Asked,
-ABO group [Type] in Blood,Source,7341,10/06/2023  14:19:00,,None,Group O,40,Male,Other White Background,
+ABO group [Type] in Blood,Source,7341,10/06/2023  14:19:00,,None,Group O,41,Male,Other White Background,
