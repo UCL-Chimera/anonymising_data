@@ -11,6 +11,7 @@ class Age:
     """
 
     def __init__(self, dob):
+        # leave out time if present
         self.dob = create_date(dob)
         self._days = None
         self._months = None

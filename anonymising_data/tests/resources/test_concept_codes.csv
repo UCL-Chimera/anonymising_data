@@ -1,4 +1,4 @@
-concept_code,vocabulary_id,concept_id,concept_name,domain_id,Comment
-400,SNOMED,1,Body temperature,Measurement,
-12-Jul,LOINC,23,Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood,Measurement,
-mm,mm,5872,gg,g
+concept_code,vocabulary_id,concept_id,concept_name,Source value,domain_id,Comment
+400,SNOMED,1,Body temperature,TEMPERATURE,Measurement,
+12-Jul,LOINC,23,Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood,AQURE TEMPERATURE CORRECTED OXYGEN,Measurement,
+mm,mm,5872,gg,Source,g

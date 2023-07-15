@@ -2,6 +2,7 @@
 -- for patient, with age, gender and ethnicity
 SELECT
     c.concept_name AS measurement_type,
+    c.concept_id AS measurement_source,
     m.person_id,
     v.visit_occurrence_id AS visit,
     m.measurement_datetime,
@@ -14,7 +15,7 @@ SELECT
         WHERE cc.concept_id = m.value_as_concept_id
             AND cc.concept_name NOT LIKE 'No matching concept'
     ) AS value_as_string,
-    p.date_of_birth AS age,
+    p.birth_datetime AS age,
     p.gender_source_value AS gender,
     p.race_source_value AS ethnicity
 FROM :FILL_SCHEMA:measurement AS m

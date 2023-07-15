@@ -25,6 +25,7 @@ def test_get_query(config):
     d = RetrieveData(config)
     sql = d.get_query()
     assert (sql == 'SELECT\n    c.concept_name AS measurement_type,\n'
+                   '    c.concept_id AS measurement_source,\n'
                    '    m.person_id,\n    m.measurement_datetime,\n'
                    '    m.value_as_number,\n'
                    '	m.unit_source_value AS units,\n    (\n'
@@ -33,7 +34,7 @@ def test_get_query(config):
                    '            AND cc.concept_name NOT LIKE '
                    '\'No matching concept\'\n'
                    '    ) AS value_as_string,\n'
-                   '    p.date_of_birth AS age,\n'
+                   '    p.birth_datetime AS age,\n'
                    '    p.gender_source_value AS gender,\n'
                    '    p.race_source_value AS ethnicity\n'
                    'FROM measurement AS m\n\n'
@@ -73,7 +74,7 @@ def test_z_write_data(config):
     fo = open(d._output_file, 'r')
     line1 = fo.readline()
     parts = line1.split(',')
-    assert (len(parts) == 9)
+    assert (len(parts) == 10)
 
 
 def test_write_data_non_test(config):
@@ -90,7 +91,7 @@ def test_write_data_non_test(config):
     fo = open(d._output_file, 'r')
     line1 = fo.readline()
     parts = line1.split(',')
-    assert (len(parts) == 10)
+    assert (len(parts) == 11)
 
 
 def test_get_data_fail(config):

@@ -10,6 +10,11 @@ def create_date(date_string):
     :param date_string: string to be used
     :return: datetime of format 'YYYY-MM-DD'
     """
+    # check for a date surrounded by "
+    if date_string.startswith('"'):
+        date_string = date_string[1:11]
+    else:
+        date_string = date_string[0:10]
     try:
         d = datetime.strptime(date_string, '%Y-%m-%d')
     except ValueError:
@@ -19,7 +24,10 @@ def create_date(date_string):
             try:
                 d = datetime.strptime(date_string, '%Y/%m/%d')
             except ValueError:
-                d = datetime.strptime(date_string, '%d/%m/%Y')
+                try:
+                    d = datetime.strptime(date_string, '%d/%m/%Y')
+                except ValueError:
+                    d = datetime.strptime(date_string, '%Y:%m:%d')
     return d
 
 
