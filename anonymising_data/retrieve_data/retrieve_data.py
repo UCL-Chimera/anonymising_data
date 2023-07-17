@@ -1,4 +1,5 @@
 from anonymising_data.retrieve_data.myconnection import MyConnection
+from anonymising_data.retrieve_data.mypostgresconnection import MyPostgresConnection
 
 
 class RetrieveData:
@@ -6,10 +7,14 @@ class RetrieveData:
     Class to retrieve data.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, sqlserver=True):
         self._query_file = config.output_query_file
         self._testing = config.testing
-        self._conn = MyConnection.create_valid_connection(config.database)
+        if sqlserver:
+            self._conn = MyConnection.create_valid_connection(config.database)
+        else:
+            self._odbcconn = MyPostgresConnection.create_valid_connection(config.database)
+            self._conn = MyPostgresConnection(config.database, self._odbcconn)
         self._output_file = config.omop_data_file
         self._query = None
         self._data = None
