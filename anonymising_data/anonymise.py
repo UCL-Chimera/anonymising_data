@@ -27,7 +27,7 @@ def main():
 
     print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
 
-    data = Data(cfg)
+    data = Data(cfg, con._source)
     data.create_final_output()
 
     print(f"Anonymised data written to {cfg.final_data_file}")
