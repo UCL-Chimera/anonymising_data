@@ -56,6 +56,8 @@ def test_adjust_line(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
+    d.set_date_fields([3])
+    d.set_age_fields([])
     assert (d.adjust_line(testdata) == shifted)
 
 
@@ -74,6 +76,8 @@ def test_find_age(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
+    d.set_date_fields([3])
+    d.set_age_fields([7])
     assert (d.adjust_line(testdata) == shifted)
 
 
@@ -112,5 +116,46 @@ def test_adjust_line_not_test(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
-    d._testing = False
+    d.set_date_fields([3])
+    d.set_age_fields([7])
+    assert (d.adjust_line(testdata) == shifted)
+
+
+def test_write_data(config, sources):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :return:
+    """
+    # need correct testing data in our output file
+    config.read_yaml()
+    rd = RetrieveData(config)
+    rd.write_data()
+    # now do test
+    d = Data(config, sources)
+    d.create_final_output()
+    newfile = Path(__file__).parent.parent. \
+        joinpath('tests/output/final_data.csv')
+    testfile = Path(__file__).parent.parent. \
+        joinpath('tests/resources/test_expected_data.csv')
+    assert (filecmp.cmp(newfile, testfile, shallow=False))
+
+
+@pytest.mark.parametrize("testdata, shifted", [
+    ('0,1,1,1,2000-02-10 03:21,4,5,6,1991-03-10',
+     '0,TEMPERATURE,1,1,2001-02-09 03:21,4,5,6,32'),
+    ('a,1,c,1,1999-02-10 22:16,d,e,f,1966-07-05',
+     'a,TEMPERATURE,c,1,2000-02-10 22:16,d,e,f,57'),
+])
+def test_adjust_line_not_test(config, sources, testdata, shifted):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :param testdata:
+    :param shifted:
+    :return:
+    """
+    d = Data(config, sources)
+    d.set_date_fields([4])
+    d.set_age_fields([8])
     assert (d.adjust_line(testdata) == shifted)

@@ -27,6 +27,7 @@ class Config:
         self._date_offset = None
         self.headers = []
         self.date_fields = []
+        self.age_fields = []
 
     @property
     def concept_file(self):
@@ -110,7 +111,8 @@ class Config:
         f.close()
         self._schema = cfg['database']['schema']
         self._date_offset = cfg['anonymisation']['date_offset']
-        self.date_fields =  cfg['anonymisation']['dates']
+        self.date_fields = cfg['anonymisation']['dates']
+        self.age_fields = cfg['anonymisation']['age']
         self._concept_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['concept_mapping'])
         self._query_file = Path(__file__).parent.parent.\

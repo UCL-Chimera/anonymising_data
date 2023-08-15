@@ -14,7 +14,8 @@ files:
     final_data:
       tests/output/final_data.csv
     headers:
-      ["condition_id","person","visit","condition","condition_start_date","condition_end_date","status"]
+      ["measurement_type", "measurement_source", "person_id", 
+      "measurement_datetime", "value_as_number", "units", "value_as_string", "age", "gender", "ethnicity"]
 
 database:
   path:
@@ -23,4 +24,5 @@ database:
 
 anonymisation:
   date_offset: 365
-  dates: [4,5]
+  dates: [3]
+  age: [7]
