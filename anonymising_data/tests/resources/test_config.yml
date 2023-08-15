@@ -6,6 +6,8 @@ files:
       tests/resources/test_concept_codes.csv
     db_query:
       tests/resources/test_query.sql
+    vent:
+      tests/output/vent500.csv
   output:
     query:
       tests/output/get_data.sql
@@ -13,6 +15,10 @@ files:
       tests/output/omop_data.csv
     final_data:
       tests/output/final_data.csv
+    vent:
+      tests/output/co-morbidities.csv
+    vent_headers:
+      ["condition_id","person","visit","condition","condition_start_date","condition_end_date","status"]
 
 database:
   path:
@@ -21,3 +27,4 @@ database:
 
 anonymisation:
   date_offset: 365
+  dates: [4,5]
