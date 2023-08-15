@@ -15,9 +15,7 @@ class Data:
         self._offset = config.date_offset
         self._testing = config.testing
         self._concepts = sources
-        self.vent = config.vent
-        self.final_vent = config.final_vent
-        self.headers = config.vent_headers
+        self.headers = config.headers
         self.date_cols = config.date_fields
 
     @property

@@ -25,9 +25,7 @@ class Config:
         self._final_data_file = ''
         self._schema = ''
         self._date_offset = None
-        self.vent = ''
-        self.final_vent = ''
-        self.vent_headers = []
+        self.headers = []
         self.date_fields = []
 
     @property
@@ -125,8 +123,4 @@ class Config:
             joinpath(cfg['files']['output']['final_data'])
         self._omop_data_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['omop_data'])
-        self.final_vent = Path(__file__).parent.parent. \
-            joinpath(cfg['files']['output']['vent'])
-        self.vent = Path(__file__).parent.parent. \
-            joinpath(cfg['files']['input']['vent'])
-        self.vent_headers = cfg['files']['output']['vent_headers']
+        self.headers = cfg['files']['output']['headers']
