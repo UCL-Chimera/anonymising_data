@@ -28,11 +28,6 @@ class MyPostgresConnection:
             conn = pyodbc.connect("DRIVER={PostgreSQL Unicode};Server=uclvlddpragae06;"
                                   "Database=omop_reservoir;Port=15432;UID=skeating;"
                                   "PWD=CherryBlossom_2022;")
-
-#                                  "Password=Old!Mother!Hubbard1;String Types=Unicode")
- #               port="15080",
-                #connect_timeout=600
-            #)
         except (Exception, pyodbc.Error) as error:
             print(error)
             return None
