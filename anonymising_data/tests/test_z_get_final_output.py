@@ -97,7 +97,7 @@ def test_write_data(config, sources):
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/final_data.csv')
     testfile = Path(__file__).parent.parent.\
-        joinpath('tests/resources/test_expected_data.csv')
+        joinpath('tests/resources/test_expected_data.csv')1
     assert (filecmp.cmp(newfile, testfile, shallow=False))
 
 
@@ -119,26 +119,6 @@ def test_adjust_line_not_test(config, sources, testdata, shifted):
     d.set_date_fields([3])
     d.set_age_fields([7])
     assert (d.adjust_line(testdata) == shifted)
-
-
-def test_write_data(config, sources):
-    """
-
-    :param config: Configuration class from Pytest fixtures
-    :return:
-    """
-    # need correct testing data in our output file
-    config.read_yaml()
-    rd = RetrieveData(config)
-    rd.write_data()
-    # now do test
-    d = Data(config, sources)
-    d.create_final_output()
-    newfile = Path(__file__).parent.parent. \
-        joinpath('tests/output/final_data.csv')
-    testfile = Path(__file__).parent.parent. \
-        joinpath('tests/resources/test_expected_data.csv')
-    assert (filecmp.cmp(newfile, testfile, shallow=False))
 
 
 @pytest.mark.parametrize("testdata, shifted", [
