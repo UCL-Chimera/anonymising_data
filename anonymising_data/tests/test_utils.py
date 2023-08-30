@@ -1,4 +1,4 @@
-from anonymising_data.utils.helpers import determine_date_format,\
+from anonymising_data.utils.helpers import determine_date_format, \
     has_expected_date_format, rreplace
 
 import pytest

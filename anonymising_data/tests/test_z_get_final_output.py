@@ -61,7 +61,7 @@ def test_adjust_line(config, sources, testdata, shifted):
 
 @pytest.mark.parametrize("testdata, shifted", [
     ('0,1,1,2000-02-10 03:21,4,5,6,1991:03:10 00:00:00',
-     '0,TEMPERATURE,1,2001-02-09 03:21,4,5,6,32'),
+     '0,TEMPERATURE,1,2001-02-09 03:21,4,5,6,33'),
     ('a,1,c,1999-02-10 22:16,d,e,f,1966-07-05',
      'a,TEMPERATURE,c,2000-02-10 22:16,d,e,f,57'),
 ])
@@ -99,7 +99,7 @@ def test_write_data(config, sources):
 
 @pytest.mark.parametrize("testdata, shifted", [
     ('0,1,1,1,2000-02-10 03:21,4,5,6,1991-03-10',
-     '0,TEMPERATURE,1,1,2001-02-09 03:21,4,5,6,32'),
+     '0,TEMPERATURE,1,1,2001-02-09 03:21,4,5,6,33'),
     ('a,1,c,1,1999-02-10 22:16,d,e,f,1966-07-05',
      'a,TEMPERATURE,c,1,2000-02-10 22:16,d,e,f,57'),
 ])
