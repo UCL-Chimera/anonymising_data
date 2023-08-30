@@ -73,7 +73,7 @@ class Data:
         """
         parts = line.split(',')
         # we assume the number of parts equals the number of headers
-        num_parts = len(parts)
+        # num_parts = len(parts)
         # deal with concepts
         parts[1] = self._concepts[parts[1]]
 
@@ -81,7 +81,6 @@ class Data:
         for column in self.date_cols:
             parts[column] = self.adjust_date_time(parts[column])
 
-        # deal with age
         for column in self.age_cols:
             parts[column] = self.find_age(parts[column])
 
