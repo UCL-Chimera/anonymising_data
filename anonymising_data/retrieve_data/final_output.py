@@ -15,6 +15,16 @@ class Data:
         self._offset = config.date_offset
         self._testing = config.testing
         self._concepts = sources
+        self._headers = config.headers
+        self.date_cols = config.date_fields
+        self.age_cols = config.age_fields
+
+    # FOR USE IN TESTING
+    def set_date_fields(self, date_columns):
+        self.date_cols = date_columns
+
+    def set_age_fields(self, age_columns):
+        self.age_cols = age_columns
 
     @property
     def omop_data_file(self):
@@ -62,18 +72,20 @@ class Data:
         :return: The line with anonymised data.
         """
         parts = line.split(',')
-        # columns are
-        # measurement_type,measurement_source,person_id,visit,measurement_datetime,
-        # value_as_number,units,value_as_string,age,gender,ethnicity
-        if self._testing:
-            parts[1] = self._concepts[parts[1]]
-            parts[3] = self.adjust_date_time(parts[3])
-            if len(parts) > 7:
-                parts[7] = self.find_age(parts[7])
-        else:
-            parts[1] = self._concepts[parts[1]]
-            parts[4] = self.adjust_date_time(parts[4])
-            parts[8] = self.find_age(parts[8])
+        # we assume the number of parts equals the number of headers
+        num_parts = len(parts)
+        # deal with concepts
+        parts[1] = self._concepts[parts[1]]
+
+        # deal with dates
+        for column in self.date_cols:
+            parts[column] = self.adjust_date_time(parts[column])
+
+        # deal with age
+        for column in self.age_cols:
+            parts[column] = self.find_age(parts[column])
+
+        # rejoin parts
         return ','.join(parts)
 
     def adjust_date_time(self, line):
@@ -82,6 +94,8 @@ class Data:
         :param line: A string representing a date/time.
         :return: A string with the date shifted but the time left as is.
         """
+        if not line or line == 'NULL' or line.startswith(' unspec'):
+            return line
         if line.startswith('"'):
             this_date = line[1:11]
             this_time = line[12:len(line)-1]
