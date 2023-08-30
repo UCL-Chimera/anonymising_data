@@ -56,6 +56,8 @@ def test_adjust_line(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
+    d.set_date_fields([3])
+    d.set_age_fields([])
     assert (d.adjust_line(testdata) == shifted)
 
 
@@ -74,6 +76,8 @@ def test_find_age(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
+    d.set_date_fields([3])
+    d.set_age_fields([7])
     assert (d.adjust_line(testdata) == shifted)
 
 
@@ -93,7 +97,7 @@ def test_write_data(config, sources):
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/final_data.csv')
     testfile = Path(__file__).parent.parent.\
-        joinpath('tests/resources/test_expected_data.csv')
+        joinpath('tests/resources/test_expected_data.csv')1
     assert (filecmp.cmp(newfile, testfile, shallow=False))
 
 
@@ -112,5 +116,6 @@ def test_adjust_line_not_test(config, sources, testdata, shifted):
     :return:
     """
     d = Data(config, sources)
-    d._testing = False
+    d.set_date_fields([3])
+    d.set_age_fields([7])
     assert (d.adjust_line(testdata) == shifted)
