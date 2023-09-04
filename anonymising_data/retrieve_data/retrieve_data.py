@@ -9,7 +9,8 @@ class RetrieveData:
 
     def __init__(self, config):
         self._query_file = config.output_query_file
-        self._testing = config.testing
+#        self._testing = config.testing
+        self.headings = config.headers
         if config.sqlserver:
             self._conn = MyConnection.create_valid_connection(config.database)
         else:
@@ -61,16 +62,11 @@ class RetrieveData:
         if dt is not None:
             self._conn.close_connection()
             fo = open(self._output_file, 'w')
-            if self._testing:
-                fo.write('measurement_type,measurement_source,person_id,'
-                         'measurement_datetime,'
-                         'value_as_number,units,value_as_string,age,gender,'
-                         'ethnicity\n')
-            else:
-                fo.write('measurement_type,measurement_source, person_id,'
-                         'visit,measurement_datetime,'
-                         'value_as_number,units,value_as_string,age,gender,'
-                         'ethnicity\n')
+            num_headings = len(self.headings)
+            for i in range(0, num_headings - 1):
+                fo.write(f'{self.headings[i]},')
+            fo.write(f'{self.headings[num_headings - 1]}\n')
+
             for row in dt:
                 for col in row:
                     fo.write(f'{col},')

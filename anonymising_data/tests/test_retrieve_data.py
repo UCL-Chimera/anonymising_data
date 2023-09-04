@@ -77,24 +77,7 @@ def test_z_write_data(config):
     assert (len(parts) == 10)
 
 
-def test_write_data_non_test(config):
-    """
-    Function to test the write_data function when the
-    configuration specifies testing equals false.
-
-    :param config: Configuration class from Pytest fixtures
-    """
-    d = RetrieveData(config)
-    d.get_data()
-    d._testing = False
-    d.write_data()
-    fo = open(d._output_file, 'r')
-    line1 = fo.readline()
-    parts = line1.split(',')
-    assert (len(parts) == 11)
-
-
-def test_get_data_fail(config):
+10def test_get_data_fail(config):
     """
     Function to test the get_data function fails gracefully
     if no database is supplied.
