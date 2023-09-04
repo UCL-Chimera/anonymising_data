@@ -23,6 +23,7 @@ database:
   schema: mock_omop_es
   username: fred
   password: flintstone
+  sqlserver: true
 
 anonymisation:
   date_offset: 365

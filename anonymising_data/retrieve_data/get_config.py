@@ -30,6 +30,7 @@ class Config:
         self.age_fields = []
         self._username = ''
         self._password = ''
+        self._sqlserver = True
 
     @property
     def concept_file(self):
@@ -119,6 +120,14 @@ class Config:
         """
         return self._password
 
+    @property
+    def sqlserver(self):
+        """
+        Function to return whether this database is an SQL (true) or a PostgreSQL (false).
+        :return: _sqlserver
+        """
+        return self._sqlserver
+
     def read_yaml(self):
         """
         Function to read config and populate variables.
@@ -130,6 +139,7 @@ class Config:
         self._schema = cfg['database']['schema']
         self._password = cfg['database']['password']
         self._username = cfg['database']['username']
+        self._sqlserver = True if cfg['database']['sqlserver'] else False
         self._database = Path(__file__).parent.parent.\
             joinpath(cfg['database']['path'])
 

@@ -49,6 +49,7 @@ def test_read_config():
     assert (cfg.schema == 'mock_omop_es')
     assert (cfg.username == 'fred')
     assert (cfg.password == 'flintstone')
+    assert (cfg.sqlserver == True)
     # anonymisation
     assert (cfg.date_fields == [3])
     assert (cfg.age_fields == [7])
