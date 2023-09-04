@@ -7,10 +7,10 @@ class RetrieveData:
     Class to retrieve data.
     """
 
-    def __init__(self, config, sqlserver=True):
+    def __init__(self, config):
         self._query_file = config.output_query_file
         self._testing = config.testing
-        if sqlserver:
+        if config.sqlserver:
             self._conn = MyConnection.create_valid_connection(config.database)
         else:
             self._odbcconn = MyPostgresConnection.create_valid_connection(config.database)
