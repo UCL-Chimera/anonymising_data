@@ -50,6 +50,10 @@ def test_read_config():
     assert (cfg.username == 'fred')
     assert (cfg.password == 'flintstone')
     assert cfg.sqlserver
+    assert (cfg.driver == '{some driver}')
+    assert (cfg.server == 'some_server')
+    assert (cfg.dbname == 'some_database')
+    assert (cfg.port == 111)
     # anonymisation
     assert (cfg.date_fields == [3])
     assert (cfg.age_fields == [7])

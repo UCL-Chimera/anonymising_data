@@ -24,6 +24,10 @@ database:
   username: fred
   password: flintstone
   sqlserver: true
+  driver: "{some driver}"
+  server: "some_server"
+  dbname: "some_database"
+  port: 111
 
 anonymisation:
   date_offset: 365

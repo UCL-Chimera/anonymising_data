@@ -31,6 +31,10 @@ class Config:
         self._username = ''
         self._password = ''
         self._sqlserver = True
+        self._driver = ''
+        self._server = ''
+        self._dbname = ''
+        self._port = ''
 
     @property
     def concept_file(self):
@@ -128,6 +132,38 @@ class Config:
         """
         return self._sqlserver
 
+    @property
+    def driver(self):
+        """
+        Function to return driver for access to the database.
+        :return: _driver
+        """
+        return self._driver
+
+    @property
+    def server(self):
+        """
+        Function to return server for access to the database.
+        :return: _server
+        """
+        return self._server
+
+    @property
+    def dbname(self):
+        """
+        Function to return name for access to the database.
+        :return: _dbname
+        """
+        return self._dbname
+
+    @property
+    def port(self):
+        """
+        Function to return port for access to the database.
+        :return: _port
+        """
+        return self._port
+
     def read_yaml(self):
         """
         Function to read config and populate variables.
@@ -142,6 +178,10 @@ class Config:
         self._sqlserver = True if cfg['database']['sqlserver'] else False
         self._database = Path(__file__).parent.parent.\
             joinpath(cfg['database']['path'])
+        self._driver = cfg['database']['driver']
+        self._server = cfg['database']['server']
+        self._dbname = cfg['database']['dbname']
+        self._port = cfg['database']['port']
 
         self._date_offset = cfg['anonymisation']['date_offset']
         self.date_fields = cfg['anonymisation']['dates']
