@@ -28,6 +28,8 @@ class Config:
         self.headers = []
         self.date_fields = []
         self.age_fields = []
+        self._username = ''
+        self._password = ''
 
     @property
     def concept_file(self):
@@ -101,6 +103,22 @@ class Config:
         """
         return self._testing
 
+    @property
+    def username(self):
+        """
+        Function to return username for access to the database.
+        :return:
+        """
+        return self._username
+
+    @property
+    def password(self):
+        """
+        Function to return password for access to the database.
+        :return: _password
+        """
+        return self._password
+
     def read_yaml(self):
         """
         Function to read config and populate variables.
@@ -110,15 +128,20 @@ class Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         self._schema = cfg['database']['schema']
+        self._password = cfg['database']['password']
+        self._username = cfg['database']['username']
+        self._database = Path(__file__).parent.parent.\
+            joinpath(cfg['database']['path'])
+
         self._date_offset = cfg['anonymisation']['date_offset']
         self.date_fields = cfg['anonymisation']['dates']
         self.age_fields = cfg['anonymisation']['age']
+
         self._concept_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['concept_mapping'])
         self._query_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['db_query'])
-        self._database = Path(__file__).parent.parent.\
-            joinpath(cfg['database']['path'])
+
         self._output_query_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['query'])
         self._final_data_file = Path(__file__).parent.parent. \
