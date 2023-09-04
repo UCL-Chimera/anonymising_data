@@ -1,5 +1,5 @@
-import psycopg2
 import pyodbc
+
 
 class MyPostgresConnection:
     """
@@ -40,7 +40,6 @@ class MyPostgresConnection:
     def close_connection(self):
         """
         Close the database connection.
-        :param conn: the db connection
         """
         self.conn.close()
 
