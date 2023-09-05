@@ -14,8 +14,11 @@ class Concepts:
     and return the set of concepts to query
     """
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, config):
+        self._filename = config.concepts['filename']
+        self._concept_index = config.concepts['concept_index']
+        self._source_index = config.concepts['source_index']
+
         self._concepts = []
         self._source = {}
 
@@ -41,7 +44,7 @@ class Concepts:
         Function to read csv and populate list of concept ids
         :return: list of conceptids
         """
-        with open(self.filename, 'r') as f:
+        with open(self._filename, 'r') as f:
             lines = f.readlines()
         f.close()
         # put in error checking
@@ -52,3 +55,12 @@ class Concepts:
             if con_id != '':
                 self._concepts.append(con_id)
                 self._source[con_id] = source
+
+    def get_concept_id_and_source(self, line):
+        """
+        Function to read concept id and source from csv line
+        :param line
+        :return: [concept id, source]
+        """
+        parts = line.split(',')
+        return [parts[self._concept_index].strip(), parts[self._source_index].strip()]
