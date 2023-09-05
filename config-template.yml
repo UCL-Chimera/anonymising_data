@@ -34,6 +34,12 @@ database:
   username: fred         # the username for access to the database
   password: flintstone   # the password for access to the database
   sqlserver: true        # the type of server true is SQL, false is PostgreSQL
+  # PostgreSQL specific variables needed
+  driver: "{driver}"     # the driver e.g. {PostgreSQL Unicode}
+  server: "server"       # the actual server name
+  dbname: "database"     # the name of the database
+  port: 111              # the port number
+
 
 anonymisation:
   date_offset: 365      # the number of days by which the dates should be offset
