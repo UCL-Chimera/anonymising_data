@@ -20,7 +20,7 @@ class RetrieveData:
         if config.sqlserver:
             self._conn = MyConnection.create_valid_connection(config.database)
         else:
-            self._odbcconn = MyPostgresConnection.create_valid_connection(config.database)
+            self._odbcconn = MyPostgresConnection.create_valid_connection(config.database, self.pg_connection_string)
             self._conn = MyPostgresConnection(config.database, self._odbcconn)
         self._output_file = config.omop_data_file
         self._query = None

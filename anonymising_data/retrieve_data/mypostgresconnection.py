@@ -11,7 +11,7 @@ class MyPostgresConnection:
         self.cur = MyPGCursor(self.conn)
 
     @classmethod
-    def create_valid_connection(cls, db_file):
+    def create_valid_connection(cls, db_file, connection_string):
         """
         Function to create a valid connection.
         This allows for error trapping when creating the connection
@@ -24,9 +24,7 @@ class MyPostgresConnection:
         if db_file == '':
             return None
         try:
-            conn = pyodbc.connect("DRIVER={PostgreSQL Unicode};Server=uclvlddpragae06;"
-                                  "Database=omop_reservoir;Port=15432;UID=skeating;"
-                                  "PWD=CherryBlossom_2022;")
+            conn = pyodbc.connect(connection_string)
         except (Exception, pyodbc.Error) as error:
             print(error)
             return None
