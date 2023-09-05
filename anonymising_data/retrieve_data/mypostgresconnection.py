@@ -6,8 +6,7 @@ class MyPostgresConnection:
     Connection to a database.
     """
 
-    def __init__(self, database, conn):
-        self.db_file = database
+    def __init__(self, conn):
         self.conn = conn
         self.cur = MyPGCursor(self.conn)
 
