@@ -3,7 +3,9 @@ files:
   # input files necessary
   input:
     concept_mapping:
-      tests/resources/test_concept_codes.csv
+      filename: tests/resources/test_concept_codes.csv
+      concept_index: 2
+      source_index: 4
     db_query:
       tests/resources/test_query.sql
   output:

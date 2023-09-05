@@ -35,6 +35,7 @@ class Config:
         self._server = ''
         self._dbname = ''
         self._port = ''
+        self.concepts = {}
 
     @property
     def concept_file(self):
@@ -188,7 +189,7 @@ class Config:
         self.age_fields = cfg['anonymisation']['age']
 
         self._concept_file = Path(__file__).parent.parent.\
-            joinpath(cfg['files']['input']['concept_mapping'])
+            joinpath(cfg['files']['input']['concept_mapping']['filename'])
         self._query_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['db_query'])
 
@@ -199,3 +200,7 @@ class Config:
         self._omop_data_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['omop_data'])
         self.headers = cfg['files']['output']['headers']
+
+        self.concepts = {'filename': self._concept_file,
+                         'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
+                         'source_index': cfg['files']['input']['concept_mapping']['source_index']}
