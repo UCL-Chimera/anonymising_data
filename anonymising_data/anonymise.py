@@ -14,7 +14,7 @@ def main():
     cfg = Config(testing=False)
     cfg.read_yaml()
 
-    con = Concepts(cfg.concept_file)
+    con = Concepts(cfg)
     con.populate_concepts()
 
     q = Query(cfg, con.concepts)
