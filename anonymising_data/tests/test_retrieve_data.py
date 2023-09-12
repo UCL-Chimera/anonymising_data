@@ -116,4 +116,3 @@ def test_postgresql_string(config):
     d = RetrieveData(config)
     assert (d.pg_connection_string == "DRIVER={some driver};Server=some_server;Database=some_database;"
                                       "Port=111;UID=fred;PWD=flintstone;")
-    
