@@ -5,12 +5,7 @@ select c.condition_occurrence_id as condition_id,
 	c.condition_start_date,
 	c.condition_end_date,
 	(
-        SELECT cc.concept_name FROM hic_cc_003.concept AS cc
+        SELECT cc.concept_name FROM :FILL_SCHEMA:concept AS cc
         WHERE cc.concept_id = c.condition_status_concept_id
      ) AS status
-
-
-
-from hic_cc_003.condition_occurrence as c
-where c.person_id > 0
-and   c.person_id < 500
+from :FILL_SCHEMA:condition_occurrence as c

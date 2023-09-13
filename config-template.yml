@@ -3,9 +3,12 @@ files:
   # input files necessary
   input:
     concept_mapping:
-    # this is a file where the concept codes are found
-    # 
-      tests/resources/test_concept_codes.csv
+      # this is a file where the concept codes are found
+      filename: tests/resources/test_concept_codes.csv
+      # the column number where the concept is found
+      concept_index: 2
+      # the column number where the source is found
+      source_index: 4
     db_query:
     # this is the template query for the data to be retrieved
       queries/omop-es/get_data.sql

@@ -58,3 +58,7 @@ def test_read_config():
     assert (cfg.date_fields == [3])
     assert (cfg.age_fields == [7])
     assert (cfg.date_offset == 365)
+    # concepts
+    assert (cfg.concepts['filename'] == cfg.concept_file)
+    assert (cfg.concepts['concept_index'] == 2)
+    assert (cfg.concepts['source_index'] == 4)

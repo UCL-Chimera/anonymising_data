@@ -44,6 +44,6 @@ def test_adjust_line(config, concepts):
     line = ':FILL_SCHEMA:'
     newline = q.adjust_line(line)
     assert (newline == '')
-    q._testing = False
+    q._issql = False
     newline = q.adjust_line(line)
     assert (newline == 'mock_omop_es.')
