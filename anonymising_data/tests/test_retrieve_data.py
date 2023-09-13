@@ -77,23 +77,6 @@ def test_z_write_data(config):
     assert (len(parts) == 10)
 
 
-def test_write_data_non_test(config):
-    """
-    Function to test the write_data function when the
-    configuration specifies testing equals false.
-
-    :param config: Configuration class from Pytest fixtures
-    """
-    d = RetrieveData(config)
-    d.get_data()
-    d._testing = False
-    d.write_data()
-    fo = open(d._output_file, 'r')
-    line1 = fo.readline()
-    parts = line1.split(',')
-    assert (len(parts) == 11)
-
-
 def test_get_data_fail(config):
     """
     Function to test the get_data function fails gracefully
@@ -121,3 +104,15 @@ def test_write_data_fail(config):
     d._conn = None
     d.write_data()
     assert (d._data is None)
+
+
+def test_postgresql_string(config):
+    """
+    Function to test the string written for a postgres connection.
+
+    :param config: Configuration class from Pytest fixtures
+    """
+    config.read_yaml()
+    d = RetrieveData(config)
+    assert (d.pg_connection_string == "DRIVER={some driver};Server=some_server;Database=some_database;"
+                                      "Port=111;UID=fred;PWD=flintstone;")

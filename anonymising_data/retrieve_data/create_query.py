@@ -17,7 +17,7 @@ class Query:
         self._schema = config.schema
         self._offset = config.date_offset
         self._offset_str = ''
-        self._testing = config.testing
+        self._issql = config.sqlserver
         self.create_strings()
 
     def create_strings(self):
@@ -58,7 +58,7 @@ class Query:
         if line.find(':FILL_CONCEPT:') != -1:
             newline = line.replace(':FILL_CONCEPT:', self._con_str)
         elif line.find(':FILL_SCHEMA:') != -1:
-            if self._testing:
+            if self._issql:
                 newline = line.replace(':FILL_SCHEMA:', '')
             else:
                 newline = line.replace(':FILL_SCHEMA:', self._schema + '.')

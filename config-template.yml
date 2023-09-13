@@ -1,0 +1,50 @@
+#paths to files
+files:
+  # input files necessary
+  input:
+    concept_mapping:
+      # this is a file where the concept codes are found
+      filename: tests/resources/test_concept_codes.csv
+      # the column number where the concept is found
+      concept_index: 2
+      # the column number where the source is found
+      source_index: 4
+    db_query:
+    # this is the template query for the data to be retrieved
+      queries/omop-es/get_data.sql
+  
+  # specify where the output files will be written
+  output:
+    query:
+    # this is the template query with any placeholders correctly replaced
+      tests/output/get_data.sql
+    omop_data:
+    # this is the raw omop data returned by the query
+      tests/output/omop_data.csv
+    final_data:
+    # this is the data after anonymisation steps have been run
+      tests/output/final_data.csv
+    headers:
+    # these are the headers for the columns in the final data
+      ["measurement_type", "measurement_source", "person_id", 
+      "measurement_datetime", "value_as_number", "units", "value_as_string", "age", "gender", "ethnicity"]
+
+database:
+  path:
+  # the path to the database
+    tests/resources/mock-database/test_omop_es.sqlite3
+  schema: mock_omop_es   # the database schema being used
+  username: fred         # the username for access to the database
+  password: flintstone   # the password for access to the database
+  sqlserver: true        # the type of server true is SQL, false is PostgreSQL
+  # PostgreSQL specific variables needed
+  driver: "{driver}"     # the driver e.g. {PostgreSQL Unicode}
+  server: "server"       # the actual server name
+  dbname: "database"     # the name of the database
+  port: 111              # the port number
+
+
+anonymisation:
+  date_offset: 365      # the number of days by which the dates should be offset
+  dates: [3]            # the set of column numbers which correspond to dates that need to be offset
+  age: [7]              # the set of column numbers which correspond to age that needs to be anonymized according to the protocol
