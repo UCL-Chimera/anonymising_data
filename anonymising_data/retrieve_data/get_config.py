@@ -2,7 +2,6 @@ from pathlib import Path
 
 import yaml
 
-
 class Config:
     """
     Class to assign config variables.
@@ -43,6 +42,7 @@ class Config:
         Function to return filename of concept file.
         :return:
         """
+        print(self._concept_file)
         return self._concept_file
 
     @property
@@ -173,6 +173,7 @@ class Config:
         with open(self.filename, 'r') as f:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
+
         self._schema = cfg['database']['schema']
         self._password = cfg['database']['password']
         self._username = cfg['database']['username']
@@ -204,3 +205,60 @@ class Config:
         self.concepts = {'filename': self._concept_file,
                          'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
                          'source_index': cfg['files']['input']['concept_mapping']['source_index']}
+
+    
+class CPet_Config:
+    """
+    Class to assign config variables.
+    """
+
+    def __init__(self, testing=False):
+        if testing:
+            self.filename = Path(__file__).parent.\
+                parent.joinpath('tests', 'resources', 'cpet_config.yml')
+        else:
+            self.filename = Path(__file__).parent.\
+                parent.parent.joinpath('config.yml')
+    
+
+    def getvalueofnode(self, node):
+        """ return node text or None """
+        return node.text if node is not None else None
+
+    def read_xml(self):
+        import xml.etree.ElementTree as ET
+
+        with open(self.filename, 'r') as f:
+            cfg = yaml.load(f, Loader=yaml.FullLoader)
+        f.close()
+
+        self._concept_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['concept_mapping']['filename'])
+
+        tree = ET.parse(self._concept_file)
+        root = tree.getroot()
+
+        ns = {"doc": "urn:schemas-microsoft-com:office:spreadsheet"}
+
+        # parsed_xml = tree
+
+        data = []
+        for i, node in enumerate(root.findall('.//doc:Row', ns)):
+            if i > 6:
+                data.append({self.getvalueofnode(node.find('doc:Cell[1]/doc:Data', ns)),
+                            self.getvalueofnode(node.find('doc:Cell[2]/doc:Data', ns))})
+        
+        print(type(data[0]))
+
+
+        # Accessing specific cell data
+        # for row in root.iter('Workbook'):
+        #     print(row.tag)
+            # data_elem = cell.find('Data')
+            # if data_elem is not None and data_elem.text in ['ID', 'xxxx']:
+            #     merge_across = cell.get('ss:MergeAcross')
+            #     style_id = cell.get('ss:StyleID')
+            #     data_type = data_elem.get('ss:Type')
+            #     data_value = data_elem.text
+                
+            #     print(f"MergeAcross: {merge_across}, StyleID: {style_id}, DataType: {data_type}, Value: {data_value}")
