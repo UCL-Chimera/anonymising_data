@@ -47,3 +47,20 @@ def test_adjust_line(config, concepts):
     q._issql = False
     newline = q.adjust_line(line)
     assert (newline == 'mock_omop_es.')
+
+
+def test_write_link_query(config, concepts):
+    """
+    Function to test the create_query_file by comparing with an example given.
+    :param config: Configuration class from Pytest fixtures
+    :param concepts: Concepts from Pytest fixtures
+    """
+    q = Query(config, concepts, True)
+    q.create_query_file()
+    newfile = Path(__file__).parent.parent.\
+        joinpath('tests/output/get_link.sql')
+    testfile = Path(__file__).parent.parent.\
+        joinpath('tests/resources/link_query_expected.sql')
+    assert (filecmp.cmp(newfile, testfile, shallow=False))
+
+

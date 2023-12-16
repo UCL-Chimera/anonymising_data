@@ -17,6 +17,8 @@ def test_create_config():
     assert (cfg.final_data_file == '')
     assert (cfg.schema == '')
     assert (cfg.date_offset is None)
+    assert (cfg.link_query_file == '')
+    assert (cfg.output_link_query_file == '')
 
 
 def test_read_config():
@@ -32,9 +34,13 @@ def test_read_config():
             joinpath('tests/resources/test_concept_codes.csv'))
     assert (cfg.query_file == Path(__file__).parent.parent.
             joinpath('tests/resources/test_query.sql'))
+    assert (cfg.link_query_file == Path(__file__).parent.parent.
+            joinpath('tests/resources/link_query.sql'))
     # files output
     assert (cfg.output_query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_data.sql'))
+    assert (cfg.output_link_query_file == Path(__file__).parent.parent.
+            joinpath('tests/output/get_link.sql'))
     assert (cfg.omop_data_file == Path(__file__).parent.parent.
             joinpath('tests/output/omop_data.csv'))
     assert (cfg.final_data_file == Path(__file__).parent.parent.
