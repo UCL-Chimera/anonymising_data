@@ -203,7 +203,7 @@ class Cpet_Config:
         self._omop_data_file = Path(__file__).parent.parent.joinpath(
             cfg["files"]["output"]["omop_data"]
         )
-        self.headers = cfg["files"]["input"]["concept_mapping"]["headers"]
+        self.headers_exclude = cfg["files"]["input"]["concept_mapping"]["headers_exclude"]
 
         # self.concepts = {'filename': self._concept_file,
         #                  'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],

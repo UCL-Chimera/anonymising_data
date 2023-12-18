@@ -10,15 +10,8 @@ class RetrieveXML:
 
     def __init__(self, config):
         self._xml_file = config._database
-        self.headings = config.headers
-        # self.pg_connection_string = construct_connection_string(config)
-        # if config.sqlserver:
-        #     self._conn = MyConnection.create_valid_connection(config.database)
-        # else:
-        #     self._odbcconn = MyPostgresConnection.create_valid_connection(config.database, self.pg_connection_string)
-        #     self._conn = MyPostgresConnection(config.database, self._odbcconn)
+        self.headers_exclude = config.headers_exclude
         self._output_file = config.omop_data_file
-        # self._query = None
         self._data = None
 
     @property
@@ -34,36 +27,11 @@ class RetrieveXML:
         """return node text or None"""
         return node.text if node is not None else None
 
-    def _standardize_dict(self):
-        # Check if the dictionary is in the expected structure
-        keys = self.headings
-        standardized_set = set()
-        standardized_dict = {}
-        for item in self._data:
-            print(item)
-            # print("true")
-            for key in keys:
-                print(key)
-                if key in item:
-                    standardized_dict[key] = item[key]
-                else:
-                    standardized_dict.update({v: k for k, v in item.items()})
-            standardized_set.add(frozenset(standardized_dict.items()))
-
-        return standardized_set
-
     def get_data(self):
         """
         Function to get data.
         :return: data from xml
         """
-        print(self._xml_file)
-        # with open(self._xml_file, 'r') as f:
-        #     cfg = yaml.load(f, Loader=yaml.FullLoader)
-        # f.close()
-
-        # self._concept_file = Path(__file__).parent.parent.\
-        #     joinpath(cfg['files']['input']['concept_mapping']['filename'])
 
         tree = ET.parse(self._xml_file)
         root = tree.getroot()
@@ -83,7 +51,6 @@ class RetrieveXML:
             data.append(row_data)
 
         self._data = data
-        print(type(data[0]))
         return data
 
     def write_data(self):
@@ -93,19 +60,27 @@ class RetrieveXML:
          this function will call the get_data function.
         """
         dt = self._data if self._data is not None else self.get_data()
-        print(self.headings)
-
-        # Extract headers and data rows
-        # headers = [cell[0] for cell in dt if len(cell) > 1 and cell[0] != 'Variable']
-        # data_rows = [cell[1:] for cell in dt if len(cell) > 1 and cell[0] != 'Variable']
-
-        # print(headers)
 
         with open(self._output_file, "w", newline="") as csvfile:
             csv_writer = csv.writer(csvfile)
 
+            keywords_to_exclude = [
+                "CPET Results",
+                "Patient data",
+                "Administrative Data",
+                "Title",
+                "Last Name",
+                "First Name",
+                "",
+            ]
+
             for row in dt:
-                for keyword in self.headings:
-                    if any(keyword.lower() in cell.lower() for cell in row):
-                        csv_writer.writerow(row)
-                        break  # If you want to stop after finding the first occurrence in a row
+                row_lower = [cell.lower() for cell in row]
+
+                if any(
+                    exclude_keyword.lower() in row_lower or not any(row_lower)
+                    for exclude_keyword in self.headers_exclude
+                ):
+                    continue  # Skip writing this row
+
+                csv_writer.writerow(row)

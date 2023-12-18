@@ -4,11 +4,8 @@ files:
   input:
     concept_mapping:
       filename: tests/resources/CPet/Sample.xml
-      headers:
-        ["ID", "Sex", "Date of Birth", "Height", "Weight", "Variable", 
-        "t", "HR", "V'O2/HR", "V'E", "BF", "V'O2", "V'CO2", "RER",
-        "V'E/V'O2", "V'E/V'CO2", "VT", "PetO2", "PetCO2", "WR", "RpM",
-        "METS", "%MET-R", "WR/kg", "V'E/MVV", "VD/VT(est)", "VD(est)", "%BR", "%HR-R"] 
+      headers_exclude:
+        ['CPET Results', 'Patient data', 'Administrative Data', 'Title', 'Last Name', 'First Name', ''] 
   output:
     omop_data:
       tests/output/omop_CPet_data.csv
@@ -17,7 +14,7 @@ files:
     time_series_data:
       tests/output/final_CPet_data.csv
     headers_demographic:
-      ["patient_id", "age", "gender", "height", "weight", "t_Unit", "t_Rest", "t_AT", "t_V'O2peak",
+      ["person_id", "age", "gender", "height", "weight", "t_Unit", "t_Rest", "t_AT", "t_V'O2peak",
       "HR_Unit", "HR_Rest", "HR_AT", "HR_V'O2peak", "V'O2/HR_Unit", "V'O2/HR_Rest", "V'O2/HR_AT", "V'O2/HR_V'O2peak",
       "V'E_Unit", "V'E_Rest", "V'E_AT", "V'E_V'O2peak"]
     # headers_time_series:
