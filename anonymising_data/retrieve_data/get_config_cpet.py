@@ -198,12 +198,14 @@ class Cpet_Config:
 
         # self._output_query_file = Path(__file__).parent.parent. \
         #     joinpath(cfg['files']['output']['query'])
-        # self._final_data_file = Path(__file__).parent.parent. \
-        #     joinpath(cfg['files']['output']['final_data'])
+        self._final_demographic_data = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['demographic_data'])
         self._omop_data_file = Path(__file__).parent.parent.joinpath(
             cfg["files"]["output"]["omop_data"]
         )
         self.headers_exclude = cfg["files"]["input"]["concept_mapping"]["headers_exclude"]
+        self.headers_demographic = cfg["files"]["output"]["headers_demographic"]
+        self.headers_reading = cfg["files"]["output"]["headers_reading"]
 
         # self.concepts = {'filename': self._concept_file,
         #                  'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],

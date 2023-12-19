@@ -38,16 +38,20 @@ class RetrieveXML:
 
         ns = {"doc": "urn:schemas-microsoft-com:office:spreadsheet"}
 
-        # parsed_xml = tree
-
         data = []
         for node in root.findall(".//doc:Row", ns):
             row_data = []
             cells = node.findall("doc:Cell", ns)
             for cell in cells:
-                cell_data = self._getvalueofnode(cell.find("doc:Data", ns))
-                if cell_data is not None:
-                    row_data.append(cell_data)
+                data_tag = cell.find("doc:Data", ns)
+                if data_tag is not None:
+                    cell_data = self._getvalueofnode(data_tag)
+                    if cell_data is not None and cell_data.strip():
+                        row_data.append(cell_data)
+                    else:
+                        row_data.append(
+                            "na"
+                        )  # If cell_data is None or empty, fill with 'na'
             data.append(row_data)
 
         self._data = data
@@ -64,23 +68,13 @@ class RetrieveXML:
         with open(self._output_file, "w", newline="") as csvfile:
             csv_writer = csv.writer(csvfile)
 
-            keywords_to_exclude = [
-                "CPET Results",
-                "Patient data",
-                "Administrative Data",
-                "Title",
-                "Last Name",
-                "First Name",
-                "",
-            ]
-
             for row in dt:
-                row_lower = [cell.lower() for cell in row]
+                row_lower = [cell.lower() if cell else "na" for cell in row]
 
-                if any(
+                exclude_row = any(
                     exclude_keyword.lower() in row_lower or not any(row_lower)
                     for exclude_keyword in self.headers_exclude
-                ):
-                    continue  # Skip writing this row
+                )
 
-                csv_writer.writerow(row)
+                if not exclude_row:
+                    csv_writer.writerow(row_lower)

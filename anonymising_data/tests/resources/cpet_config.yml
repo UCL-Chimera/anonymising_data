@@ -5,18 +5,18 @@ files:
     concept_mapping:
       filename: tests/resources/CPet/Sample.xml
       headers_exclude:
-        ['CPET Results', 'Patient data', 'Administrative Data', 'Title', 'Last Name', 'First Name', ''] 
+        ["CPET Results", "Patient data", "Administrative Data", "Title", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
   output:
     omop_data:
       tests/output/omop_CPet_data.csv
     demographic_data:
-      tests/output/final_CPet_data.csv
+      tests/output/cpet_dmeographic_report_data.csv
     time_series_data:
       tests/output/final_CPet_data.csv
     headers_demographic:
-      ["person_id", "age", "gender", "height", "weight", "t_Unit", "t_Rest", "t_AT", "t_V'O2peak",
-      "HR_Unit", "HR_Rest", "HR_AT", "HR_V'O2peak", "V'O2/HR_Unit", "V'O2/HR_Rest", "V'O2/HR_AT", "V'O2/HR_V'O2peak",
-      "V'E_Unit", "V'E_Rest", "V'E_AT", "V'E_V'O2peak"]
+      ["person_id", "age", "gender", "height", "weight"]
+    headers_reading :
+      ["Unit", "Rest", "AT", "V'O2peak"]
     # headers_time_series:
 
 database:
