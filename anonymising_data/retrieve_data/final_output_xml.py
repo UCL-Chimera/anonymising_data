@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 import re
 from datetime import datetime
+import os
 
 
 from anonymising_data.anonymise.age import Age
@@ -14,21 +15,12 @@ class Data:
     """
 
     def __init__(self, config):
-        self._omop_data_file = config._omop_data_file
-        self._final_demographic_data = config._final_demographic_data
-        self._offset = config.date_offset
+        self._omop_data_file = config.omop_data_file
+        self._final_demographic_data = config.final_demographic_data
+        self._final_cpet_data = config.final_cpet_data
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
-        self.date_cols = config.date_fields
-        self.age_cols = config.age_fields
-
-    # FOR USE IN TESTING
-    def set_date_fields(self, date_columns):
-        self.date_cols = date_columns
-
-    def set_age_fields(self, age_columns):
-        self.age_cols = age_columns
 
     @property
     def omop_data_file(self):
@@ -39,12 +31,20 @@ class Data:
         return self._omop_data_file
 
     @property
-    def final_data_file(self):
+    def final_cpet_data(self):
         """
         Function to return filename of final data file.
         :return:
         """
-        return self._final_data_file
+        return self._final_cpet_data
+
+    @property
+    def final_demographic_data(self):
+        """
+        Function to return filename of final data file.
+        :return:
+        """
+        return self._final_demographic_data
 
     def _create_demographic_output(self):
         """
@@ -105,12 +105,27 @@ class Data:
         # # MAKE output dir if necessary
 
         Path(self._final_demographic_data).parent.mkdir(parents=True, exist_ok=True)
+        file_exists = (
+            os.path.exists(self._final_demographic_data)
+            and os.path.getsize(self._final_demographic_data) > 0
+        )
 
-        with open(self._final_demographic_data, "w", newline="") as csvfile:
+        with open(self._final_demographic_data, "a", newline="") as csvfile:
             writer = csv.writer(csvfile)
             headers, new_row = self._create_demographic_output()
-            writer.writerow(headers)
+
+            # If the file is empty or doesn't exist, write headers
+            if not file_exists:
+                writer.writerow(headers)
             writer.writerow(new_row)
+
+        Path(self._final_cpet_data).parent.mkdir(parents=True, exist_ok=True)
+        with open(self._final_cpet_data, "w") as out:
+            for row in self.lines:
+                elements = [element.strip() for element in row.split(",")]
+                if len(elements) > 6:
+                    line_to_write = ",".join(elements) + "\n"
+                    out.write(line_to_write)
 
     def find_age(self, dob):
         """

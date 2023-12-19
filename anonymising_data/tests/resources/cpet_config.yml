@@ -12,12 +12,11 @@ files:
     demographic_data:
       tests/output/cpet_dmeographic_report_data.csv
     time_series_data:
-      tests/output/final_CPet_data.csv
+      tests/output/final_cpet_data.csv
     headers_demographic:
       ["person_id", "gender", "age", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
-    # headers_time_series:
 
 database:
   path:
