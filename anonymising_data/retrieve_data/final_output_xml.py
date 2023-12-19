@@ -1,6 +1,8 @@
 import csv
 from pathlib import Path
 import re
+from datetime import datetime
+
 
 from anonymising_data.anonymise.age import Age
 from anonymising_data.anonymise.recorded_date import RecordedDate
@@ -49,8 +51,6 @@ class Data:
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
         """
-        # TODO: anonymise for dob to age
-
         new_header = []
 
         for row in self.lines:
@@ -65,35 +65,30 @@ class Data:
         i = 0
         for row in self.lines:
             elements = [element.strip() for element in row.split(",")[1:]]
-            # print(len(elements))
             if len(elements) < 5:
                 data_dict[i] = elements
                 i += 1
 
+        for i in range(len(data_dict)):
+            if i == 2:
+                try:
+                    data_dict[i] = [str(self.find_age(data_dict[i][0]))]
+                except (IndexError, ValueError):
+                    pass
+
         new_row = []
-        values = []
-
-        # Iterate through headers
         for i, field in enumerate(headers):
-            if i < len(
-                data_dict
-            ):  # Check if the index is within the bounds of data_dict
-                # Extract values for the current header
+            if i < len(data_dict):
                 current_values = data_dict[i]
-
-                # If there are multiple values, assign them to the corresponding headers
                 while current_values:
-                    value = current_values.pop(0)  # Get the first value
-                    new_row.append(value)  # Append it to the new row
+                    value = current_values.pop(0)
+                    new_row.append(value)
 
-                    # If there are more headers, add empty strings for the missing values
                     if len(new_row) < i + 1:
                         new_row.extend([""] * (i + 1 - len(new_row)))
             else:
-                # If data_dict doesn't have enough elements, add empty strings for the missing headers
                 new_row.extend([""] * (i + 1 - len(new_row)))
 
-        # Ensure new_row has the same length as headers
         new_row.extend([""] * (len(headers) - len(new_row)))
 
         return headers, new_row
@@ -116,3 +111,12 @@ class Data:
             headers, new_row = self._create_demographic_output()
             writer.writerow(headers)
             writer.writerow(new_row)
+
+    def find_age(self, dob):
+        """
+        A function to return the age based on DOB.
+        :param dob: A date object
+        :return: An integer representing the age as a string.
+        """
+        age = Age(dob)
+        return f"{age.anon_age}"

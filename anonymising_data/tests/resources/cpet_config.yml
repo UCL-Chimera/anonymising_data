@@ -14,7 +14,7 @@ files:
     time_series_data:
       tests/output/final_CPet_data.csv
     headers_demographic:
-      ["person_id", "age", "gender", "height", "weight"]
+      ["person_id", "gender", "age", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
     # headers_time_series:
