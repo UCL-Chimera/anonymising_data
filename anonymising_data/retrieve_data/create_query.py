@@ -24,6 +24,15 @@ class Query:
         self._issql = config.sqlserver
         self.create_strings()
 
+    @property
+    def output_query(self):
+        """
+        Returns the name of the query file.
+
+        :return: The query file.
+        """
+        return self._output_query
+
     def create_strings(self):
         """
         Function to create the strings to be substituted.

@@ -17,22 +17,14 @@ class Link:
         else:
             self._odbcconn = MyPostgresConnection.create_valid_connection(config.database, self.pg_connection_string)
             self._conn = MyPostgresConnection(config.database, self._odbcconn)   
-        self._query_file = config.link_query_file
+        self._query_file = q._output_query
         self._query = None
 
-    @property
-    def query(self):
+    def get_query(self):
         """
         Returns the name of the query file.
 
         :return: The query file.
-        """
-        return self._query
-
-    def get_query(self):
-        """
-        Get the sql for the query from txt file.
-        :return: sql content of file
         """
         fo = open(self._query_file, 'r')
         sql = fo.read()
@@ -45,7 +37,8 @@ class Link:
         :return: data from query
         """
         if self._conn is not None:
-            sql = self._query if self._query is not None else self.get_query()
+            sql = self.get_query()
+            sql = sql.rstrip()
             data = self._conn.get_data_query(sql, mrn)
             self._data = data
             return data

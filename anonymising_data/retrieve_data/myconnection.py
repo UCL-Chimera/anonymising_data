@@ -62,6 +62,13 @@ class MyCursor:
         :param sql: sql to execute
         :return: data
         """
-        self.cur.execute(sql, mrn)
+        if mrn:
+            value = (mrn,)
+            self.cur.execute(sql, value)
+        else:
+            self.cur.execute(sql)
         data = self.cur.fetchall()
-        return data
+        if len(data) > 0:
+            return data[0][0]
+        else:
+            return None

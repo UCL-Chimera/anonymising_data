@@ -25,7 +25,7 @@ files:
 
 database:
   path:
-    tests/resources/mock-database/test_omop_es.sqlite3
+    tests/resources/mock-database/test_omop_es_expanded.sqlite3
   schema: mock_omop_es
   username: fred
   password: flintstone

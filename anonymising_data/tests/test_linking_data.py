@@ -8,6 +8,7 @@ from anonymising_data.linking.get_person_id import Link
     ('12345', 6327),
     ('sd/678', 7341),
     ('.345', None)
+    #('Female', [(6327,)])
 ])
 def test_get_person_id(config, mrn, person_id):
     link = Link(config)
