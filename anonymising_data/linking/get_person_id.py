@@ -16,7 +16,7 @@ class Link:
             self._conn = MyConnection.create_valid_connection(config.database)
         else:
             self._odbcconn = MyPostgresConnection.create_valid_connection(config.database, self.pg_connection_string)
-            self._conn = MyPostgresConnection(config.database, self._odbcconn)   
+            self._conn = MyPostgresConnection(config.database, self._odbcconn)
         self._query_file = q._output_query
         self._query = None
 

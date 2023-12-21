@@ -62,5 +62,3 @@ def test_write_link_query(config, concepts):
     testfile = Path(__file__).parent.parent.\
         joinpath('tests/resources/link_query_expected.sql')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
-
-
