@@ -13,3 +13,4 @@ from anonymising_data.linking.get_person_id import Link
 def test_get_person_id(config, mrn, person_id):
     link = Link(config)
     assert (link.get_person_id(mrn) == person_id)
+    
