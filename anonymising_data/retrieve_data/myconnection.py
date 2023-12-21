@@ -65,10 +65,12 @@ class MyCursor:
         if mrn:
             value = (mrn,)
             self.cur.execute(sql, value)
+            data = self.cur.fetchall()
+            if len(data) > 0:
+                return data[0][0]
+            else:
+                return None
         else:
             self.cur.execute(sql)
-        data = self.cur.fetchall()
-        if len(data) > 0:
-            return data[0][0]
-        else:
-            return None
+            data = self.cur.fetchall()
+            return data

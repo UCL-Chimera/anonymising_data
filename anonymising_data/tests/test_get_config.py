@@ -51,7 +51,7 @@ def test_read_config():
                             "age", "gender", "ethnicity"])
     # database
     assert (cfg.database == Path(__file__).parent.parent.
-            joinpath('tests/resources/mock-database/test_omop_es.sqlite3'))
+            joinpath('tests/resources/mock-database/test_omop_es_expanded.sqlite3'))
     assert (cfg.schema == 'mock_omop_es')
     assert (cfg.username == 'fred')
     assert (cfg.password == 'flintstone')
