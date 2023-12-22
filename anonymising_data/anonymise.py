@@ -1,37 +1,88 @@
-from anonymising_data.retrieve_data.final_output import Data
-from anonymising_data.retrieve_data.create_query import Query
-from anonymising_data.retrieve_data.get_concepts import Concepts
-from anonymising_data.retrieve_data.get_config import Config
-from anonymising_data.retrieve_data.retrieve_data import RetrieveData
+import argparse
 
 
-def main():
+def main(args):
     """
     Main function to run the whole pipeline to anonymise data.
 
     :return: A csv file containing the anonymised data
     """
-    cfg = Config(testing=False)
-    cfg.read_yaml()
+    
+    if args.data == 'sql':
 
-    con = Concepts(cfg)
-    con.populate_concepts()
+        from anonymising_data.retrieve_data.final_output import Data
+        from anonymising_data.retrieve_data.create_query import Query
+        from anonymising_data.retrieve_data.get_concepts import Concepts
+        from anonymising_data.retrieve_data.get_config import Config
+        from anonymising_data.retrieve_data.retrieve_data import RetrieveData
 
-    q = Query(cfg, con.concepts)
-    q.create_query_file()
+        cfg = Config(testing=args.testing)
+        cfg.read_yaml()
 
-    print(f"Query written to {cfg.output_query_file}")
+        con = Concepts(cfg)
+        con.populate_concepts()
 
-    d = RetrieveData(cfg)
-    d.write_data()
+        q = Query(cfg, con.concepts)
+        q.create_query_file()
 
-    print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
+        print(f"Query written to {cfg.output_query_file}")
 
-    data = Data(cfg, con._source)
-    data.create_final_output()
+        d = RetrieveData(cfg)
+        d.write_data()
 
-    print(f"Anonymised data written to {cfg.final_data_file}")
+        print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
+
+        data = Data(cfg, con._source)
+        data.create_final_output()
+
+        print(f"Anonymised data written to {cfg.final_data_file}")
+
+    elif args.data == 'cpet':
+
+        from anonymising_data.retrieve_data.get_config_cpet import Cpet_Config
+        from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
+        from anonymising_data.retrieve_data.final_output_xml import Data
+
+        cfg = Cpet_Config(testing=args.testing)
+        cfg.read_yaml()
+
+        d = RetrieveXML(cfg)
+        d.write_data()
+
+        # print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
+
+        data = Data(cfg)
+        data.create_final_output()
+
+        # print(f"Anonymised data written to {cfg.final_data_file}")
+
+    else:
+        raise ValueError("Unsupported data type")
 
 
-if __name__ == '__main__':
-    main()
+def argument_parser() -> argparse.Namespace:
+    """
+    Parse command-line arguments for the script.
+    """
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--testing",
+        type=bool,
+        required=True,
+        help="",
+    )
+    parser.add_argument(
+        "--data",
+        type=str,
+        default='cpet',
+        required=False,
+        help="sql or cpet",
+    )
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = argument_parser()
+    main(args)

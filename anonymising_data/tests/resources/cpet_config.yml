@@ -1,0 +1,36 @@
+#paths to files
+files:
+  # input files necessary
+  input:
+    concept_mapping:
+      filename: tests/resources/CPet/Sample.xml
+      headers_exclude:
+        ["CPET Results", "Patient data", "Administrative Data", "Title", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
+  output:
+    omop_data:
+      tests/output/omop_CPet_data.csv
+    demographic_data:
+      tests/output/cpet_dmeographic_report_data.csv
+    time_series_data:
+      tests/output/final_cpet_data.csv
+    headers_demographic:
+      ["person_id", "gender", "age", "height", "weight"]
+    headers_reading :
+      ["Unit", "Rest", "AT", "V'O2peak"]
+
+database:
+  path:
+    tests/resources/CPet/Sample.xml
+  schema: mock_omop_es
+  username: fred
+  password: flintstone
+  sqlserver: true
+  driver: "{some driver}"
+  server: "some_server"
+  dbname: "some_database"
+  port: 111
+
+anonymisation:
+  date_offset: 365
+  dates: [3]
+  age: [7]
