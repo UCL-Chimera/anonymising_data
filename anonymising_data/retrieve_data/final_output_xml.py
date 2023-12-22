@@ -44,7 +44,7 @@ class Data:
         """
         return self._final_demographic_data
 
-    def _create_demographic_output(self):
+    def _create_demographic_output(self):  # noqa C901
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
