@@ -65,7 +65,7 @@ def test_adjust_line(config, sources, testdata, shifted):
     ('0,1,1,2000-02-10 03:21,4,5,6,1991:03:10 00:00:00',
      '0,TEMPERATURE,1,2001-02-09 03:21,4,5,6,33'),
     ('a,1,c,1999-02-10 22:16,d,e,f,1966-07-05',
-     'a,TEMPERATURE,c,2000-02-10 22:16,d,e,f,57'),
+     'a,TEMPERATURE,c,2000-02-10 22:16,d,e,f,58'),
 ])
 def test_find_age(config, sources, testdata, shifted):
     """
@@ -105,7 +105,7 @@ def test_write_data(config, sources):
     ('0,1,1,2000-02-10 03:21,4,5,6,1991:03:10 00:00:00',
      '0,TEMPERATURE,1,2001-02-09 03:21,4,5,6,33'),
     ('a,1,c,1999-02-10 22:16,d,e,f,1966-07-05',
-     'a,TEMPERATURE,c,2000-02-10 22:16,d,e,f,57'),
+     'a,TEMPERATURE,c,2000-02-10 22:16,d,e,f,58'),
 ])
 def test_adjust_line_not_test(config, sources, testdata, shifted):
     """

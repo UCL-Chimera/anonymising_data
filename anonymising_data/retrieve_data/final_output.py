@@ -97,7 +97,7 @@ class Data:
             return line
         if line.startswith('"'):
             this_date = line[1:11]
-            this_time = line[12:len(line)-1]
+            this_time = line[12:len(line) - 1]
         else:
             this_date = line[0:10]
             this_time = line[10:]

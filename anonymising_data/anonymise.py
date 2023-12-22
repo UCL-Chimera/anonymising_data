@@ -7,7 +7,7 @@ def main(args):
 
     :return: A csv file containing the anonymised data
     """
-    
+
     if args.data == 'sql':
 
         from anonymising_data.retrieve_data.final_output import Data
