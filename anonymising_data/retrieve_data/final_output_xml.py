@@ -56,6 +56,8 @@ class Data:
             if key == "id":
                 self.person_id = value
                 break
+            
+        for row in self.lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
@@ -123,7 +125,6 @@ class Data:
         new_final_cpet_file = self._final_cpet_data.with_name(
             self._final_cpet_data.name.replace("x", str(self.person_id))
         )
-        print(new_final_cpet_file)
         Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
         with open(new_final_cpet_file, "w") as out:
             for row in self.lines:
