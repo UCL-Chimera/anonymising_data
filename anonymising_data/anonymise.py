@@ -8,8 +8,7 @@ def main(args):
     :return: A csv file containing the anonymised data
     """
 
-    if args.data == 'sql':
-
+    if args.data == "sql":
         from anonymising_data.retrieve_data.final_output import Data
         from anonymising_data.retrieve_data.create_query import Query
         from anonymising_data.retrieve_data.get_concepts import Concepts
@@ -30,15 +29,16 @@ def main(args):
         d = RetrieveData(cfg)
         d.write_data()
 
-        print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
+        print(
+            f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}"
+        )
 
         data = Data(cfg, con._source)
         data.create_final_output()
 
         print(f"Anonymised data written to {cfg.final_data_file}")
 
-    elif args.data == 'cpet':
-
+    elif args.data == "cpet":
         from anonymising_data.retrieve_data.get_config_cpet import Cpet_Config
         from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
         from anonymising_data.retrieve_data.final_output_xml import Data
@@ -49,12 +49,14 @@ def main(args):
         d = RetrieveXML(cfg)
         d.write_data()
 
-        # print(f"Data retrieved from {cfg.schema} written to {cfg.omop_data_file}")
+        print(
+            f"Data retrieved from {cfg.filename} written to {cfg._omop_data_file}"
+        )
 
         data = Data(cfg)
         data.create_final_output()
 
-        # print(f"Anonymised data written to {cfg.final_data_file}")
+        print(f"Demographic data written to {cfg._final_demographic_data}")
 
     else:
         raise ValueError("Unsupported data type")

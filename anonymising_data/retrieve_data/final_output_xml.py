@@ -135,6 +135,7 @@ class Data:
                 if len(elements) > 6:
                     line_to_write = ",".join(elements) + "\n"
                     out.write(line_to_write)
+        print(f"Time series data written to {new_final_cpet_file}")
 
     def find_age(self, dob):
         """
