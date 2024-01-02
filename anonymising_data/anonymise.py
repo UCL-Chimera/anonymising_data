@@ -50,7 +50,7 @@ def main(args):
         d.write_data()
 
         print(
-            f"Data retrieved from {cfg.filename} written to {cfg._omop_data_file}"
+            f"Data retrieved from {cfg.database} written to {cfg._omop_data_file}"
         )
 
         data = Data(cfg)

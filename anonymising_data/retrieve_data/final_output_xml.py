@@ -53,7 +53,7 @@ class Data:
 
         for row in self.lines:
             key, value = row.strip().split(",")
-            if key == "id":
+            if key == "id" or key == "id.-no.:":
                 self.person_id = value
                 break
 

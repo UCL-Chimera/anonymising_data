@@ -5,7 +5,8 @@ files:
     concept_mapping:
       filename: tests/resources/CPet/Sample.xml
       headers_exclude:
-        ["CPET Results", "Patient data", "Administrative Data", "Title", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
+        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", 
+        "Title", "Title:", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
   output:
     omop_data:
       tests/output/omop_cpet_data.csv
@@ -17,18 +18,6 @@ files:
       ["person_id", "gender", "age", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
-
-database:
-  path:
-    tests/resources/CPet/Sample.xml
-  schema: mock_omop_es
-  username: fred
-  password: flintstone
-  sqlserver: true
-  driver: "{some driver}"
-  server: "some_server"
-  dbname: "some_database"
-  port: 111
 
 anonymisation:
   date_offset: 365

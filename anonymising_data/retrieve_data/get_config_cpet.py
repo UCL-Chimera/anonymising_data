@@ -14,8 +14,9 @@ class Cpet_Config:
                 "tests", "resources", "cpet_config.yml"
             )
         else:
-            self.filename = Path(__file__).parent.parent.parent.joinpath("config.yml")
-
+            self.filename = Path(__file__).parent.parent.parent.joinpath(
+                "config.yml"
+            )
         self._testing = testing
         self._database = ""
         self._omop_data_file = ""
@@ -72,7 +73,9 @@ class Cpet_Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
 
-        self._database = Path(__file__).parent.parent.joinpath(cfg["database"]["path"])
+        self._database = Path(__file__).parent.parent.joinpath(
+            cfg["files"]["input"]["concept_mapping"]["filename"]
+        )
 
         self._final_demographic_data = Path(__file__).parent.parent.joinpath(
             cfg["files"]["output"]["demographic_data"]
@@ -86,5 +89,7 @@ class Cpet_Config:
         self.headers_exclude = cfg["files"]["input"]["concept_mapping"][
             "headers_exclude"
         ]
-        self.headers_demographic = cfg["files"]["output"]["headers_demographic"]
+        self.headers_demographic = cfg["files"]["output"][
+            "headers_demographic"
+        ]
         self.headers_reading = cfg["files"]["output"]["headers_reading"]
