@@ -12,7 +12,7 @@ def test_create_connection(config):
     assert (conn is not None)
     assert (conn.cur is not None)
     assert (conn.db_file == Path(__file__).parent.parent.
-            joinpath('tests/resources/mock-database/test_omop_es.sqlite3'))
+            joinpath('tests/resources/mock-database/test_omop_es_expanded.sqlite3'))
 
 
 def test_failed_connection(config):

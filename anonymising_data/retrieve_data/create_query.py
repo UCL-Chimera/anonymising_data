@@ -9,9 +9,13 @@ class Query:
     and return file with template filled.
     """
 
-    def __init__(self, config, concepts):
-        self._query_filename = config.query_file
-        self._output_query = config.output_query_file
+    def __init__(self, config, concepts, create_link_query=False):
+        if create_link_query:
+            self._query_filename = config.link_query_file
+            self._output_query = config.output_link_query_file
+        else:
+            self._query_filename = config.query_file
+            self._output_query = config.output_query_file
         self._concepts = concepts
         self._con_str = '('
         self._schema = config.schema
@@ -20,13 +24,23 @@ class Query:
         self._issql = config.sqlserver
         self.create_strings()
 
+    @property
+    def output_query(self):
+        """
+        Returns the name of the query file.
+
+        :return: The query file.
+        """
+        return self._output_query
+
     def create_strings(self):
         """
         Function to create the strings to be substituted.
         """
-        for c in self._concepts:
-            self._con_str = self._con_str + str(c) + ', '
-        self._con_str = rreplace(self._con_str, ', ', ')', 1)
+        if self._concepts:
+            for c in self._concepts:
+                self._con_str = self._con_str + str(c) + ', '
+            self._con_str = rreplace(self._con_str, ', ', ')', 1)
         self._offset_str = str(self._offset)
 
     def create_query_file(self):

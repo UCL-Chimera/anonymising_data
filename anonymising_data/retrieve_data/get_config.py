@@ -19,6 +19,8 @@ class Config:
         self._testing = testing
         self._concept_file = ''
         self._query_file = ''
+        self._link_query_file = ''
+        self._output_link_query_file = ''
         self._database = ''
         self._output_query_file = ''
         self._omop_data_file = ''
@@ -55,6 +57,14 @@ class Config:
         return self._query_file
 
     @property
+    def link_query_file(self):
+        """
+        Function to return filename of query file.
+        :return:
+        """
+        return self._link_query_file
+
+    @property
     def database(self):
         """
         Function to return filename of database.
@@ -69,6 +79,14 @@ class Config:
         :return:
         """
         return self._output_query_file
+
+    @property
+    def output_link_query_file(self):
+        """
+        Function to return filename of output query file.
+        :return:
+        """
+        return self._output_link_query_file
 
     @property
     def omop_data_file(self):
@@ -194,9 +212,13 @@ class Config:
             joinpath(cfg['files']['input']['concept_mapping']['filename'])
         self._query_file = Path(__file__).parent.parent.\
             joinpath(cfg['files']['input']['db_query'])
+        self._link_query_file = Path(__file__).parent.parent.\
+            joinpath(cfg['files']['input']['link_query'])
 
         self._output_query_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['query'])
+        self._output_link_query_file = Path(__file__).parent.parent. \
+            joinpath(cfg['files']['output']['link_query'])
         self._final_data_file = Path(__file__).parent.parent. \
             joinpath(cfg['files']['output']['final_data'])
         self._omop_data_file = Path(__file__).parent.parent. \
