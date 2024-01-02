@@ -29,7 +29,7 @@ def test_calculate_age(dob, days, months, years, testdate):
     :param months: expected age months
     :param years: expected age years
     """
-    age = Age(dob)
+    age = Age(dob, True)
     age.calculate_age_for_testing(testdate)
     assert (age.days == days)
     assert (age.months == months)
@@ -66,6 +66,6 @@ def test_anonymise_age(dob, testdate, anon_age):
     :param anon_age: expected anonymised age
     :return:
     """
-    age = Age(dob)
+    age = Age(dob, True)
     age.anonymise_age_for_testing(testdate)
     assert (anon_age == age.anon_age)
