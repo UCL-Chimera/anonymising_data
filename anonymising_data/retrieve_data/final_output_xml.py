@@ -44,6 +44,7 @@ class Data:
         """
         return self._final_demographic_data
 
+
     def _create_demographic_output(self):
         """
         Function to retrieve the headers and data for demographic output
@@ -51,11 +52,21 @@ class Data:
         """
         new_header = []
 
+        # getting the person_id
         for row in self.lines:
             key, value = row.strip().split(",")
             if key == "id" or key == "id.-no.":
                 self.person_id = value
                 break
+        
+        # getting the height and weight
+        # for row in self.lines:
+        #     if len(row) > 1:
+        #         print(row["height  (m)"])
+        #     # key, value = row.strip().split(",")
+        #     # if key == "height":
+        #     #     # print(value)
+        #     #     break
 
         for row in self.lines:
             for h in self._headers_reading:
@@ -68,8 +79,15 @@ class Data:
         data_dict = {}
         i = 0
         for row in self.lines:
+            keys = [key.strip() for key in row.split(",")]
             elements = [element.strip() for element in row.split(",")[1:]]
+            if keys[0].lower().startswith("height") or keys[0].lower().startswith("weight"):
+                print(elements)
+                elements = self.normalize_height_weight(elements)
+                print(elements)
+
             if len(elements) < 5:
+                
                 data_dict[i] = elements
                 i += 1
 
@@ -145,3 +163,20 @@ class Data:
         """
         age = Age(dob)
         return f"{age.anon_age}"
+
+    def normalize_height_weight(self, element):
+        new_element = None
+        element = element[0]
+        # Process height
+        if "cm" in element or "kg" in element:
+            try:
+                new_element = float(element.replace("cm", "").replace("kg", "").strip())
+            except ValueError:
+                pass
+        else:
+            try:
+                new_element = float(element)
+            except ValueError:
+                pass
+
+        return [str(new_element)]

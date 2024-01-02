@@ -46,11 +46,10 @@ class RetrieveXML:
                 if data_tag is not None:
                     cell_data = self._getvalueofnode(data_tag)
                     if cell_data is not None and cell_data.strip():
-                        # Modify the header names by removing the colon
                         header = cell_data.split(":")[0].strip()
                         row_data.append(header)
                     else:
-                        row_data.append("na")  # If cell_data is None or empty, fill with 'na'
+                        row_data.append("na")
             data.append(row_data)
 
         self._data = data
