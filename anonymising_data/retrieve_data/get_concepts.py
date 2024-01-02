@@ -1,12 +1,3 @@
-def get_concept_id_and_source(line):
-    """
-    Function to read concept id and source from csv line
-    :param line
-    :return: [concept id, source]
-    """
-    parts = line.split(',')
-    return [parts[2].strip(), parts[4].strip()]
-
 
 class Concepts:
     """
@@ -51,7 +42,7 @@ class Concepts:
         # if not lines[0].startswith('concept_code'):
         num_concepts = len(lines)
         for i in range(1, num_concepts):
-            [con_id, source] = get_concept_id_and_source(lines[i])
+            [con_id, source] = self.get_concept_id_and_source(lines[i])
             if con_id != '':
                 self._concepts.append(con_id)
                 self._source[con_id] = source

@@ -45,6 +45,7 @@ class Config:
         Function to return filename of concept file.
         :return:
         """
+        print(self._concept_file)
         return self._concept_file
 
     @property
@@ -191,6 +192,7 @@ class Config:
         with open(self.filename, 'r') as f:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
+
         self._schema = cfg['database']['schema']
         self._password = cfg['database']['password']
         self._username = cfg['database']['username']

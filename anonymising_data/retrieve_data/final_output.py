@@ -93,7 +93,7 @@ class Data:
         :param line: A string representing a date/time.
         :return: A string with the date shifted but the time left as is.
         """
-        if not line or line == 'NULL' or line.startswith(' unspec'):
+        if not line or line == 'NULL' or line == 'None' or line.startswith(' unspec'):
             return line
         if line.startswith('"'):
             this_date = line[1:11]
