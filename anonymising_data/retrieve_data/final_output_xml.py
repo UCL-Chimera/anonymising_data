@@ -56,7 +56,7 @@ class Data:
             if key == "id":
                 self.person_id = value
                 break
-            
+
         for row in self.lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
@@ -108,9 +108,12 @@ class Data:
 
         # # MAKE output dir if necessary
 
-        Path(self._final_demographic_data).parent.mkdir(parents=True, exist_ok=True)
+        Path(self._final_demographic_data).parent.mkdir(
+            parents=True, exist_ok=True
+        )
         file_exists = (
-            os.path.exists(self._final_demographic_data) and os.path.getsize(self._final_demographic_data) > 0
+            os.path.exists(self._final_demographic_data)
+            and os.path.getsize(self._final_demographic_data) > 0
         )
 
         with open(self._final_demographic_data, "a", newline="") as csvfile:
