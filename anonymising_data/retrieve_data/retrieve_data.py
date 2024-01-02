@@ -25,6 +25,7 @@ class RetrieveData:
         self._output_file = config.omop_data_file
         self._query = None
         self._data = None
+        self._testing = config.testing
 
     @property
     def query(self):

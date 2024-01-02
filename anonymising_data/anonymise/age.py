@@ -10,7 +10,7 @@ class Age:
     Class to calculate age and anonymise
     """
 
-    def __init__(self, dob):
+    def __init__(self, dob, testing=False):
         # leave out time if present
         self.dob = create_date(dob)
         self._days = None
@@ -18,6 +18,10 @@ class Age:
         self._years = None
         self.total_days = -1
         self._anon_age = None
+        self._testing = testing
+        self.testdate = None
+        if testing:
+            self.testdate = '2023-12-22'
         self.__anonymise_age()
 
     @property
@@ -66,15 +70,18 @@ class Age:
         """
         self.__anonymise_age(strdate)
 
-    def __calculate_age(self, testdate=None):
+    def __calculate_age(self, test_date=None):
         """
         Function to calculate age using date of birth and todays date.
-        :param testdate dummy date used as 'today' for tests
+        :param test_date dummy date used as 'today' for tests
         """
-        if not testdate:
-            reference_date = datetime.today()
+        if not test_date:
+            if self._testing:
+                reference_date = datetime.strptime(self.testdate, '%Y-%m-%d')
+            else:
+                reference_date = datetime.today()
         else:
-            reference_date = datetime.strptime(testdate, '%Y-%m-%d')
+            reference_date = datetime.strptime(test_date, '%Y-%m-%d')
 
         self.total_days = (reference_date - self.dob).days
 
@@ -83,16 +90,16 @@ class Age:
         self._months = rdiff.months
         self._days = rdiff.days
 
-    def __anonymise_age(self, testdate=None):
+    def __anonymise_age(self, test_date=None):
         """
         Function to anonymise age.
-        :param testdate dummy date used as 'today' for tests
+        :param test_date dummy date used as 'today' for tests
         :return: age in weeks if < 1 yr
                      in months if < 18 yrs
                      in years if < 99 yrs
                      100 otherwise
         """
-        self.__calculate_age(testdate)
+        self.__calculate_age(test_date)
         if self.years == 0:
             self._anon_age = round(self.total_days / 7, 0)
         elif self.years < 18:
