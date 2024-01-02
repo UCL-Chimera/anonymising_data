@@ -8,11 +8,11 @@ files:
         ["CPET Results", "Patient data", "Administrative Data", "Title", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
   output:
     omop_data:
-      tests/output/omop_CPet_data.csv
+      tests/output/omop_cpet_data.csv
     demographic_data:
       tests/output/cpet_dmeographic_report_data.csv
     time_series_data:
-      tests/output/final_cpet_data.csv
+      tests/output/OMOP_person_id_x_time_series_cpet.csv
     headers_demographic:
       ["person_id", "gender", "age", "height", "weight"]
     headers_reading :

@@ -75,8 +75,7 @@ def argument_parser() -> argparse.Namespace:
     parser.add_argument(
         "--data",
         type=str,
-        default='cpet',
-        required=False,
+        required=True,
         help="sql or cpet",
     )
 

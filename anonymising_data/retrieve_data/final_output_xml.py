@@ -52,6 +52,10 @@ class Data:
         new_header = []
 
         for row in self.lines:
+            key, value = row.strip().split(",")
+            if key == "id":
+                self.person_id = value
+                break
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
@@ -116,8 +120,12 @@ class Data:
                 writer.writerow(headers)
             writer.writerow(new_row)
 
-        Path(self._final_cpet_data).parent.mkdir(parents=True, exist_ok=True)
-        with open(self._final_cpet_data, "w") as out:
+        new_final_cpet_file = self._final_cpet_data.with_name(
+            self._final_cpet_data.name.replace("x", str(self.person_id))
+        )
+        print(new_final_cpet_file)
+        Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
+        with open(new_final_cpet_file, "w") as out:
             for row in self.lines:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 6:
