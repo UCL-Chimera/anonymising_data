@@ -4,6 +4,27 @@ from datetime import datetime
 YEAR_SLASH, DAY_SLASH, YEAR_DASH, DAY_DASH, YEAR_COLON = range(5)
 
 
+def parse_date(date_string):
+    formats_to_check = [
+        "%Y-%m-%d",
+        "%d-%m-%Y",
+        "%Y/%m/%d",
+        "%d/%m/%Y",
+        "%Y:%m:%d",
+        "%d.%m.%Y",
+        "%m.%d.%Y",
+    ]
+
+    for date_format in formats_to_check:
+        try:
+            d = datetime.strptime(date_string, date_format)
+            return d
+        except ValueError:
+            pass
+
+    return None
+
+
 def create_date(date_string):
     """
     Function to return a datetime object of the required format
@@ -15,19 +36,13 @@ def create_date(date_string):
         date_string = date_string[1:11]
     else:
         date_string = date_string[0:10]
-    try:
-        d = datetime.strptime(date_string, '%Y-%m-%d')
-    except ValueError:
-        try:
-            d = datetime.strptime(date_string, '%d-%m-%Y')
-        except ValueError:
-            try:
-                d = datetime.strptime(date_string, '%Y/%m/%d')
-            except ValueError:
-                try:
-                    d = datetime.strptime(date_string, '%d/%m/%Y')
-                except ValueError:
-                    d = datetime.strptime(date_string, '%Y:%m:%d')
+
+    # Use the parse_date function
+    d = parse_date(date_string)
+
+    if not d:
+        print("Date format not recognized:", date_string)
+
     return d
 
 
@@ -77,14 +92,14 @@ def determine_date_format(date_str):
 
     """
     if date_str[0:4].isnumeric():
-        if date_str[4] == '/':
+        if date_str[4] == "/":
             date_format = YEAR_SLASH
-        elif date_str[4] == '-':
+        elif date_str[4] == "-":
             date_format = YEAR_DASH
         else:
             date_format = YEAR_COLON
     else:
-        if date_str[2] == '/':
+        if date_str[2] == "/":
             date_format = DAY_SLASH
         else:
             date_format = DAY_DASH

@@ -44,7 +44,7 @@ class Data:
         """
         return self._final_demographic_data
 
-    def _create_demographic_output(self):  # noqa C901
+    def _create_demographic_output(self):
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
@@ -53,7 +53,7 @@ class Data:
 
         for row in self.lines:
             key, value = row.strip().split(",")
-            if key == "id" or key == "id.-no.:":
+            if key == "id" or key == "id.-no.":
                 self.person_id = value
                 break
 
