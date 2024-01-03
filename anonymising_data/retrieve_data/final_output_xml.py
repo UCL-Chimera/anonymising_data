@@ -13,6 +13,7 @@ class Data:
     """
 
     def __init__(self, config):
+        self._xml_file = config._database
         self._omop_data_file = config.omop_data_file
         self._final_demographic_data = config.final_demographic_data
         self._final_cpet_data = config.final_cpet_data
@@ -55,7 +56,7 @@ class Data:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
-                    prefix = re.sub(r"[^a-zA-Z'/%2-]", "", elements[0])
+                    prefix = re.sub(r"[^a-zA-Z'/%2-:]", "", elements[0])
                     new_header.append(f"{prefix}_{h}")
 
         headers = self._headers + new_header
@@ -102,62 +103,73 @@ class Data:
         Function to create final data file.
         :return:
         """
-        with open(self._omop_data_file, "r") as f:
-            self.lines = f.readlines()
-        f.close()
 
-        # getting the person_id
-        for row in self.lines:
-            key, value = row.strip().split(",")
-            if key == "id" or key == "id.-no.":
-                self.person_id = value
-                break
-        
-        person_id_found = False
+        xml_files = self._xml_file.glob("*.xml")
+        for xml_file in xml_files:
 
-        file_exists = (
-            os.path.isfile(self._final_demographic_data)
-            and os.path.getsize(self._final_demographic_data) > 0
-        )
+            xml_filename = os.path.basename(xml_file)
+            xml_filename, _ = os.path.splitext(xml_filename)
+            new_filename = str(self._omop_data_file).replace(
+                "x", str(xml_filename)
+            )
+            omop_csv_file = Path(new_filename)
 
-        if file_exists:
-            with open(self._final_demographic_data, "r") as csvfile:
-                reader = csv.reader(csvfile)
-                for row in reader:
-                    if self.person_id in row[0]:  # Check if the person_id is in the file
-                        person_id_found = True
-        
-        with open(self._final_demographic_data, "a", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            headers, new_row = self._create_demographic_output()
+            with open(omop_csv_file, "r") as f:
+                self.lines = f.readlines()
+            f.close()
 
-            if not file_exists:
-                writer.writerow(headers)
-            if not person_id_found:
-                writer.writerow(new_row)
-            else:
-                # Overwrite the row with the person_id
-                with open(self._final_demographic_data, "r+") as file:
-                    lines = file.readlines()
-                    file.seek(0)
-                    for line in lines:
-                        if line.split(',')[0] in self.person_id:
-                            file.write(','.join(new_row) + '\n')
-                        else:
-                            file.write(line)
-                    file.truncate()
-
-        new_final_cpet_file = self._final_cpet_data.with_name(
-            self._final_cpet_data.name.replace("x", str(self.person_id))
-        )
-        Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
-        with open(new_final_cpet_file, "w") as out:
+            # getting the person_id
             for row in self.lines:
-                elements = [element.strip() for element in row.split(",")]
-                if len(elements) > 6:
-                    line_to_write = ",".join(elements) + "\n"
-                    out.write(line_to_write)
-        print(f"Time series data written to {new_final_cpet_file}")
+                key, value = row.strip().split(",")
+                if key == "ID" or key == "Id.-No.":
+                    self.person_id = value
+                    break
+            
+            person_id_found = False
+
+            file_exists = (
+                os.path.isfile(self._final_demographic_data)
+                and os.path.getsize(self._final_demographic_data) > 0
+            )
+
+            if file_exists:
+                with open(self._final_demographic_data, "r") as csvfile:
+                    reader = csv.reader(csvfile)
+                    for row in reader:
+                        if self.person_id in row[0]:  # Check if the person_id is in the file
+                            person_id_found = True
+            
+            with open(self._final_demographic_data, "a", newline="") as csvfile:
+                writer = csv.writer(csvfile)
+                headers, new_row = self._create_demographic_output()
+
+                if not file_exists:
+                    writer.writerow(headers)
+                if not person_id_found:
+                    writer.writerow(new_row)
+                else:
+                    # Overwrite the row with the person_id
+                    with open(self._final_demographic_data, "r+") as file:
+                        lines = file.readlines()
+                        file.seek(0)
+                        for line in lines:
+                            if line.split(',')[0] in self.person_id:
+                                file.write(','.join(new_row) + '\n')
+                            else:
+                                file.write(line)
+                        file.truncate()
+
+            new_final_cpet_file = self._final_cpet_data.with_name(
+                self._final_cpet_data.name.replace("x", str(self.person_id))
+            )
+            Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
+            with open(new_final_cpet_file, "w") as out:
+                for row in self.lines:
+                    elements = [element.strip() for element in row.split(",")]
+                    if len(elements) > 6:
+                        line_to_write = ",".join(elements) + "\n"
+                        out.write(line_to_write)
+            print(f"Time series data written to {new_final_cpet_file}")
 
     def find_age(self, dob):
         """

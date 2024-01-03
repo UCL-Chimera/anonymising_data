@@ -3,13 +3,13 @@ files:
   # input files necessary
   input:
     concept_mapping:
-      filename: tests/resources/CPet/Sample.xml
+      filename: tests/resources/CPet/
       headers_exclude:
         ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "start time", "workload protocol",
         "Title", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters", ""] 
   output:
     omop_data:
-      tests/output/omop_cpet_data.csv
+      tests/output/omop_x_cpet_data.csv
     demographic_data:
       tests/output/cpet_dmeographic_report_data.csv
     time_series_data:
