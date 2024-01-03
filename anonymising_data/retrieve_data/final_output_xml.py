@@ -44,20 +44,12 @@ class Data:
         """
         return self._final_demographic_data
 
-
     def _create_demographic_output(self):
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
         """
         new_header = []
-
-        # getting the person_id
-        for row in self.lines:
-            key, value = row.strip().split(",")
-            if key == "id" or key == "id.-no.":
-                self.person_id = value
-                break
 
         for row in self.lines:
             for h in self._headers_reading:
@@ -72,11 +64,12 @@ class Data:
         for row in self.lines:
             keys = [key.strip() for key in row.split(",")]
             elements = [element.strip() for element in row.split(",")[1:]]
-            if keys[0].lower().startswith("height") or keys[0].lower().startswith("weight"):
+            if keys[0].lower().startswith("height") or keys[
+                0
+            ].lower().startswith("weight"):
                 elements = self.normalize_height_weight(elements)
 
             if len(elements) < 5:
-                
                 data_dict[i] = elements
                 i += 1
 
@@ -113,24 +106,46 @@ class Data:
             self.lines = f.readlines()
         f.close()
 
-        # # MAKE output dir if necessary
+        # getting the person_id
+        for row in self.lines:
+            key, value = row.strip().split(",")
+            if key == "id" or key == "id.-no.":
+                self.person_id = value
+                break
+        
+        person_id_found = False
 
-        Path(self._final_demographic_data).parent.mkdir(
-            parents=True, exist_ok=True
-        )
         file_exists = (
-            os.path.exists(self._final_demographic_data)
+            os.path.isfile(self._final_demographic_data)
             and os.path.getsize(self._final_demographic_data) > 0
         )
 
+        if file_exists:
+            with open(self._final_demographic_data, "r") as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if self.person_id in row[0]:  # Check if the person_id is in the file
+                        person_id_found = True
+        
         with open(self._final_demographic_data, "a", newline="") as csvfile:
             writer = csv.writer(csvfile)
             headers, new_row = self._create_demographic_output()
 
-            # If the file is empty or doesn't exist, write headers
             if not file_exists:
                 writer.writerow(headers)
-            writer.writerow(new_row)
+            if not person_id_found:
+                writer.writerow(new_row)
+            else:
+                # Overwrite the row with the person_id
+                with open(self._final_demographic_data, "r+") as file:
+                    lines = file.readlines()
+                    file.seek(0)
+                    for line in lines:
+                        if line.split(',')[0] in self.person_id:
+                            file.write(','.join(new_row) + '\n')
+                        else:
+                            file.write(line)
+                    file.truncate()
 
         new_final_cpet_file = self._final_cpet_data.with_name(
             self._final_cpet_data.name.replace("x", str(self.person_id))
@@ -159,7 +174,9 @@ class Data:
 
         if "cm" in element or "kg" in element:
             try:
-                new_element = float(element.replace("cm", "").replace("kg", "").strip())
+                new_element = float(
+                    element.replace("cm", "").replace("kg", "").strip()
+                )
             except ValueError:
                 pass
         elif float(element) < 3:
