@@ -58,21 +58,12 @@ class Data:
             if key == "id" or key == "id.-no.":
                 self.person_id = value
                 break
-        
-        # getting the height and weight
-        # for row in self.lines:
-        #     if len(row) > 1:
-        #         print(row["height  (m)"])
-        #     # key, value = row.strip().split(",")
-        #     # if key == "height":
-        #     #     # print(value)
-        #     #     break
 
         for row in self.lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
-                    prefix = re.sub(r"[^a-zA-Z]", "", elements[0])
+                    prefix = re.sub(r"[^a-zA-Z'/%2-]", "", elements[0])
                     new_header.append(f"{prefix}_{h}")
 
         headers = self._headers + new_header
@@ -82,9 +73,7 @@ class Data:
             keys = [key.strip() for key in row.split(",")]
             elements = [element.strip() for element in row.split(",")[1:]]
             if keys[0].lower().startswith("height") or keys[0].lower().startswith("weight"):
-                print(elements)
                 elements = self.normalize_height_weight(elements)
-                print(elements)
 
             if len(elements) < 5:
                 
@@ -167,10 +156,15 @@ class Data:
     def normalize_height_weight(self, element):
         new_element = None
         element = element[0]
-        # Process height
+
         if "cm" in element or "kg" in element:
             try:
                 new_element = float(element.replace("cm", "").replace("kg", "").strip())
+            except ValueError:
+                pass
+        elif float(element) < 3:
+            try:
+                new_element = float(element) * 100
             except ValueError:
                 pass
         else:
