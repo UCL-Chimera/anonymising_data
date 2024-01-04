@@ -22,7 +22,7 @@ def parse_date(date_string):
         except ValueError:
             pass
 
-    return None
+    raise ValueError(f"Date format not recognized: {date_string}")
 
 
 def create_date(date_string):

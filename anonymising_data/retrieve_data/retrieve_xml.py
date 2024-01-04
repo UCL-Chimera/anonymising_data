@@ -56,14 +56,14 @@ class RetrieveXML:
         self._data = data
         return data
 
-    def write_data(self):
+    def write_data(self, _xml_file):
         """
         A function to output the data retrieved from querying the database.
         If the data has not been read and stored
          this function will call the get_data function.
         """
 
-        xml_files = self._xml_file.glob("*.xml")
+        xml_files = _xml_file.glob("*.xml")
         for xml_file in xml_files:
             dt = self.get_data(xml_file)
 

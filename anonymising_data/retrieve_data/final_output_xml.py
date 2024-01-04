@@ -5,7 +5,7 @@ import os
 
 
 from anonymising_data.anonymise.age import Age
-
+from anonymising_data.utils.height_weight_helpers import HeightWeightNormalizer
 
 class Data:
     """
@@ -45,6 +45,7 @@ class Data:
         """
         return self._final_demographic_data
 
+
     def _create_demographic_output(self):
         """
         Function to retrieve the headers and data for demographic output
@@ -68,7 +69,8 @@ class Data:
             if keys[0].lower().startswith("height") or keys[
                 0
             ].lower().startswith("weight"):
-                elements = self.normalize_height_weight(elements)
+                normalizer = HeightWeightNormalizer(elements)
+                elements = normalizer.normalize_height_weight()
 
             if len(elements) < 5:
                 data_dict[i] = elements
@@ -179,27 +181,4 @@ class Data:
         """
         age = Age(dob)
         return f"{age.anon_age}"
-
-    def normalize_height_weight(self, element):
-        new_element = None
-        element = element[0]
-
-        if "cm" in element or "kg" in element:
-            try:
-                new_element = float(
-                    element.replace("cm", "").replace("kg", "").strip()
-                )
-            except ValueError:
-                pass
-        elif float(element) < 3:
-            try:
-                new_element = float(element) * 100
-            except ValueError:
-                pass
-        else:
-            try:
-                new_element = float(element)
-            except ValueError:
-                pass
-
-        return [str(new_element)]
+    

@@ -47,7 +47,7 @@ def main(args):
         cfg.read_yaml()
 
         d = RetrieveXML(cfg)
-        d.write_data()
+        d.write_data(cfg._database)
 
         print(
             f"Data retrieved from {cfg.database} written to {cfg._omop_data_file}"
