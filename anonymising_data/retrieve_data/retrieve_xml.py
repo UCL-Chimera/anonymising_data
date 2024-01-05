@@ -2,6 +2,7 @@ import os
 import xml.etree.ElementTree as ET
 import csv
 from pathlib import Path
+from typing import Optional
 
 
 class RetrieveXML:
@@ -56,7 +57,7 @@ class RetrieveXML:
         self._data = data
         return data
 
-    def write_data(self):
+    def write_data(self, dt: Optional[list] = None):
         """
         A function to output the data retrieved from querying the database.
         If the data has not been read and stored
@@ -65,7 +66,8 @@ class RetrieveXML:
 
         xml_filepaths = self._xml_file.glob("*.xml")
         for xml_filepath in xml_filepaths:
-            dt = self.get_data(xml_filepath)
+            if not dt:
+                dt = self.get_data(xml_filepath)
 
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
@@ -88,3 +90,4 @@ class RetrieveXML:
 
                     if not exclude_row:
                         csv_writer.writerow(row)
+            return csv_output_file
