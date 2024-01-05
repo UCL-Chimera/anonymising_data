@@ -44,16 +44,13 @@ class Data:
         :return:
         """
         return self._final_demographic_data
+    
 
-
-    def _create_demographic_output(self):
-        """
-        Function to retrieve the headers and data for demographic output
-        :return: the headers and rows for demographic data
-        """
+    def _create_new_header(self, csv_lines):
         new_header = []
-
-        for row in self.lines:
+        print(self._headers_reading)
+        print(self._headers)
+        for row in csv_lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
@@ -61,9 +58,19 @@ class Data:
                     new_header.append(f"{prefix}_{h}")
 
         headers = self._headers + new_header
+        return headers
+
+
+    def _create_demographic_output(self, csv_lines):
+        """
+        Function to retrieve the headers and data for demographic output
+        :return: the headers and rows for demographic data
+        """
+        headers = self._create_new_header(csv_lines)
+
         data_dict = {}
         i = 0
-        for row in self.lines:
+        for row in csv_lines:
             keys = [key.strip() for key in row.split(",")]
             elements = [element.strip() for element in row.split(",")[1:]]
             if keys[0].lower().startswith("height") or keys[
@@ -72,9 +79,14 @@ class Data:
                 normalizer = HeightWeightNormalizer(elements)
                 elements = normalizer.normalize_height_weight()
 
+                print(elements)
+
             if len(elements) < 5:
                 data_dict[i] = elements
+                # print(data_dict[i])
                 i += 1
+            
+            
 
         for i in range(len(data_dict)):
             if i == 2:
@@ -117,11 +129,11 @@ class Data:
             omop_csv_file = Path(new_filename)
 
             with open(omop_csv_file, "r") as f:
-                self.lines = f.readlines()
+                csv_lines = f.readlines()
             f.close()
 
             # getting the person_id
-            for row in self.lines:
+            for row in csv_lines:
                 key, value = row.strip().split(",")
                 if key == "ID" or key == "Id.-No.":
                     self.person_id = value
@@ -143,7 +155,7 @@ class Data:
             
             with open(self._final_demographic_data, "a", newline="") as csvfile:
                 writer = csv.writer(csvfile)
-                headers, new_row = self._create_demographic_output()
+                headers, new_row = self._create_demographic_output(csv_lines)
 
                 if not file_exists:
                     writer.writerow(headers)
@@ -166,7 +178,7 @@ class Data:
             )
             Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
             with open(new_final_cpet_file, "w") as out:
-                for row in self.lines:
+                for row in csv_lines:
                     elements = [element.strip() for element in row.split(",")]
                     if len(elements) > 6:
                         line_to_write = ",".join(elements) + "\n"

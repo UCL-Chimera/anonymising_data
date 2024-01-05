@@ -15,7 +15,7 @@ files:
     time_series_data:
       tests/output/OMOP_person_id_x_time_series_cpet.csv
     headers_demographic:
-      ["person_id", "gender", "age", "height", "weight"]
+      ["person_id", "age", "gender", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
 

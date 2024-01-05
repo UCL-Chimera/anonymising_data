@@ -31,10 +31,7 @@ def test_z_write_data(xml_config, tmp_path):
     :param config: Configuration class from Pytest fixtures
     """
     retriever = RetrieveXML(xml_config)
-
     xml_directory = xml_config._database / "test-files"
-
-    # Get a list of XML files in the specified directory
     xml_files = [file for file in os.listdir(xml_directory) if file.endswith(".xml")]
 
     for xml_file in xml_files:
