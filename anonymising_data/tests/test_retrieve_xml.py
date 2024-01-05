@@ -1,8 +1,6 @@
 import os
-import filecmp
 from pathlib import Path
 import pytest
-import xml.etree.ElementTree as ET
 
 from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
 

@@ -1,9 +1,5 @@
-import os
-import filecmp
 import pytest
 from pathlib import Path
-import csv
-import tempfile
 
 from anonymising_data.retrieve_data.final_output_xml import Data
 
