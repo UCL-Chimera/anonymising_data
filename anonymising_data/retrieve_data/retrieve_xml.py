@@ -28,12 +28,12 @@ class RetrieveXML:
         """return node text or None"""
         return node.text if node is not None else None
 
-    def get_data(self, xml_file):
+    def get_data(self, xml_filepath):
         """
         Function to get data.
         :return: data from xml
         """
-        tree = ET.parse(xml_file)
+        tree = ET.parse(xml_filepath)
         root = tree.getroot()
 
         ns = {"doc": "urn:schemas-microsoft-com:office:spreadsheet"}
@@ -56,18 +56,18 @@ class RetrieveXML:
         self._data = data
         return data
 
-    def write_data(self, _xml_file):
+    def write_data(self):
         """
         A function to output the data retrieved from querying the database.
         If the data has not been read and stored
          this function will call the get_data function.
         """
 
-        xml_files = _xml_file.glob("*.xml")
-        for xml_file in xml_files:
-            dt = self.get_data(xml_file)
+        xml_filepaths = self._xml_file.glob("*.xml")
+        for xml_filepath in xml_filepaths:
+            dt = self.get_data(xml_filepath)
 
-            xml_filename = os.path.basename(xml_file)
+            xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._output_file).replace(
                 "x", str(xml_filename)

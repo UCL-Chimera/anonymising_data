@@ -2,10 +2,12 @@ import csv
 from pathlib import Path
 import re
 import os
+from typing import Optional
 
 
 from anonymising_data.anonymise.age import Age
 from anonymising_data.utils.height_weight_helpers import HeightWeightNormalizer
+
 
 class Data:
     """
@@ -44,12 +46,13 @@ class Data:
         :return:
         """
         return self._final_demographic_data
-    
 
     def _create_new_header(self, csv_lines):
+        """
+        Function to create the headers for demographic output
+        :return: the headers for demographic data
+        """
         new_header = []
-        print(self._headers_reading)
-        print(self._headers)
         for row in csv_lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
@@ -60,8 +63,7 @@ class Data:
         headers = self._headers + new_header
         return headers
 
-
-    def _create_demographic_output(self, csv_lines):
+    def _get_demographic_output(self, csv_lines):
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
@@ -79,14 +81,9 @@ class Data:
                 normalizer = HeightWeightNormalizer(elements)
                 elements = normalizer.normalize_height_weight()
 
-                print(elements)
-
             if len(elements) < 5:
                 data_dict[i] = elements
-                # print(data_dict[i])
                 i += 1
-            
-            
 
         for i in range(len(data_dict)):
             if i == 2:
@@ -112,69 +109,76 @@ class Data:
 
         return headers, new_row
 
-    def create_final_output(self):
+    def _get_person_id(self, csv_lines):
+        for row in csv_lines:
+            key, value = row.strip().split(",")
+            lowercase_key = key.lower()
+            if lowercase_key == "id" or lowercase_key == "id.-no.":
+                self.person_id = value
+                break
+
+        self.person_id_found = False
+
+        self.file_exists = (
+            os.path.isfile(self._final_demographic_data)
+            and os.path.getsize(self._final_demographic_data) > 0
+        )
+
+        if self.file_exists:
+            with open(self._final_demographic_data, "r") as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if (
+                        self.person_id in row[0]
+                    ):  # Check if the person_id is in the file
+                        self.person_id_found = True
+
+    def _create_demographic_output(self, csv_lines):
+        self._get_person_id(csv_lines)
+
+        with open(self._final_demographic_data, "a", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            headers, new_row = self._get_demographic_output(csv_lines)
+
+            if not self.file_exists:
+                writer.writerow(headers)
+            if not self.person_id_found:
+                writer.writerow(new_row)
+            else:
+                with open(self._final_demographic_data, "r+") as file:
+                    lines = file.readlines()
+                    file.seek(0)
+                    for line in lines:
+                        if line.split(",")[0] in self.person_id:
+                            file.write(",".join(new_row) + "\n")
+                        else:
+                            file.write(line)
+                    file.truncate()
+
+    def create_final_output(
+        self, final_cpet_data, csv_lines: Optional[list] = None
+    ):
         """
         Function to create final data file.
         :return:
         """
-
         xml_files = self._xml_file.glob("*.xml")
         for xml_file in xml_files:
-
             xml_filename = os.path.basename(xml_file)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._omop_data_file).replace(
                 "x", str(xml_filename)
             )
             omop_csv_file = Path(new_filename)
+            if not csv_lines:
+                with open(omop_csv_file, "r") as f:
+                    csv_lines = f.readlines()
+                f.close()
 
-            with open(omop_csv_file, "r") as f:
-                csv_lines = f.readlines()
-            f.close()
+            self._create_demographic_output(csv_lines)
 
-            # getting the person_id
-            for row in csv_lines:
-                key, value = row.strip().split(",")
-                if key == "ID" or key == "Id.-No.":
-                    self.person_id = value
-                    break
-            
-            person_id_found = False
-
-            file_exists = (
-                os.path.isfile(self._final_demographic_data)
-                and os.path.getsize(self._final_demographic_data) > 0
-            )
-
-            if file_exists:
-                with open(self._final_demographic_data, "r") as csvfile:
-                    reader = csv.reader(csvfile)
-                    for row in reader:
-                        if self.person_id in row[0]:  # Check if the person_id is in the file
-                            person_id_found = True
-            
-            with open(self._final_demographic_data, "a", newline="") as csvfile:
-                writer = csv.writer(csvfile)
-                headers, new_row = self._create_demographic_output(csv_lines)
-
-                if not file_exists:
-                    writer.writerow(headers)
-                if not person_id_found:
-                    writer.writerow(new_row)
-                else:
-                    # Overwrite the row with the person_id
-                    with open(self._final_demographic_data, "r+") as file:
-                        lines = file.readlines()
-                        file.seek(0)
-                        for line in lines:
-                            if line.split(',')[0] in self.person_id:
-                                file.write(','.join(new_row) + '\n')
-                            else:
-                                file.write(line)
-                        file.truncate()
-
-            new_final_cpet_file = self._final_cpet_data.with_name(
-                self._final_cpet_data.name.replace("x", str(self.person_id))
+            new_final_cpet_file = final_cpet_data.with_name(
+                final_cpet_data.name.replace("x", str(self.person_id))
             )
             Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
             with open(new_final_cpet_file, "w") as out:
@@ -193,4 +197,3 @@ class Data:
         """
         age = Age(dob)
         return f"{age.anon_age}"
-    

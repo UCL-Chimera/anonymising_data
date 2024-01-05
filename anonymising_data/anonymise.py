@@ -47,16 +47,16 @@ def main(args):
         cfg.read_yaml()
 
         d = RetrieveXML(cfg)
-        d.write_data(cfg._database)
+        d.write_data()
 
         print(
-            f"Data retrieved from {cfg.database} written to {cfg._omop_data_file}"
+            f"Data retrieved from {cfg.database} written to {cfg.omop_data_file}"
         )
 
         data = Data(cfg)
-        data.create_final_output()
+        data.create_final_output(cfg.final_cpet_data)
 
-        print(f"Demographic data written to {cfg._final_demographic_data}")
+        print(f"Demographic data written to {cfg.final_demographic_data}")
 
     else:
         raise ValueError("Unsupported data type")
