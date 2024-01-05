@@ -63,12 +63,11 @@ class Data:
         headers = self._headers + new_header
         return headers
 
-    def _get_demographic_output(self, csv_lines):
+    def _get_demographic_data(self, csv_lines):
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
         """
-        headers = self._create_new_header(csv_lines)
 
         data_dict = {}
         i = 0
@@ -92,6 +91,16 @@ class Data:
                 except (IndexError, ValueError):
                     pass
 
+        return data_dict
+
+    def _get_demographic_output(self, csv_lines):
+        """
+        Function to retrieve the headers and data for demographic output
+        :return: the headers and rows for demographic data
+        """
+        headers = self._create_new_header(csv_lines)
+
+        data_dict = self._get_demographic_data(csv_lines)
         new_row = []
         for i, field in enumerate(headers):
             if i < len(data_dict):
