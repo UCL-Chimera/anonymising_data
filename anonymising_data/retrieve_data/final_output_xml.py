@@ -90,7 +90,6 @@ class Data:
                     data_dict[i] = [str(self.find_age(data_dict[i][0]))]
                 except (IndexError, ValueError):
                     pass
-                print(data_dict[i])
 
         return data_dict
 
@@ -100,7 +99,6 @@ class Data:
         :return: the headers and rows for demographic data
         """
         headers = self._create_new_header(csv_lines)
-
         data_dict = self._get_demographic_data(csv_lines)
         new_row = []
         for i, field in enumerate(headers):
@@ -119,34 +117,48 @@ class Data:
 
         return headers, new_row
 
+    def _check_person_id(
+        self, demographic_output, person_id: Optional[str] = None
+    ):
+        if not person_id:
+            person_id = self.person_id
+        self.person_id_found = False
+
+        self.file_exists = (
+            os.path.isfile(demographic_output)
+            and os.path.getsize(demographic_output) > 0
+        )
+
+        if self.file_exists:
+            with open(demographic_output, "r") as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if (
+                        person_id == row[0]
+                    ):  # Check if the person_id is in the file
+                        self.person_id_found = True
+
     def _get_person_id(self, csv_lines):
         for row in csv_lines:
             key, value = row.strip().split(",")
             lowercase_key = key.lower()
             if lowercase_key == "id" or lowercase_key == "id.-no.":
-                self.person_id = value
+                person_id = value
                 break
+        return person_id
 
-        self.person_id_found = False
+    def _create_demographic_output(
+        self, csv_lines, demographic_output: Optional[str] = None
+    ):
+        self.person_id = self._get_person_id(csv_lines)
 
-        self.file_exists = (
-            os.path.isfile(self._final_demographic_data)
-            and os.path.getsize(self._final_demographic_data) > 0
-        )
+        if not demographic_output:
+            demographic_output = self._final_demographic_data
+            self._check_person_id(demographic_output)
+        else:
+            self._check_person_id(demographic_output)
 
-        if self.file_exists:
-            with open(self._final_demographic_data, "r") as csvfile:
-                reader = csv.reader(csvfile)
-                for row in reader:
-                    if (
-                        self.person_id in row[0]
-                    ):  # Check if the person_id is in the file
-                        self.person_id_found = True
-
-    def _create_demographic_output(self, csv_lines):
-        self._get_person_id(csv_lines)
-
-        with open(self._final_demographic_data, "a", newline="") as csvfile:
+        with open(demographic_output, "a", newline="") as csvfile:
             writer = csv.writer(csvfile)
             headers, new_row = self._get_demographic_output(csv_lines)
 
@@ -165,6 +177,16 @@ class Data:
                             file.write(line)
                     file.truncate()
 
+    def _create_time_series_output(self, csv_lines, new_final_cpet_file):
+        with open(new_final_cpet_file, "w") as out:
+            for row in csv_lines:
+                elements = [element.strip() for element in row.split(",")]
+                if len(elements) > 6:
+                    line_to_write = ",".join(elements) + "\n"
+                    out.write(line_to_write)
+        print(f"Time series data written to {new_final_cpet_file}")
+        return new_final_cpet_file
+
     def create_final_output(
         self, final_cpet_data, csv_lines: Optional[list] = None
     ):
@@ -174,21 +196,19 @@ class Data:
         """
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)
-        
-        for xml_filepath in xml_filepaths:
 
+        for xml_filepath in xml_filepaths:
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._omop_data_file).replace(
                 "x", str(xml_filename)
             )
+
             omop_csv_file = Path(new_filename)
             if not csv_lines:
                 with open(omop_csv_file, "r") as f:
                     csv_lines = f.readlines()
                 f.close()
-            
-            print(omop_csv_file)
 
             self._create_demographic_output(csv_lines)
 
@@ -196,13 +216,8 @@ class Data:
                 final_cpet_data.name.replace("x", str(self.person_id))
             )
             Path(new_final_cpet_file).parent.mkdir(parents=True, exist_ok=True)
-            with open(new_final_cpet_file, "w") as out:
-                for row in csv_lines:
-                    elements = [element.strip() for element in row.split(",")]
-                    if len(elements) > 6:
-                        line_to_write = ",".join(elements) + "\n"
-                        out.write(line_to_write)
-            print(f"Time series data written to {new_final_cpet_file}")
+            self._create_time_series_output(csv_lines, new_final_cpet_file)
+
             csv_lines = None
 
     def find_age(self, dob):

@@ -5,7 +5,7 @@ files:
     concept_mapping:
       filename: tests/resources/CPet
       headers_exclude:
-        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "start time", "workload protocol",
+        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
         "Title", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters", ""] 
   output:
     omop_data:

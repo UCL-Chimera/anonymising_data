@@ -187,6 +187,5 @@ def test_z_write_data(xml_config):
     with open(output_csv_file, "r") as csvfile:
         csv_content = csvfile.read()
         assert any(
-            keyword not in csv_content
-            for keyword in retriever.headers_exclude
+            keyword not in csv_content for keyword in retriever.headers_exclude
         )
