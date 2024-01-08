@@ -90,6 +90,7 @@ class Data:
                     data_dict[i] = [str(self.find_age(data_dict[i][0]))]
                 except (IndexError, ValueError):
                     pass
+                print(data_dict[i])
 
         return data_dict
 
@@ -171,9 +172,11 @@ class Data:
         Function to create final data file.
         :return:
         """
-        xml_files = self._xml_file.glob("*.xml")
-        for xml_file in xml_files:
-            xml_filename = os.path.basename(xml_file)
+        xml_filepaths = self._xml_file.glob("*.xml")
+        xml_filepaths = list(xml_filepaths)
+        print(xml_filepaths)
+        for xml_filepath in xml_filepaths:
+            xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._omop_data_file).replace(
                 "x", str(xml_filename)
@@ -183,6 +186,8 @@ class Data:
                 with open(omop_csv_file, "r") as f:
                     csv_lines = f.readlines()
                 f.close()
+            
+            print(omop_csv_file)
 
             self._create_demographic_output(csv_lines)
 

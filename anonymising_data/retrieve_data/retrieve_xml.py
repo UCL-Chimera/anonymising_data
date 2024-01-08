@@ -65,10 +65,11 @@ class RetrieveXML:
         """
 
         xml_filepaths = self._xml_file.glob("*.xml")
+        xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:
-            if not dt:
-                dt = self.get_data(xml_filepath)
-
+            
+            data_to_write = dt if dt is not None else self.get_data(xml_filepath)
+            
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._output_file).replace(
@@ -79,7 +80,8 @@ class RetrieveXML:
             with open(csv_output_file, "w", newline="") as csvfile:
                 csv_writer = csv.writer(csvfile)
 
-                for row in dt:
+                for row in data_to_write:
+                    
                     if len(row) == 2 and ":" in row[0]:
                         row[0] = row[0].replace(":", "")
 
@@ -90,4 +92,11 @@ class RetrieveXML:
 
                     if not exclude_row:
                         csv_writer.writerow(row)
-            return csv_output_file
+            
+            if dt is not None:
+                break
+            dt = None
+            print(
+                f"Data retrieved from {xml_filepath} written to {csv_output_file}"
+            )
+        return csv_output_file 

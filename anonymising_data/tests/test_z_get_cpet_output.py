@@ -1,4 +1,5 @@
 import pytest
+import filecmp
 from pathlib import Path
 
 from anonymising_data.retrieve_data.final_output_xml import Data
@@ -51,3 +52,27 @@ def test_file_does_not_exist(instance):
     )
     instance._get_person_id(["ID,CPET702"])
     assert instance.file_exists is False
+
+
+def test_write_demographic_output(instance, xml_config):
+    """
+    Function to test function to write demographic output.
+    :param instance: An instance of Data class.
+    :param xml_config: Configuration class from Pytest fixtures.
+    """
+    csvfile = Path(__file__).parent.parent.joinpath(
+        "tests/resources/CPet/test-files/expected-files/omop_person_id_01_cpet_data.csv"
+    )
+    with open(csvfile, "r") as f:
+        csv_lines = f.readlines()
+    f.close()
+
+    headers, rows = instance._get_demographic_output(csv_lines)
+    assert len(headers) == 21
+
+    # instance._create_demographic_output(csv_lines)
+
+    # testfile = Path(__file__).parent.parent.joinpath(
+    #     "tests/resources/CPet/test-files/expected-files/cpet_demographics_report_data.csv"
+    # )
+    # assert filecmp.cmp(demographic_file, testfile, shallow=False)

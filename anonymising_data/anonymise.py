@@ -49,10 +49,6 @@ def main(args):
         d = RetrieveXML(cfg)
         d.write_data()
 
-        print(
-            f"Data retrieved from {cfg.database} written to {cfg.omop_data_file}"
-        )
-
         data = Data(cfg)
         data.create_final_output(cfg.final_cpet_data)
 
