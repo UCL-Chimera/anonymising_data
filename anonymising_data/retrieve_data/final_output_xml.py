@@ -174,8 +174,9 @@ class Data:
         """
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)
-        print(xml_filepaths)
+        
         for xml_filepath in xml_filepaths:
+
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
             new_filename = str(self._omop_data_file).replace(
@@ -202,6 +203,7 @@ class Data:
                         line_to_write = ",".join(elements) + "\n"
                         out.write(line_to_write)
             print(f"Time series data written to {new_final_cpet_file}")
+            csv_lines = None
 
     def find_age(self, dob):
         """
