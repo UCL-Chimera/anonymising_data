@@ -48,7 +48,7 @@ def xml_config():
     """
     Create an instance of the cpet config class and read the appropriate yaml file.
 
-    :return: An instance of the config class fully populated.
+    :return: An instance of the xml config class fully populated.
     """
     xml_cfg = Cpet_Config(testing=True)
     xml_cfg.read_yaml()

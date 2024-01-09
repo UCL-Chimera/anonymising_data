@@ -51,7 +51,7 @@ def test_data_retrieval(xml_config, xml_directory):
         assert len(data) > 0
 
 
-def test_xml_retrieval(xml_config, xml_directory):
+def test_xml_retrieval(xml_config):
     """
     Functions to test the write_data function.
     :param xml_config: Configuration class from Pytest fixtures
@@ -88,6 +88,10 @@ def test_xml_retrieval(xml_config, xml_directory):
 
 
 def test_z_write_data(xml_config):
+    """
+    Functions to test the write_data function.
+    :param xml_config: Configuration class from Pytest fixtures
+    """
     dt = [
         [],
         ["CPET Results"],

@@ -68,7 +68,6 @@ class Data:
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
         """
-
         data_dict = {}
         i = 0
         for row in csv_lines:
@@ -120,6 +119,11 @@ class Data:
     def _check_person_id(
         self, demographic_output, person_id: Optional[str] = None
     ):
+        """
+        Function to retrieve the headers and data for demographic output
+        :param demographic_output: The demographic output file.
+        :param person_id: The person ID. Optional defaults to None.
+        """
         if not person_id:
             person_id = self.person_id
         self.person_id_found = False
@@ -139,6 +143,11 @@ class Data:
                         self.person_id_found = True
 
     def _get_person_id(self, csv_lines):
+        """
+        Function to retrieve the headers and data for demographic output
+        :param csv_lines: The contains from the csv.
+        :return: The person ID
+        """
         for row in csv_lines:
             key, value = row.strip().split(",")
             lowercase_key = key.lower()
@@ -150,6 +159,12 @@ class Data:
     def _create_demographic_output(
         self, csv_lines, demographic_output: Optional[str] = None
     ):
+        """
+        Function to create and write demographic output.
+        :param csv_lines: The contains from the csv.
+        :param demographic_output: The demographic output file.
+                                    Optional defaults to None.
+        """
         self.person_id = self._get_person_id(csv_lines)
 
         if not demographic_output:
@@ -178,6 +193,12 @@ class Data:
                     file.truncate()
 
     def _create_time_series_output(self, csv_lines, new_final_cpet_file):
+        """
+        Function to create and write time_series output.
+        :param csv_lines: The contains from the csv.
+        :param new_final_cpet_file: The time_series output file.
+        :return: The time_series output file.
+        """
         with open(new_final_cpet_file, "w") as out:
             for row in csv_lines:
                 elements = [element.strip() for element in row.split(",")]
@@ -192,7 +213,8 @@ class Data:
     ):
         """
         Function to create final data file.
-        :return:
+        :param final_cpet_file: The time_series output file.
+        :param csv_lines: The contains from the csv. Optional defaults to None.
         """
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)

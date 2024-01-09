@@ -276,7 +276,7 @@ def test_write_time_series_output(instance):
     assert time_series_expected == time_series_output
 
 
-def test_write_final_output():
+def test_write_final_output(instance):
     """
     Function to test write final output.
     :param instance: An instance of Data class.

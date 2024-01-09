@@ -63,7 +63,6 @@ class RetrieveXML:
         If the data has not been read and stored
          this function will call the get_data function.
         """
-
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:

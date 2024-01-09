@@ -4,7 +4,7 @@ import argparse
 def main(args):
     """
     Main function to run the whole pipeline to anonymise data.
-
+    :param args: The arguements containing test option and data type.
     :return: A csv file containing the anonymised data
     """
 

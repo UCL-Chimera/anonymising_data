@@ -7,7 +7,6 @@ class Cpet_Config:
     """
     Class to assign config variables.
     """
-
     def __init__(self, testing=False):
         if testing:
             self.filename = Path(__file__).parent.parent.joinpath(
