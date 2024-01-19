@@ -1,3 +1,3 @@
 person_id,age,gender,height,weight,t_Unit,t_Rest,t_AT,t_V'O2peak,HR_Unit,HR_Rest,HR_AT,HR_V'O2peak,V'O2/HR_Unit,V'O2/HR_Rest,V'O2/HR_AT,V'O2/HR_V'O2peak,V'E_Unit,V'E_Rest,V'E_AT,V'E_V'O2peak
 CPET702,male,55,185.0,90.0,mm:ss,00:00 - 03:00,10:08,12:16 - 12:46,/min,73,116,143,ml,2.8,5.9,7.6,L/min,7.3,21.0,38.7
-CPET705,female,57,150.0,75.0,mm:ss,00:00 - 03:00,10:08,12:16 - 12:46,/min,73,116,143,ml,2.8,5.9,7.6,L/min,7.3,21.0,38.7
+CPET705,female,58,150.0,75.0,mm:ss,00:00 - 03:00,10:08,12:16 - 12:46,/min,73,116,143,ml,2.8,5.9,7.6,L/min,7.3,21.0,38.7
