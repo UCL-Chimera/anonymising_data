@@ -4,7 +4,7 @@ import argparse
 def main(args):
     """
     Main function to run the whole pipeline to anonymise data.
-
+    :param args: The arguements containing test option and data type.
     :return: A csv file containing the anonymised data
     """
 
@@ -49,14 +49,10 @@ def main(args):
         d = RetrieveXML(cfg)
         d.write_data()
 
-        print(
-            f"Data retrieved from {cfg.database} written to {cfg._omop_data_file}"
-        )
-
         data = Data(cfg)
-        data.create_final_output()
+        data.create_final_output(cfg.final_cpet_data)
 
-        print(f"Demographic data written to {cfg._final_demographic_data}")
+        print(f"Demographic data written to {cfg.final_demographic_data}")
 
     else:
         raise ValueError("Unsupported data type")

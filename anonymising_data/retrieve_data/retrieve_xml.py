@@ -1,5 +1,8 @@
+import os
 import xml.etree.ElementTree as ET
 import csv
+from pathlib import Path
+from typing import Optional
 
 
 class RetrieveXML:
@@ -26,13 +29,12 @@ class RetrieveXML:
         """return node text or None"""
         return node.text if node is not None else None
 
-    def get_data(self):
+    def get_data(self, xml_filepath):
         """
         Function to get data.
         :return: data from xml
         """
-
-        tree = ET.parse(self._xml_file)
+        tree = ET.parse(xml_filepath)
         root = tree.getroot()
 
         ns = {"doc": "urn:schemas-microsoft-com:office:spreadsheet"}
@@ -46,34 +48,54 @@ class RetrieveXML:
                 if data_tag is not None:
                     cell_data = self._getvalueofnode(data_tag)
                     if cell_data is not None and cell_data.strip():
+                        # header = cell_data.split(":")[0].strip()
                         row_data.append(cell_data)
                     else:
-                        row_data.append(
-                            "na"
-                        )  # If cell_data is None or empty, fill with 'na'
+                        row_data.append("na")
             data.append(row_data)
 
         self._data = data
         return data
 
-    def write_data(self):
+    def write_data(self, dt: Optional[list] = None):
         """
         A function to output the data retrieved from querying the database.
         If the data has not been read and stored
          this function will call the get_data function.
         """
-        dt = self._data if self._data is not None else self.get_data()
+        xml_filepaths = self._xml_file.glob("*.xml")
+        xml_filepaths = list(xml_filepaths)
+        for xml_filepath in xml_filepaths:
+            data_to_write = (
+                dt if dt is not None else self.get_data(xml_filepath)
+            )
 
-        with open(self._output_file, "w", newline="") as csvfile:
-            csv_writer = csv.writer(csvfile)
+            xml_filename = os.path.basename(xml_filepath)
+            xml_filename, _ = os.path.splitext(xml_filename)
+            new_filename = str(self._output_file).replace(
+                "x", str(xml_filename)
+            )
+            csv_output_file = Path(new_filename)
 
-            for row in dt:
-                row_lower = [cell.lower() if cell else "na" for cell in row]
+            with open(csv_output_file, "w", newline="") as csvfile:
+                csv_writer = csv.writer(csvfile)
 
-                exclude_row = any(
-                    exclude_keyword.lower() in row_lower or not any(row_lower)
-                    for exclude_keyword in self.headers_exclude
-                )
+                for row in data_to_write:
+                    if len(row) == 2 and ":" in row[0]:
+                        row[0] = row[0].replace(":", "")
 
-                if not exclude_row:
-                    csv_writer.writerow(row_lower)
+                    exclude_row = any(
+                        exclude_keyword in row or not any(row)
+                        for exclude_keyword in self.headers_exclude
+                    )
+
+                    if not exclude_row:
+                        csv_writer.writerow(row)
+
+            if dt is not None:
+                break
+            dt = None
+            print(
+                f"Data retrieved from {xml_filepath} written to {csv_output_file}"
+            )
+        return csv_output_file

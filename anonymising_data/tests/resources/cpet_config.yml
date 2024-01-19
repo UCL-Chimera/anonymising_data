@@ -3,19 +3,19 @@ files:
   # input files necessary
   input:
     concept_mapping:
-      filename: tests/resources/CPet/Sample.xml
+      filename: tests/resources/CPet
       headers_exclude:
-        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", 
-        "Title", "Title:", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", ""] 
+        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
+        "Title", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters", ""] 
   output:
     omop_data:
-      tests/output/omop_cpet_data.csv
+      tests/output/omop_x_cpet_data.csv
     demographic_data:
-      tests/output/cpet_dmeographic_report_data.csv
+      tests/output/cpet_demographic_report_data.csv
     time_series_data:
       tests/output/OMOP_person_id_x_time_series_cpet.csv
     headers_demographic:
-      ["person_id", "gender", "age", "height", "weight"]
+      ["person_id", "age", "gender", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
 
