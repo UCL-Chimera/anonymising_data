@@ -3,10 +3,12 @@ from pathlib import Path
 import re
 import os
 from typing import Optional
-
+import sqlite3
 
 from anonymising_data.anonymise.age import Age
 from anonymising_data.utils.height_weight_helpers import HeightWeightNormalizer
+from anonymising_data.linking.get_person_id import Link
+from anonymising_data.utils.check_filename import extract_and_check_format
 
 
 class Data:
@@ -15,14 +17,33 @@ class Data:
     """
 
     def __init__(self, config):
-        self._xml_file = config._database
+        self.config = config
+        self._xml_file = config._xml_data
+        self._mapping = config._mapping
         self._omop_data_file = config.omop_data_file
         self._final_demographic_data = config.final_demographic_data
         self._final_cpet_data = config.final_cpet_data
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
+        self._database = config._database
 
+    @property
+    def xml_file(self):
+        """
+        Function to return file path of xml data.
+        :return:
+        """
+        return self._xml_file
+    
+    @property
+    def mapping(self):
+        """
+        Function to return csv file of mapping data.
+        :return:
+        """
+        return self._mapping
+    
     @property
     def omop_data_file(self):
         """
@@ -152,8 +173,29 @@ class Data:
             key, value = row.strip().split(",")
             lowercase_key = key.lower()
             if lowercase_key == "id" or lowercase_key == "id.-no.":
-                person_id = value
+                cpet_id = value
                 break
+
+        with open(self._mapping, "r") as f:
+            for row in f:
+                key, value = row.strip().split(",")
+                if cpet_id == key:
+                    mrn = value
+                    break
+                else:
+                    mrn = cpet_id
+        # link = Link(self.config)
+        # link.get_person_id(mrn)
+        
+        connection = sqlite3.connect(self._database)
+        cursor = connection.cursor()
+        cursor.execute("SELECT person_id FROM _link WHERE mrn=?", (mrn,))
+        result = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+        person_id = result[0]
+
         return person_id
 
     def _create_demographic_output(
@@ -222,6 +264,7 @@ class Data:
         for xml_filepath in xml_filepaths:
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
+            xml_filename = extract_and_check_format(xml_filename)
             new_filename = str(self._omop_data_file).replace(
                 "x", str(xml_filename)
             )
@@ -248,5 +291,5 @@ class Data:
         :param dob: A date object
         :return: An integer representing the age as a string.
         """
-        age = Age(dob)
+        age = Age(dob, self._testing)
         return f"{age.anon_age}"

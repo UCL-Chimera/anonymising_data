@@ -4,6 +4,8 @@ import csv
 from pathlib import Path
 from typing import Optional
 
+from anonymising_data.utils.check_filename import extract_and_check_format
+
 
 class RetrieveXML:
     """
@@ -11,7 +13,7 @@ class RetrieveXML:
     """
 
     def __init__(self, config):
-        self._xml_file = config._database
+        self._xml_file = config._xml_data
         self.headers_exclude = config.headers_exclude
         self._output_file = config.omop_data_file
         self._data = None
@@ -72,6 +74,9 @@ class RetrieveXML:
 
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
+    
+            xml_filename = extract_and_check_format(xml_filename)
+            
             new_filename = str(self._output_file).replace(
                 "x", str(xml_filename)
             )

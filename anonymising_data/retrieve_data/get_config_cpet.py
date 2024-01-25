@@ -17,19 +17,29 @@ class Cpet_Config:
                 "config.yml"
             )
         self._testing = testing
-        self._database = ""
+        self._xml_data = ""
+        self._mapping = ""
         self._omop_data_file = ""
         self._final_cpet_data = ""
         self._final_demographic_data = ""
         self.headers = []
+        self._database = ""
 
     @property
-    def database(self):
+    def mapping(self):
         """
         Function to return filename of database.
         :return:
         """
-        return self._database
+        return self._xml_mapping_data
+
+    @property
+    def xml_data(self):
+        """
+        Function to return filename of database.
+        :return:
+        """
+        return self._xml_data
 
     @property
     def omop_data_file(self):
@@ -62,6 +72,13 @@ class Cpet_Config:
         :return: testing
         """
         return self._testing
+    
+    def database(self):
+        """
+        Function to return filename of database.
+        :return:
+        """
+        return self._database
 
     def read_yaml(self):
         """
@@ -72,10 +89,15 @@ class Cpet_Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
 
-        self._database = Path(__file__).parent.parent.joinpath(
+        self._database = Path(__file__).parent.parent.\
+            joinpath(cfg['database']['path'])
+
+        self._xml_data = Path(__file__).parent.parent.joinpath(
+            cfg["files"]["input"]["xml_data"]["filename"]
+        )
+        self._mapping = Path(__file__).parent.parent.joinpath(
             cfg["files"]["input"]["concept_mapping"]["filename"]
         )
-
         self._final_demographic_data = Path(__file__).parent.parent.joinpath(
             cfg["files"]["output"]["demographic_data"]
         )
@@ -85,7 +107,7 @@ class Cpet_Config:
         self._omop_data_file = Path(__file__).parent.parent.joinpath(
             cfg["files"]["output"]["omop_data"]
         )
-        self.headers_exclude = cfg["files"]["input"]["concept_mapping"][
+        self.headers_exclude = cfg["files"]["input"]["xml_data"][
             "headers_exclude"
         ]
         self.headers_demographic = cfg["files"]["output"][
