@@ -14,7 +14,6 @@ class Data:
     """
     Class to read omop data and do final data shifting.
     """
-
     def __init__(self, config):
         self.config = config
         self._xml_file = config._xml_data
@@ -25,7 +24,6 @@ class Data:
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
-        self._link_query_file = config._output_link_query_file
 
     @property
     def xml_file(self):

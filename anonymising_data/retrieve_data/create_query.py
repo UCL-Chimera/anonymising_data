@@ -10,7 +10,6 @@ class Query:
     """
 
     def __init__(self, config, concepts, create_link_query=False):
-        # print(config.link_query_file)
         if create_link_query:
             self._query_filename = config.link_query_file
             self._output_query = config.output_link_query_file
