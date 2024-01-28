@@ -8,10 +8,12 @@ class Config:
     Class to assign config variables.
     """
 
-    def __init__(self, testing=False):
+    def __init__(self, cpet=False,testing=False):
         if testing:
-            self.filename = Path(__file__).parent.\
-                parent.joinpath('tests', 'resources', 'test_config.yml')
+            if cpet:
+                self.filename = Path(__file__).parent.parent.joinpath('tests', 'resources', 'test_config_cpet_ehr.yml')
+            else:
+                self.filename = Path(__file__).parent.parent.joinpath('tests', 'resources', 'test_config.yml')
         else:
             self.filename = Path(__file__).parent.\
                 parent.parent.joinpath('config.yml')
