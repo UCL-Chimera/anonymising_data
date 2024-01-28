@@ -115,5 +115,5 @@ def test_read_config_cpet():
     assert (cfg.date_offset == 365)
     # concepts
     assert (cfg.concepts['filename'] == cfg.concept_file)
-    assert (cfg.concepts['concept_index'] == 2)
-    assert (cfg.concepts['source_index'] == 4)
+    assert (cfg.concepts['concept_index'] == 4)
+    assert (cfg.concepts['source_index'] == 0)

@@ -1,4 +1,4 @@
-concept_code,vocabulary_id,concept_id,concept_name,Source value,domain_id,Comment
-400,SNOMED,1,Body temperature,TEMPERATURE,Measurement,
-12-Jul,LOINC,23,Oxygen [Partial pressure] adjusted to patient's actual temperature in Blood,AQURE TEMPERATURE CORRECTED OXYGEN,Measurement,
-mm,mm,5872,gg,Source,g
+Item,use,Table,Columns,concept_id,,Comment
+Received Meteraminol ,1,drug_exposure,drug_exposure_start_datetime; drug_exposure_end_datetime,35775967,,
+Mean Arterial Blood Pressure,1,measurement,measurement_datetime; value_as_number ,4239021,,
+Mode of O2 delivery,1,Device,device_source_value; device_exposure_start_datetime;device_exposure_end_datetime,32817,* Need drug names,This the device_type_concept_id

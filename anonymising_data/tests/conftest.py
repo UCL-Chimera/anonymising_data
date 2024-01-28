@@ -53,3 +53,14 @@ def xml_config():
     xml_cfg = Cpet_Config(testing=True)
     xml_cfg.read_yaml()
     return xml_cfg
+
+@pytest.fixture(scope="session")
+def config_cpet():
+    """
+    Create an instance of the config class and read the appropriate yaml file.
+
+    :return: An instance of the config class fully populated.
+    """
+    cfg = Config(cpet=True, testing=True)
+    cfg.read_yaml()
+    return cfg
