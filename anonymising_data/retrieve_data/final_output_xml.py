@@ -248,5 +248,5 @@ class Data:
         :param dob: A date object
         :return: An integer representing the age as a string.
         """
-        age = Age(dob)
+        age = Age(dob, self._testing)
         return f"{age.anon_age}"
