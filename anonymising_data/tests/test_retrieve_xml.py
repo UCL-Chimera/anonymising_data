@@ -22,7 +22,7 @@ def xml_directory(xml_config):
     """
     Fixture to provide the path to the directory containing sample XML files.
     """
-    return xml_config._database / "test-files"
+    return xml_config._xml_data
 
 
 def test_xml_file_existence(instance):
@@ -39,6 +39,7 @@ def test_data_retrieval(xml_config, xml_directory):
     :param xml_config: Configuration class from Pytest fixtures
     """
     retriever = RetrieveXML(xml_config)
+    print(xml_directory)
 
     xml_files = [
         file for file in os.listdir(xml_directory) if file.endswith(".xml")
@@ -46,7 +47,7 @@ def test_data_retrieval(xml_config, xml_directory):
 
     for xml_file in xml_files:
         file_path = os.path.join(xml_directory, xml_file)
-        data = retriever.get_data(file_path)
+        data = retriever.get_xml_data(file_path)
         assert isinstance(data, list)
         assert len(data) > 0
 
@@ -81,7 +82,7 @@ def test_xml_retrieval(xml_config):
         file.write(xml_content)
 
     retriever = RetrieveXML(xml_config)
-    data = retriever.get_data(temp_xml_file)
+    data = retriever.get_xml_data(temp_xml_file)
     assert isinstance(data, list)
     assert len(data) > 0
     os.remove(temp_xml_file)

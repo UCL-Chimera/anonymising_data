@@ -52,7 +52,7 @@ def main(args):
         data = Data(cfg)
         data.create_final_output(cfg.final_cpet_data)
 
-        # print(f"Demographic data written to {cfg.final_demographic_data}")
+        print(f"Demographic data written to {cfg.final_demographic_data}")
 
     else:
         raise ValueError("Unsupported data type")

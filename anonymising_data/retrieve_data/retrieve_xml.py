@@ -31,7 +31,7 @@ class RetrieveXML:
         """return node text or None"""
         return node.text if node is not None else None
 
-    def get_data(self, xml_filepath):
+    def get_xml_data(self, xml_filepath):
         """
         Function to get data.
         :return: data from xml
@@ -69,14 +69,14 @@ class RetrieveXML:
         xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:
             data_to_write = (
-                dt if dt is not None else self.get_data(xml_filepath)
+                dt if dt is not None else self.get_xml_data(xml_filepath)
             )
 
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
-    
+
             xml_filename = extract_and_check_format(xml_filename)
-            
+
             new_filename = str(self._output_file).replace(
                 "x", str(xml_filename)
             )

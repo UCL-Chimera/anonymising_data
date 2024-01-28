@@ -3,7 +3,6 @@ from pathlib import Path
 import re
 import os
 from typing import Optional
-import sqlite3
 
 from anonymising_data.anonymise.age import Age
 from anonymising_data.utils.height_weight_helpers import HeightWeightNormalizer
@@ -26,7 +25,7 @@ class Data:
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
-        self._database = config._database
+        self._link_query_file = config._output_link_query_file
 
     @property
     def xml_file(self):
@@ -35,7 +34,7 @@ class Data:
         :return:
         """
         return self._xml_file
-    
+
     @property
     def mapping(self):
         """
@@ -43,7 +42,7 @@ class Data:
         :return:
         """
         return self._mapping
-    
+
     @property
     def omop_data_file(self):
         """
@@ -113,7 +112,9 @@ class Data:
 
         return data_dict
 
-    def _get_demographic_output(self, csv_lines):
+    def _get_demographic_output(
+        self, csv_lines, person_id: Optional[str] = None
+    ):
         """
         Function to retrieve the headers and data for demographic output
         :return: the headers and rows for demographic data
@@ -122,7 +123,14 @@ class Data:
         data_dict = self._get_demographic_data(csv_lines)
         new_row = []
         for i, field in enumerate(headers):
-            if i < len(data_dict):
+            if i == 0:
+                if not person_id:
+                    value = self.person_id
+                else:
+                    value = person_id
+                new_row.append(value)
+
+            elif i < len(data_dict):
                 current_values = data_dict[i]
                 while current_values:
                     value = current_values.pop(0)
@@ -184,19 +192,11 @@ class Data:
                     break
                 else:
                     mrn = cpet_id
-        # link = Link(self.config)
-        # link.get_person_id(mrn)
-        
-        connection = sqlite3.connect(self._database)
-        cursor = connection.cursor()
-        cursor.execute("SELECT person_id FROM _link WHERE mrn=?", (mrn,))
-        result = cursor.fetchone()
 
-        cursor.close()
-        connection.close()
-        person_id = result[0]
+        link = Link(self.config)
+        person_id = link.get_person_id(mrn)
 
-        return person_id
+        return str(person_id)
 
     def _create_demographic_output(
         self, csv_lines, demographic_output: Optional[str] = None
@@ -228,7 +228,7 @@ class Data:
                     lines = file.readlines()
                     file.seek(0)
                     for line in lines:
-                        if line.split(",")[0] in self.person_id:
+                        if line.split(",")[0] == self.person_id:
                             file.write(",".join(new_row) + "\n")
                         else:
                             file.write(line)
