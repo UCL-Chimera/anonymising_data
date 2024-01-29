@@ -117,3 +117,6 @@ def test_read_config_cpet():
     assert (cfg.concepts['filename'] == cfg.concept_file)
     assert (cfg.concepts['concept_index'] == 4)
     assert (cfg.concepts['source_index'] == 0)
+    if cfg.cpet:
+        assert (cfg.concepts['person_id'] ==  Path(__file__).parent.parent.
+                joinpath('tests/resources/cpet_ehr_data/test_person_id.csv'))

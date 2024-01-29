@@ -6,6 +6,7 @@ files:
       filename: tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv
       concept_index: 4
       source_index: 0
+      person_id: tests/resources/cpet_ehr_data/test_person_id.csv
     db_query:
       tests/resources/cpet_ehr_data/get_measurement.sql
     link_query:

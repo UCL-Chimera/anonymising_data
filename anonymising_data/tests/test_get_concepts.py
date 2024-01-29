@@ -65,3 +65,4 @@ def test_get_concepts_cpet(config_cpet):
     con = Concepts(config_cpet)
     con.populate_concepts()
     assert (con.concepts == ['35775967', '4239021', '32817'])
+    assert (con.person_id == ['1', '325'])
