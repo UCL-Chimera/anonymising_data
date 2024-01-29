@@ -14,6 +14,7 @@ class Data:
     """
     Class to read omop data and do final data shifting.
     """
+
     def __init__(self, config):
         self.config = config
         self._xml_file = config._xml_data
@@ -75,7 +76,7 @@ class Data:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
-                    prefix = re.sub(r"[^a-zA-Z'/%2-:]", "", elements[0])
+                    prefix = re.sub(r"[^a-zA-Z'/%2-:()]", "", elements[0])
                     new_header.append(f"{prefix}_{h}")
 
         headers = self._headers + new_header
@@ -232,6 +233,8 @@ class Data:
                             file.write(line)
                     file.truncate()
 
+        return self.person_id
+
     def _create_time_series_output(self, csv_lines, new_final_cpet_file):
         """
         Function to create and write time_series output.
@@ -259,6 +262,8 @@ class Data:
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)
 
+        person_id_list = []
+
         for xml_filepath in xml_filepaths:
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
@@ -273,7 +278,7 @@ class Data:
                     csv_lines = f.readlines()
                 f.close()
 
-            self._create_demographic_output(csv_lines)
+            person_id_list.append(self._create_demographic_output(csv_lines))
 
             new_final_cpet_file = final_cpet_data.with_name(
                 final_cpet_data.name.replace("x", str(self.person_id))
@@ -282,6 +287,16 @@ class Data:
             self._create_time_series_output(csv_lines, new_final_cpet_file)
 
             csv_lines = None
+
+        person_id_csvfile = Path(__file__).parent.parent.joinpath(
+            "tests/output/person_id_list.csv"
+        )
+        with open(person_id_csvfile, "w") as f:
+            for id_list in person_id_list:
+                f.write(id_list + "\n")
+        f.close
+
+        return person_id_list
 
     def find_age(self, dob):
         """

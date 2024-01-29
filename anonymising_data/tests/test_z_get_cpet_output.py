@@ -69,8 +69,8 @@ def test_file_does_not_exist(instance):
             ],
             [
                 "person_id",
-                "age",
                 "gender",
+                "age",
                 "height",
                 "weight",
                 "t_Unit",

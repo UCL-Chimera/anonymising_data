@@ -2,7 +2,6 @@ import os
 import xml.etree.ElementTree as ET
 import csv
 from pathlib import Path
-from typing import Optional
 
 from anonymising_data.utils.check_filename import extract_and_check_format
 
@@ -59,7 +58,38 @@ class RetrieveXML:
         self._data = data
         return data
 
-    def write_data(self, dt: Optional[list] = None):
+    def get_data(self, xml_filepath):
+        data_to_write = self.get_xml_data(xml_filepath)
+
+        xml_filename = os.path.basename(xml_filepath)
+        xml_filename, _ = os.path.splitext(xml_filename)
+
+        xml_filename = extract_and_check_format(xml_filename)
+
+        new_filename = str(self._output_file).replace("x", str(xml_filename))
+        csv_output_file = Path(new_filename)
+
+        with open(csv_output_file, "w", newline="") as csvfile:
+            csv_writer = csv.writer(csvfile)
+
+            for row in data_to_write:
+                if len(row) == 2 and ":" in row[0]:
+                    row[0] = row[0].replace(":", "")
+
+                exclude_row = any(
+                    exclude_keyword in row or not any(row)
+                    for exclude_keyword in self.headers_exclude
+                )
+
+                if not exclude_row:
+                    csv_writer.writerow(row)
+
+        print(
+            f"Data retrieved from {xml_filepath} written to {csv_output_file}"
+        )
+        return csv_output_file
+
+    def write_data(self):
         """
         A function to output the data retrieved from querying the database.
         If the data has not been read and stored
@@ -68,39 +98,4 @@ class RetrieveXML:
         xml_filepaths = self._xml_file.glob("*.xml")
         xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:
-            data_to_write = (
-                dt if dt is not None else self.get_xml_data(xml_filepath)
-            )
-
-            xml_filename = os.path.basename(xml_filepath)
-            xml_filename, _ = os.path.splitext(xml_filename)
-
-            xml_filename = extract_and_check_format(xml_filename)
-
-            new_filename = str(self._output_file).replace(
-                "x", str(xml_filename)
-            )
-            csv_output_file = Path(new_filename)
-
-            with open(csv_output_file, "w", newline="") as csvfile:
-                csv_writer = csv.writer(csvfile)
-
-                for row in data_to_write:
-                    if len(row) == 2 and ":" in row[0]:
-                        row[0] = row[0].replace(":", "")
-
-                    exclude_row = any(
-                        exclude_keyword in row or not any(row)
-                        for exclude_keyword in self.headers_exclude
-                    )
-
-                    if not exclude_row:
-                        csv_writer.writerow(row)
-
-            if dt is not None:
-                break
-            dt = None
-            print(
-                f"Data retrieved from {xml_filepath} written to {csv_output_file}"
-            )
-        return csv_output_file
+            self.get_data(xml_filepath)
