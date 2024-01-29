@@ -53,7 +53,7 @@ def test_create_concepts_cpet(config_cpet):
     con = Concepts(config_cpet)
     assert (con is not None)
     assert (con._filename == Path(__file__).parent.parent.
-            joinpath('tests/resources/test_concept_codes_cpet.csv'))
+            joinpath('tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv'))
     
 
 def test_get_concepts_cpet(config_cpet):

@@ -54,6 +54,7 @@ def xml_config():
     xml_cfg.read_yaml()
     return xml_cfg
 
+
 @pytest.fixture(scope="session")
 def config_cpet():
     """
@@ -64,3 +65,16 @@ def config_cpet():
     cfg = Config(cpet=True, testing=True)
     cfg.read_yaml()
     return cfg
+
+
+@pytest.fixture(scope="session")
+def concepts_cpet(config_cpet):
+    """
+    Create an instance of concepts class and populate it.
+
+    :param concept_file: The name of the file containing the concepts
+    :return: The concepts attribute of the concepts class
+    """
+    con = Concepts(config_cpet)
+    con.populate_concepts()
+    return con.concepts

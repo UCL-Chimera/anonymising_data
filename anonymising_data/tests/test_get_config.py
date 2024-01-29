@@ -80,9 +80,9 @@ def test_read_config_cpet():
     cfg.read_yaml()
     # files input
     assert (cfg.concept_file == Path(__file__).parent.parent.
-            joinpath('tests/resources/test_concept_codes_cpet.csv'))
+            joinpath('tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv'))
     assert (cfg.query_file == Path(__file__).parent.parent.
-            joinpath('tests/resources/test_query_cpet.sql'))
+            joinpath('tests/resources/cpet_ehr_data/get_measurement.sql'))
     assert (cfg.link_query_file == Path(__file__).parent.parent.
             joinpath('tests/resources/link_query.sql'))
     # files output

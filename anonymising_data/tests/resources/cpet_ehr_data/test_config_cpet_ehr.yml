@@ -3,11 +3,11 @@ files:
   # input files necessary
   input:
     concept_mapping:
-      filename: tests/resources/test_concept_codes_cpet.csv
+      filename: tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv
       concept_index: 4
       source_index: 0
     db_query:
-      tests/resources/test_query_cpet.sql
+      tests/resources/cpet_ehr_data/get_measurement.sql
     link_query:
       tests/resources/link_query.sql
   output:
