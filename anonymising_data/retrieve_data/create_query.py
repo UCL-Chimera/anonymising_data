@@ -9,7 +9,7 @@ class Query:
     and return file with template filled.
     """
 
-    def __init__(self, config, concepts, create_link_query=False):
+    def __init__(self, config, concepts, create_link_query=False, person_id=[]):
         if create_link_query:
             self._query_filename = config.link_query_file
             self._output_query = config.output_link_query_file
@@ -22,6 +22,8 @@ class Query:
         self._offset = config.date_offset
         self._offset_str = ''
         self._issql = config.sqlserver
+        self._person_id = person_id
+        self._person_str = '('
         self.create_strings()
 
     @property
@@ -42,6 +44,10 @@ class Query:
                 self._con_str = self._con_str + str(c) + ', '
             self._con_str = rreplace(self._con_str, ', ', ')', 1)
         self._offset_str = str(self._offset)
+        if self._person_id:
+            for c in self._person_id:
+                self._person_str = self._person_str + str(c) + ', '
+            self._person_str = rreplace(self._person_str, ', ', ')', 1)       
 
     def create_query_file(self):
         """
@@ -71,6 +77,8 @@ class Query:
         """
         if line.find(':FILL_CONCEPT:') != -1:
             newline = line.replace(':FILL_CONCEPT:', self._con_str)
+        elif line.find(':FILL_PERSON_IDS:') != -1:
+            newline = line.replace(':FILL_PERSON_IDS:', self._person_str)
         elif line.find(':FILL_SCHEMA:') != -1:
             if self._issql:
                 newline = line.replace(':FILL_SCHEMA:', '')

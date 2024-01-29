@@ -64,13 +64,13 @@ def test_write_link_query(config, concepts):
     assert (filecmp.cmp(newfile, testfile, shallow=False))
 
 
-def test_write_cpet_query(config_cpet, concepts_cpet):
+def test_write_cpet_query(config_cpet, concepts_cpet, person_id_cpet):
     """
     Function to test the create_query_file by comparing with an example given.
     :param config: Configuration class from Pytest fixtures
     :param concepts: Concepts from Pytest fixtures
     """
-    q = Query(config_cpet, concepts_cpet)
+    q = Query(config_cpet, concepts_cpet, person_id=person_id_cpet)
     q.create_query_file()
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/get_data_cpet.sql')

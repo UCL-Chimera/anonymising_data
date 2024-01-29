@@ -29,7 +29,7 @@ WHERE
 
 AND 
 
-    m.person_id IN :FILL_PERSON_IDS:
+    m.person_id IN (1, 325)
     
 ORDER BY m.person_id
 --LIMIT 10
