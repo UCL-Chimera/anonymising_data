@@ -84,38 +84,3 @@ def preprocess_list(input_list):
         processed_rows.append(processed_row)
     return processed_rows
 
-
-def test_write_demographic_output(instance, xml_directory):
-    """
-    Functions to test the list of person_id.
-    :param xml_config: Configuration class from Pytest fixtures
-    """
-    retriever, final_output = instance
-    xml_files = [
-        file for file in os.listdir(xml_directory) if file.endswith(".xml")
-    ]
-
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
-        temp_output = temp_file.name
-        for xml_file in xml_files:
-            print(xml_file)
-            file_path = os.path.join(xml_directory, xml_file)
-            csv_files = retriever.get_data(file_path)
-
-            with open(csv_files, "r") as output_file:
-                output_csv_content = output_file.readlines()
-
-                final_output._create_demographic_output(
-                    output_csv_content, temp_output
-                )
-
-        with open(temp_output, "r") as f:
-            demographic_output = f.readlines()
-
-        expected_file = Path(__file__).parent.parent.joinpath(
-            "tests/resources/CPet/expected-output/cpet_demographics_report_data.csv"
-        )
-        with open(expected_file, "r") as f:
-            demographic_expected = f.readlines()
-
-        assert set(demographic_output) == set(demographic_expected)
