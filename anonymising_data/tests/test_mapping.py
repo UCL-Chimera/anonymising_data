@@ -1,7 +1,5 @@
 import pytest
 import os
-import tempfile
-from pathlib import Path
 
 from anonymising_data.retrieve_data.final_output_xml import Data
 from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
@@ -83,4 +81,3 @@ def preprocess_list(input_list):
         ]
         processed_rows.append(processed_row)
     return processed_rows
-
