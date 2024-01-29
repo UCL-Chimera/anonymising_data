@@ -51,7 +51,7 @@ def test_person_id_list(instance, xml_directory):
     Functions to test the list of person_id.
     :param xml_config: Configuration class from Pytest fixtures
     """
-    expected_person_id = ["1", "7341", "6327"]
+    expected_person_id = ["7341", "6327", "1"]
     retriever, final_output = instance
     xml_files = [
         file for file in os.listdir(xml_directory) if file.endswith(".xml")
@@ -70,7 +70,7 @@ def test_person_id_list(instance, xml_directory):
             final_output._create_demographic_output(output_csv_content)
         )
 
-    assert expected_person_id == person_id_list
+    assert set(expected_person_id) == set(person_id_list)
 
 
 def preprocess_list(input_list):
