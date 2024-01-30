@@ -109,7 +109,7 @@ def test_read_config_cpet():
     assert (cfg.dbname == 'some_database')
     assert (cfg.port == 111)
     # anonymisation
-    assert (cfg.date_fields == [4])
+    assert (cfg.date_fields == [3])
     assert (cfg.age_fields == [])
     assert (cfg.date_offset == 365)
     # concepts
