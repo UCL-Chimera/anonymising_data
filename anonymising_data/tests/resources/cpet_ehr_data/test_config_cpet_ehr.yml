@@ -38,5 +38,5 @@ database:
 
 anonymisation:
   date_offset: 365
-  dates: [4]
+  dates: [3]
   age: []

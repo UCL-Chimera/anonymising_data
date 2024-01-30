@@ -9,13 +9,14 @@ class Data:
     Class to read omop data and do final data shifting.
     """
 
-    def __init__(self, config, sources):
+    def __init__(self, config, sources=[]):
         self._omop_data_file = config.omop_data_file
         self._final_data_file = config.final_data_file
         self._offset = config.date_offset
         self._testing = config.testing
         self._concepts = sources
         self._headers = config.headers
+        self._cpet = config.cpet
         self.date_cols = config.date_fields
         self.age_cols = config.age_fields
 
@@ -75,7 +76,8 @@ class Data:
         # we assume the number of parts equals the number of headers
         # num_parts = len(parts)
         # deal with concepts
-        parts[1] = self._concepts[parts[1]]
+        if not self._cpet:
+            parts[1] = self._concepts[parts[1]]
 
         # deal with dates
         for column in self.date_cols:
