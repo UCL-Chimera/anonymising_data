@@ -1,5 +1,4 @@
 import os
-import xml.etree.ElementTree as ET
 import csv
 from pathlib import Path
 
@@ -11,11 +10,12 @@ class RetrieveXML:
     Class to retrieve data from xml.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, data_format):
         self._xml_file = config._xml_data
         self.headers_exclude = config.headers_exclude
         self._output_file = config.omop_data_file
         self._data = None
+        self._data_format = data_format
 
     @property
     def xml_file(self):
@@ -30,11 +30,36 @@ class RetrieveXML:
         """return node text or None"""
         return node.text if node is not None else None
 
+    def get_xlsx_data(self, xlsx_filepath):
+        """
+        Function to get data from an Excel (.xlsx) file.
+        :return: data from xlsx
+        """
+        import openpyxl
+
+        data = []
+        workbook = openpyxl.load_workbook(xlsx_filepath)
+        sheet = workbook.active
+
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            row_data = []
+
+            for cell_data in row:
+                if cell_data is not None:
+                    row_data.append(str(cell_data))
+
+            data.append(row_data)
+
+        self._data = data
+        return data
+
     def get_xml_data(self, xml_filepath):
         """
         Function to get data.
         :return: data from xml
         """
+        import xml.etree.ElementTree as ET
+
         tree = ET.parse(xml_filepath)
         root = tree.getroot()
 
@@ -59,7 +84,12 @@ class RetrieveXML:
         return data
 
     def get_data(self, xml_filepath):
-        data_to_write = self.get_xml_data(xml_filepath)
+        if self._data_format == "xlsx":
+            data_to_write = self.get_xlsx_data(xml_filepath)
+        elif self._data_format == "xml":
+            data_to_write = self.get_xml_data(xml_filepath)
+        else:
+            print("wrong data format")
 
         xml_filename = os.path.basename(xml_filepath)
         xml_filename, _ = os.path.splitext(xml_filename)
@@ -95,7 +125,14 @@ class RetrieveXML:
         If the data has not been read and stored
          this function will call the get_data function.
         """
-        xml_filepaths = self._xml_file.glob("*.xml")
+        if self._data_format == "xlsx":
+            xml_filepaths = self._xml_file.glob("*.xlsx")
+        elif self._data_format == "xml":
+            xml_filepaths = self._xml_file.glob("*.xml")
+        else:
+            print("wrong data format")
+
         xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:
+            print(xml_filepath)
             self.get_data(xml_filepath)

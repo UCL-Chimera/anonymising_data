@@ -46,10 +46,10 @@ def main(args):
         cfg = Cpet_Config(testing=args.testing)
         cfg.read_yaml()
 
-        d = RetrieveXML(cfg)
+        d = RetrieveXML(cfg, args.data_format)
         d.write_data()
 
-        data = Data(cfg)
+        data = Data(cfg, args.data_format)
         data.create_final_output(cfg.final_cpet_data)
 
         print(f"Demographic data written to {cfg.final_demographic_data}")
@@ -76,10 +76,17 @@ def argument_parser() -> argparse.Namespace:
         required=True,
         help="sql or cpet",
     )
+    parser.add_argument(
+        "--data_format",
+        type=str,
+        default="xlsx",
+    )
 
     return parser.parse_args()
 
 
 if __name__ == "__main__":
+    # import sys
+    # sys.path.append(r'L:\Shared\Repos\anonymising_data')
     args = argument_parser()
     main(args)

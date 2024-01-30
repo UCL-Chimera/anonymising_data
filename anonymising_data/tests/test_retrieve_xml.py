@@ -13,7 +13,7 @@ def instance(xml_config):
     :return: An instance of the Data class.
     """
     xml_config.read_yaml()
-    d = RetrieveXML(xml_config)
+    d = RetrieveXML(xml_config, "xml")
     return d
 
 
@@ -38,7 +38,7 @@ def test_data_retrieval(xml_config, xml_directory):
     Functions to test the XML data retrieval.
     :param xml_config: Configuration class from Pytest fixtures
     """
-    retriever = RetrieveXML(xml_config)
+    retriever = RetrieveXML(xml_config, "xml")
 
     xml_files = [file for file in os.listdir(xml_directory) if file.endswith(".xml")]
 
@@ -78,7 +78,7 @@ def test_xml_retrieval(xml_config):
     with open(temp_xml_file, "w") as file:
         file.write(xml_content)
 
-    retriever = RetrieveXML(xml_config)
+    retriever = RetrieveXML(xml_config, "xml")
     data = retriever.get_xml_data(temp_xml_file)
     assert isinstance(data, list)
     assert len(data) > 0
@@ -90,7 +90,7 @@ def test_z_write_data(xml_config):
     Functions to test the write_data function.
     :param xml_config: Configuration class from Pytest fixtures
     """
-    retriever = RetrieveXML(xml_config)
+    retriever = RetrieveXML(xml_config, "xml")
     csvfile = Path(__file__).parent.parent.joinpath(
         "tests/resources/CPet/test-files/CPET702-JOE-BLOGGS.xml"
     )

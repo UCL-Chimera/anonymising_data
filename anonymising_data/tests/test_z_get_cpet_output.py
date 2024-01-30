@@ -15,7 +15,7 @@ def instance(xml_config):
     :return: An instance of the Data class.
     """
     xml_config.read_yaml()
-    d = Data(xml_config)
+    d = Data(xml_config, "xml")
     return d
 
 

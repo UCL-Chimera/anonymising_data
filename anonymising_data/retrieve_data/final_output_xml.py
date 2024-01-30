@@ -15,7 +15,7 @@ class Data:
     Class to read omop data and do final data shifting.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, data_format):
         self.config = config
         self._xml_file = config._xml_data
         self._mapping = config._mapping
@@ -25,6 +25,7 @@ class Data:
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
+        self._data_format = data_format
 
     @property
     def xml_file(self):
@@ -121,7 +122,7 @@ class Data:
         headers = self._create_new_header(csv_lines)
         data_dict = self._get_demographic_data(csv_lines)
         new_row = []
-        for i, field in enumerate(headers):
+        for i, _ in enumerate(headers):
             if i == 0:
                 if not person_id:
                     value = self.person_id
@@ -182,19 +183,32 @@ class Data:
             if lowercase_key == "id" or lowercase_key == "id.-no.":
                 cpet_id = value
                 break
+        if self._data_format == "xlsx":
+            import openpyxl
+            workbook = openpyxl.load_workbook(self._mapping)
+            sheet = workbook.active
 
-        with open(self._mapping, "r") as f:
-            for row in f:
-                key, value = row.strip().split(",")
-                if cpet_id == key:
-                    mrn = value
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                row_id, _, _, mapped_mrn = row
+                if cpet_id == row_id:
+                    mrn = mapped_mrn
                     break
                 else:
                     mrn = cpet_id
+        else:
+            with open(self._mapping, "r") as f:
+                for row in f:
+                    key, value = row.strip().split(",")
+                    if cpet_id == key:
+                        mrn = value
+                        break
+                    else:
+                        mrn = cpet_id
 
         link = Link(self.config)
         person_id = link.get_person_id(mrn)
 
+        # return str(mrn)
         return str(person_id)
 
     def _create_demographic_output(
@@ -259,7 +273,12 @@ class Data:
         :param final_cpet_file: The time_series output file.
         :param csv_lines: The contains from the csv. Optional defaults to None.
         """
-        xml_filepaths = self._xml_file.glob("*.xml")
+        if self._data_format == "xlsx":
+            xml_filepaths = self._xml_file.glob("*.xlsx")
+        elif self._data_format == "xml":
+            xml_filepaths = self._xml_file.glob("*.xml")
+        else:
+            print("wrong data format")
         xml_filepaths = list(xml_filepaths)
 
         person_id_list = []
