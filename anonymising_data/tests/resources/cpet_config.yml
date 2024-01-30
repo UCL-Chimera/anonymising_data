@@ -15,11 +15,11 @@ files:
     link_query:
       tests/output/get_link.sql
     omop_data:
-      tests/output/omop/omop_x_data.csv
+      tests/output/omop_x_data.csv
     demographic_data:
       tests/output/cpet_demographic_report_data.csv
     time_series_data:
-      tests/output/time_series/omop_person_id_x_time_series_cpet.csv
+      tests/output/omop_person_id_x_time_series_cpet.csv
     headers_demographic:
       ["person_id", "gender", "age", "height", "weight"]
     headers_reading :
