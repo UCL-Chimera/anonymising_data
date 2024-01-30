@@ -17,12 +17,12 @@ files:
     link_query:
       tests/output/get_link.sql
     omop_data:
-      tests/output/omop_data_cpet.csv
+      tests/output/omop_data_cpet_measurement.csv
     final_data:
-      tests/output/final_data_cpet.csv
+      tests/output/final_data_cpet_measurement.csv
     headers:
-      ["measurement_type", "measurement_source", "person_id", 
-      "measurement_datetime", "value_as_number", "units", "value_as_string", "age", "gender", "ethnicity"]
+      ["measurement_type", "person_id", "visit",
+      "measurement_datetime", "value_as_number", "units", "value_as_string"]
 
 database:
   path:
@@ -38,5 +38,5 @@ database:
 
 anonymisation:
   date_offset: 365
-  dates: [3]
-  age: [7]
+  dates: [4]
+  age: []

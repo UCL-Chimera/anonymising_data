@@ -91,13 +91,12 @@ def test_read_config_cpet():
     assert (cfg.output_link_query_file == Path(__file__).parent.parent.
             joinpath('tests/output/get_link.sql'))
     assert (cfg.omop_data_file == Path(__file__).parent.parent.
-            joinpath('tests/output/omop_data_cpet.csv'))
+            joinpath('tests/output/omop_data_cpet_measurement.csv'))
     assert (cfg.final_data_file == Path(__file__).parent.parent.
-            joinpath('tests/output/final_data_cpet.csv'))
-    assert (cfg.headers == ["measurement_type", "measurement_source",
-                            "person_id", "measurement_datetime",
-                            "value_as_number", "units", "value_as_string",
-                            "age", "gender", "ethnicity"])
+            joinpath('tests/output/final_data_cpet_measurement.csv'))
+    assert (cfg.headers == ["measurement_type", "person_id",
+                            "visit", "measurement_datetime",
+                            "value_as_number", "units", "value_as_string"])
     # database
     assert (cfg.database == Path(__file__).parent.parent.
             joinpath('tests/resources/mock-database/test_omop_es_expanded.sqlite3'))
@@ -110,8 +109,8 @@ def test_read_config_cpet():
     assert (cfg.dbname == 'some_database')
     assert (cfg.port == 111)
     # anonymisation
-    assert (cfg.date_fields == [3])
-    assert (cfg.age_fields == [7])
+    assert (cfg.date_fields == [4])
+    assert (cfg.age_fields == [])
     assert (cfg.date_offset == 365)
     # concepts
     assert (cfg.concepts['filename'] == cfg.concept_file)
