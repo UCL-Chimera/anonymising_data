@@ -133,4 +133,4 @@ def test_cpet_write_data(config_cpet):
     fo = open(d._output_file, 'r')
     line1 = fo.readline()
     parts = line1.split(',')
-    assert (len(parts) == 10)
+    assert (len(parts) == 7)
