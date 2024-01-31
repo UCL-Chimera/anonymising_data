@@ -21,8 +21,8 @@ files:
     final_data:
       tests/output/final_data_cpet_device.csv
     headers:
-      ["measurement_type", "person_id", "visit",
-      "measurement_datetime", "value_as_number", "units", "value_as_string"]
+      ["device_exposure_id", "person_id", "visit", "oxygen_delivery_device",
+      "device_exposure_start_datetime", "device_exposure_end_datetime"]
 
 database:
   path:
@@ -38,5 +38,5 @@ database:
 
 anonymisation:
   date_offset: 365
-  dates: [3, 4]
+  dates: [4, 5]
   age: []

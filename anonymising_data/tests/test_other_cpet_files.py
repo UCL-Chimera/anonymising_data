@@ -20,7 +20,8 @@ def test_write_data_cpet_devices():
     # need correct testing data in our output file
     cfg = Config(cpet=True,testing=True)
     assert (cfg is not None)
-    filename = Path(__file__).parent.parent.joinpath('tests', 'resources', 'cpet_ehr_data','test_config_cpet_ehr_devices.yml')
+    filename = Path(__file__).parent.parent.joinpath('tests', 'resources', 'cpet_ehr_data',
+                                                     'test_config_cpet_ehr_devices.yml')
     cfg.set_filename(filename)
     cfg.read_yaml()   
     con = Concepts(cfg)
@@ -42,10 +43,10 @@ def test_write_data_cpet_devices():
         joinpath('tests/resources/cpet_ehr_data/expected_omop_device.csv')
  
     # now do test
-    d = Data(config_cpet)
+    d = Data(cfg)
     d.create_final_output()
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/final_data_cpet_device.csv')
     testfile = Path(__file__).parent.parent.\
-        joinpath('tests/resources/cpet_ehr_data/expected_devices_data.csv')
+        joinpath('tests/resources/cpet_ehr_data/expected_device_data.csv')
     assert (filecmp.cmp(newfile, testfile, shallow=False))

@@ -1,5 +1,5 @@
 device_exposure_id,person_id,visit,oxygen_delivery_device,device_exposure_start_datetime,device_exposure_end_datetime
-1,1,1,Nasal cannula,30/08/2024  16:00:00,None,
-3,1,1,Nasal cannula,30/08/2024  17:00:00,None,
-4,1,1,Nasal cannula,30/08/2024  18:00:00,29/08/2023  18:00:00,
-2,325,2,Capno mask,22/03/2024  15:00:00,None,
+1,1,1,Nasal cannula,28/08/2024  16:00:00,None,
+3,1,1,Nasal cannula,28/08/2024  17:00:00,None,
+4,1,1,Nasal cannula,28/08/2024  18:00:00,28/08/2024  18:00:00,
+2,325,2,Capno mask,20/03/2024  15:00:00,None,
