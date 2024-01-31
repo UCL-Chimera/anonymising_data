@@ -1,0 +1,42 @@
+#paths to files
+files:
+  # input files necessary
+  input:
+    concept_mapping:
+      filename: tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv
+      concept_index: 4
+      source_index: 0
+      person_id: tests/resources/cpet_ehr_data/test_person_id.csv
+    db_query:
+      tests/resources/cpet_ehr_data/get_device_exposure.sql
+    link_query:
+      tests/resources/link_query.sql
+  output:
+    query:
+      tests/output/get_data_cpet.sql
+    link_query:
+      tests/output/get_link.sql
+    omop_data:
+      tests/output/omop_data_cpet_device.csv
+    final_data:
+      tests/output/final_data_cpet_device.csv
+    headers:
+      ["measurement_type", "person_id", "visit",
+      "measurement_datetime", "value_as_number", "units", "value_as_string"]
+
+database:
+  path:
+    tests/resources/mock-database/test_omop_es_expanded.sqlite3
+  schema: mock_omop_es
+  username: fred
+  password: flintstone
+  sqlserver: true
+  driver: "{some driver}"
+  server: "some_server"
+  dbname: "some_database"
+  port: 111
+
+anonymisation:
+  date_offset: 365
+  dates: [3, 4]
+  age: []

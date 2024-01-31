@@ -43,6 +43,9 @@ class Config:
         self._port = ''
         self.concepts = {}
 
+    def set_filename(self, newfilename):
+        self.filename = newfilename
+
     @property
     def concept_file(self):
         """

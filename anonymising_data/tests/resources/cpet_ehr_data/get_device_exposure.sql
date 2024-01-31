@@ -1,4 +1,5 @@
 SELECT
+	de.device_exposure_id,
 	p.person_id,
     vo.visit_occurrence_id AS visit,
 	de.device_source_value AS oxygen_delivery_device,
@@ -13,10 +14,8 @@ INNER JOIN :FILL_SCHEMA:person AS p
 INNER JOIN :FILL_SCHEMA:visit_occurrence AS vo
     ON de.visit_occurrence_id = vo.visit_occurrence_id   
 	
-WHERE 
-	de.device_type_concept_id IN :FILL_CONCEPT:
+WHERE
 
-AND
 	p.person_id IN :FILL_PERSON_IDS:
 
 ORDER BY p.person_id
