@@ -1,5 +1,5 @@
 SELECT
-    vo.visit_occurrence_id,
+    vo.visit_occurrence_id AS visit,
 	vo.person_id,
 	p.birth_datetime AS age,
     p.gender_source_value AS gender,
@@ -8,12 +8,12 @@ SELECT
 	vo.admitting_source_value,
 	vo.visit_end_datetime AS a_hospital_discharge_datetime,
 	vo.discharge_to_source_value
-FROM :FILL_SCHEMA:visit_occurrence AS vo
+FROM visit_occurrence AS vo
 
-INNER JOIN :FILL_SCHEMA:person AS p
+INNER JOIN person AS p
 	ON p.person_id = vo.person_id
 
 WHERE
-	p.person_id IN :FILL_PERSON_IDS:
+	p.person_id IN (1, 325)
 
 ORDER BY p.person_id

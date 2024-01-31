@@ -1,5 +1,5 @@
 SELECT
-    vo.visit_occurrence_id,
+    vo.visit_occurrence_id AS visit,
 	vo.person_id,
 	p.birth_datetime AS age,
     p.gender_source_value AS gender,
