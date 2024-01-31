@@ -37,7 +37,7 @@ def test_person_id_mapping(instance):
     """
     expected_person_id = ["1", "7341", "6327"]
 
-    cpet_id = [["ID,CPET702\n"], ["ID,CPET0818\n"], ["ID,CPET705\n"]]
+    cpet_id = ["CPET702", "CPET0818", "CPET705"]
     _, final_output = instance
     n = 0
 
@@ -50,6 +50,7 @@ def test_person_id_mapping(instance):
 def test_person_id_list(instance, xml_directory):
     """
     Functions to test the list of person_id.
+
     :param xml_config: Configuration class from Pytest fixtures
     """
     expected_person_id = ["7341", "6327", "1"]
@@ -68,7 +69,7 @@ def test_person_id_list(instance, xml_directory):
         output_file.close()
 
         person_id_list.append(
-            final_output._create_demographic_output(output_csv_content)
+            final_output._create_demographic_output(output_csv_content, xml_file.split("-")[0])
         )
 
     assert set(expected_person_id) == set(person_id_list)
@@ -83,6 +84,9 @@ def test_write_demographic_output(instance, xml_directory):
     file_path = Path(__file__).parent.parent.joinpath(
         "tests/resources/CPet/expected-input/CPET0818-TONY-JONES.xml"
     )
+    xml_filename = os.path.basename(file_path)
+    xml_filename, _ = os.path.splitext(xml_filename)
+    cpet_id = xml_filename.split("-")[0]
 
     with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
         temp_output = temp_file.name
@@ -92,7 +96,7 @@ def test_write_demographic_output(instance, xml_directory):
             output_csv_content = output_file.readlines()
 
             final_output._create_demographic_output(
-                output_csv_content, temp_output
+                output_csv_content, cpet_id, temp_output
             )
         demographic_output_df = pd.read_csv(temp_output)
 

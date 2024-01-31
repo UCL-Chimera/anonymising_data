@@ -207,20 +207,21 @@ def test_write_demographic_output(instance):
     Function to test function to get demographic output.
     :param instance: An instance of Data class.
     """
+    cpet_id = ["CPET702", "CPET705"]
     with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
         csvfile = Path(__file__).parent.parent.joinpath(
             "tests/resources/CPet/test-files/expected-files/omop_person_id_01_cpet_data.csv"
         )
         with open(csvfile, "r") as f:
             csv_lines = f.readlines()
-        instance._create_demographic_output(csv_lines, temp_file.name)
+        instance._create_demographic_output(csv_lines, cpet_id[0], temp_file.name)
 
         csvfile = Path(__file__).parent.parent.joinpath(
             "tests/resources/CPet/test-files/expected-files/omop_person_id_02_cpet_data.csv"
         )
         with open(csvfile, "r") as f:
             csv_lines = f.readlines()
-        instance._create_demographic_output(csv_lines, temp_file.name)
+        instance._create_demographic_output(csv_lines, cpet_id[1], temp_file.name)
 
     with open(temp_file.name, "r") as f:
         demographic_output = f.readlines()

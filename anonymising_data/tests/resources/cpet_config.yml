@@ -6,6 +6,7 @@ files:
       filename: tests/resources/CPet/expected-input/mapping.csv
     link_query:
       tests/resources/link_query.sql
+      # tests/resources/real_link_query.sql
     xml_data:
       filename: tests/resources/CPet/expected-input/
       headers_exclude:

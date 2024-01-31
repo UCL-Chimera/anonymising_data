@@ -171,20 +171,15 @@ class Data:
                     ):  # Check if the person_id is in the file
                         self.person_id_found = True
 
-    def _get_person_id(self, csv_lines):
+    def _get_person_id(self, cpet_id):
         """
         Function to retrieve the headers and data for demographic output
         :param csv_lines: The contains from the csv.
         :return: The person ID
         """
-        for row in csv_lines:
-            key, value = row.strip().split(",")
-            lowercase_key = key.lower()
-            if lowercase_key == "id" or lowercase_key == "id.-no.":
-                cpet_id = value
-                break
         if self._data_format == "xlsx":
             import openpyxl
+
             workbook = openpyxl.load_workbook(self._mapping)
             sheet = workbook.active
 
@@ -208,11 +203,16 @@ class Data:
         link = Link(self.config)
         person_id = link.get_person_id(mrn)
 
-        # return str(mrn)
-        return str(person_id)
+        if person_id:
+            # person_id = str(person_id[0][0])
+            person_id = str(person_id)
+        else:
+            person_id = cpet_id
+
+        return person_id
 
     def _create_demographic_output(
-        self, csv_lines, demographic_output: Optional[str] = None
+        self, csv_lines, cpet_id, demographic_output: Optional[str] = None
     ):
         """
         Function to create and write demographic output.
@@ -220,7 +220,7 @@ class Data:
         :param demographic_output: The demographic output file.
                                     Optional defaults to None.
         """
-        self.person_id = self._get_person_id(csv_lines)
+        self.person_id = self._get_person_id(cpet_id)
 
         if not demographic_output:
             demographic_output = self._final_demographic_data
@@ -297,7 +297,9 @@ class Data:
                     csv_lines = f.readlines()
                 f.close()
 
-            person_id_list.append(self._create_demographic_output(csv_lines))
+            person_id_list.append(
+                self._create_demographic_output(csv_lines, xml_filename)
+            )
 
             new_final_cpet_file = final_cpet_data.with_name(
                 final_cpet_data.name.replace("x", str(self.person_id))

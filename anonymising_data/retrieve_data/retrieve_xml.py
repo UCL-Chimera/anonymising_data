@@ -74,7 +74,6 @@ class RetrieveXML:
                 if data_tag is not None:
                     cell_data = self._getvalueofnode(data_tag)
                     if cell_data is not None and cell_data.strip():
-                        # header = cell_data.split(":")[0].strip()
                         row_data.append(cell_data)
                     else:
                         row_data.append("na")
@@ -114,9 +113,6 @@ class RetrieveXML:
                 if not exclude_row:
                     csv_writer.writerow(row)
 
-        print(
-            f"Data retrieved from {xml_filepath} written to {csv_output_file}"
-        )
         return csv_output_file
 
     def write_data(self):
@@ -134,5 +130,4 @@ class RetrieveXML:
 
         xml_filepaths = list(xml_filepaths)
         for xml_filepath in xml_filepaths:
-            print(xml_filepath)
             self.get_data(xml_filepath)
