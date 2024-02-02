@@ -21,7 +21,6 @@ class RetrieveXML:
     def xml_file(self):
         """
         Returns the path of the xml file.
-
         :return: The xml file.
         """
         return self._xml_file
@@ -33,6 +32,7 @@ class RetrieveXML:
     def get_xlsx_data(self, xlsx_filepath):
         """
         Function to get data from an Excel (.xlsx) file.
+        :param xml_filepath: individual xlsx filepath.
         :return: data from xlsx
         """
         import openpyxl
@@ -55,7 +55,8 @@ class RetrieveXML:
 
     def get_xml_data(self, xml_filepath):
         """
-        Function to get data.
+        Function to get data from xml.
+        :param xml_filepath: individual XML filepath.
         :return: data from xml
         """
         import xml.etree.ElementTree as ET
@@ -83,6 +84,11 @@ class RetrieveXML:
         return data
 
     def get_data(self, xml_filepath):
+        """
+        Function to get the data, remove some details and write into csv.
+        :param xml_filepath: individual XML filepath.
+        :return: csv file
+        """
         if self._data_format == "xlsx":
             data_to_write = self.get_xlsx_data(xml_filepath)
         elif self._data_format == "xml":
@@ -112,14 +118,11 @@ class RetrieveXML:
 
                 if not exclude_row:
                     csv_writer.writerow(row)
-
         return csv_output_file
 
     def write_data(self):
         """
         A function to output the data retrieved from querying the database.
-        If the data has not been read and stored
-         this function will call the get_data function.
         """
         if self._data_format == "xlsx":
             xml_filepaths = self._xml_file.glob("*.xlsx")

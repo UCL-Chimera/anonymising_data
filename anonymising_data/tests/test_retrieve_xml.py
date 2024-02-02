@@ -8,7 +8,7 @@ from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
 @pytest.fixture
 def instance(xml_config):
     """
-    Fixture to create an instance of the Data class with the provided XML configuration.
+    Pytest fixture to create an instance of the Data class with the provided XML configuration.
     :param xml_config: Configuration class from Pytest fixtures.
     :return: An instance of the Data class.
     """
@@ -20,7 +20,9 @@ def instance(xml_config):
 @pytest.fixture
 def xml_directory(xml_config):
     """
-    Fixture to provide the path to the directory containing sample XML files.
+    Pytest fixture to provide the path to the directory containing sample XML files.
+    :param xml_config: Configuration class from Pytest fixtures with `_xml_data` attribute.
+    :return: An instance of the Data class containing information about the XML files.
     """
     return xml_config._xml_data
 
@@ -36,7 +38,8 @@ def test_xml_file_existence(instance):
 def test_data_retrieval(xml_config, xml_directory):
     """
     Functions to test the XML data retrieval.
-    :param xml_config: Configuration class from Pytest fixtures
+    :param xml_config: Configuration class from Pytest fixtures.
+    :param xml_directory: Path to the directory containing sample XML files.
     """
     retriever = RetrieveXML(xml_config, "xml")
 

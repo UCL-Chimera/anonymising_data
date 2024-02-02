@@ -11,7 +11,7 @@ files:
       filename: tests/resources/CPet/expected-input/
       headers_exclude:
         ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
-        "Title", "Title:", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters", ""] 
+        "Title", "Title:", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters"] 
   output:
     link_query:
       tests/output/get_link.sql

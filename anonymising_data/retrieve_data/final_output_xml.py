@@ -54,7 +54,7 @@ class Data:
     @property
     def final_cpet_data(self):
         """
-        Function to return filename of final data file.
+        Function to return filename of final cpet file.
         :return:
         """
         return self._final_cpet_data
@@ -62,15 +62,16 @@ class Data:
     @property
     def final_demographic_data(self):
         """
-        Function to return filename of final data file.
+        Function to return filename of final demographic file.
         :return:
         """
         return self._final_demographic_data
 
     def _create_new_header(self, csv_lines):
         """
-        Function to create the headers for demographic output
-        :return: the headers for demographic data
+        Function to create the headers for demographic output.
+        :param csv_lines: The contains from the csv.
+        :return: the headers for demographic data.
         """
         new_header = []
         for row in csv_lines:
@@ -85,8 +86,9 @@ class Data:
 
     def _get_demographic_data(self, csv_lines):
         """
-        Function to retrieve the headers and data for demographic output
-        :return: the headers and rows for demographic data
+        Function to retrieve the headers and data for demographic output.
+        :param csv_lines: The contains from the csv.
+        :return: the headers and rows for demographic data.
         """
         data_dict = {}
         i = 0
@@ -117,6 +119,8 @@ class Data:
     ):
         """
         Function to retrieve the headers and data for demographic output
+        :param csv_lines: The contains from the csv.
+        :param person_id: The person ID. Optional defaults to None.
         :return: the headers and rows for demographic data
         """
         headers = self._create_new_header(csv_lines)
@@ -149,7 +153,7 @@ class Data:
         self, demographic_output, person_id: Optional[str] = None
     ):
         """
-        Function to retrieve the headers and data for demographic output
+        Function to check if the person_id already in the demographic csv.
         :param demographic_output: The demographic output file.
         :param person_id: The person ID. Optional defaults to None.
         """
@@ -173,8 +177,9 @@ class Data:
 
     def _get_person_id(self, cpet_id):
         """
-        Function to retrieve the headers and data for demographic output
-        :param csv_lines: The contains from the csv.
+        Function to map cpet_id to mrn from either csv file or xlsx.
+        Mapping mrn to person_id from the database
+        :param csv_lines: The CPET ID.
         :return: The person ID
         """
         if self._data_format == "xlsx":

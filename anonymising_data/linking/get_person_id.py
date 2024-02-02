@@ -37,7 +37,6 @@ class Link:
     def get_query(self):
         """
         Returns the name of the query file.
-
         :return: The query file.
         """
 

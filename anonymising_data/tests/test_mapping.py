@@ -11,10 +11,9 @@ from anonymising_data.retrieve_data.retrieve_xml import RetrieveXML
 @pytest.fixture
 def instance(xml_config):
     """
-    Fixture to create an instance of the Data class with the
-    provided XML configuration.
+    Pytest fixture to create instances of RetrieveXML and Data classes.
     :param xml_config: Configuration class from Pytest fixtures.
-    :return: An instance of the Data class.
+    :return: A tuple containing instances of RetrieveXML and Data classes.
     """
     xml_config.read_yaml()
     d = RetrieveXML(xml_config, "xml")
@@ -26,6 +25,8 @@ def instance(xml_config):
 def xml_directory(xml_config):
     """
     Fixture to provide the path to the directory containing sample XML files.
+    :param xml_config: Configuration class from Pytest fixtures.
+    :return: Path to the directory containing sample XML files.
     """
     return xml_config._xml_data
 
@@ -50,8 +51,11 @@ def test_person_id_mapping(instance):
 def test_person_id_list(instance, xml_directory):
     """
     Functions to test the list of person_id.
+    This function tests the generation of a list of person_id based on XML files
+    and compares it with the expected person_id list.
+    :param instance: A tuple containing instances of RetrieveXML and Data classes.
+    :param xml_directory: Path to the directory containing sample XML files.
 
-    :param xml_config: Configuration class from Pytest fixtures
     """
     expected_person_id = ["7341", "6327", "1"]
     retriever, final_output = instance
@@ -69,16 +73,18 @@ def test_person_id_list(instance, xml_directory):
         output_file.close()
 
         person_id_list.append(
-            final_output._create_demographic_output(output_csv_content, xml_file.split("-")[0])
+            final_output._create_demographic_output(
+                output_csv_content, xml_file.split("-")[0]
+            )
         )
 
     assert set(expected_person_id) == set(person_id_list)
 
 
-def test_write_demographic_output(instance, xml_directory):
+def test_write_demographic_output(instance):
     """
     Functions to test the list of person_id.
-    :param xml_config: Configuration class from Pytest fixtures
+    :param instance: A tuple containing instances of RetrieveXML and Data classes.
     """
     retriever, final_output = instance
     file_path = Path(__file__).parent.parent.joinpath(

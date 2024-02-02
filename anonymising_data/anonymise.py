@@ -62,7 +62,6 @@ def argument_parser() -> argparse.Namespace:
     """
     Parse command-line arguments for the script.
     """
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--testing",
@@ -81,12 +80,11 @@ def argument_parser() -> argparse.Namespace:
         type=str,
         default="xlsx",
     )
-
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     # import sys
-    # sys.path.append(r'L:\Shared\Repos\anonymising_data')
+    # sys.path.append(repo_dir)
     args = argument_parser()
     main(args)
