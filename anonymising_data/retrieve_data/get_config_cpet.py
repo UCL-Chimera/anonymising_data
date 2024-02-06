@@ -1,5 +1,4 @@
 from pathlib import Path
-
 import yaml
 
 
@@ -7,27 +6,25 @@ class Cpet_Config:
     """
     Class to assign config variables.
     """
-
-    def __init__(self, testing=False):
+    def __init__(self, data_type, testing=False):
+        self.data_type = data_type
         if testing:
-            self.filename = Path(__file__).parent.parent.joinpath(
-                "tests", "resources", "cpet_config.yml"
-            )
+            if self.data_type == "sql":
+                self.filename = Path(__file__).parent.parent.joinpath(
+                    "tests", "resources", "test_config.yml"
+                )
+            elif self.data_type == "cpet":
+                self.filename = Path(__file__).parent.parent.joinpath(
+                    "tests", "resources", "cpet_config.yml"
+                )
         else:
-            self.filename = Path(__file__).parent.parent.parent.joinpath(
-                "config.yml"
-            )
+            self.filename = Path(__file__).parent.parent.parent.joinpath("config.yml")
         self._testing = testing
-        self._xml_data = ""
-        self._mapping = ""
-        self._omop_data_file = ""
-        self._final_cpet_data = ""
-        self._final_demographic_data = ""
         self._date_offset = None
-        self.headers = []
         self.date_fields = []
         self.age_fields = []
         self._database = ""
+        self._omop_data_file = ""
         self._link_query_file = ""
         self._output_link_query_file = ""
         self._schema = ""
@@ -36,7 +33,41 @@ class Cpet_Config:
         self._server = ""
         self._dbname = ""
         self._port = ""
-        self.concepts = {}
+        self._username = ""
+        self._password = ""
+
+        if self.data_type == "cpet":
+            self._xml_data = ""
+            self._mapping = ""
+            self._final_cpet_data = ""
+            self._final_demographic_data = ""
+
+        elif self.data_type == "sql":
+            self.headers = []
+            self.concepts = {}
+            self._concept_file = ""
+            self._query_file = ""
+            self._output_query_file = ""
+            self._final_data_file = ""
+
+    @property
+    def concept_file(self):
+        """
+        Function to return filename of concept file.
+        :return:
+        """
+        if hasattr(self, "_concept_file"):
+            return self._concept_file
+        else:
+            return None
+
+    @property
+    def query_file(self):
+        """
+        Function to return filename of query file.
+        :return:
+        """
+        return self._query_file
 
     @property
     def mapping(self):
@@ -44,7 +75,10 @@ class Cpet_Config:
         Function to return filename of database.
         :return:
         """
-        return self._xml_mapping_data
+        if hasattr(self, "_xml_mapping_data"):
+            return self._xml_mapping_data
+        else:
+            return None
 
     @property
     def xml_data(self):
@@ -52,15 +86,10 @@ class Cpet_Config:
         Function to return filename of database.
         :return:
         """
-        return self._xml_data
-
-    @property
-    def omop_data_file(self):
-        """
-        Function to return filename of omop data file.
-        :return:
-        """
-        return self._omop_data_file
+        if hasattr(self, "_xml_data"):
+            return self._xml_data
+        else:
+            return None
 
     @property
     def final_cpet_data(self):
@@ -68,7 +97,10 @@ class Cpet_Config:
         Function to return filename of final data file.
         :return:
         """
-        return self._final_cpet_data
+        if hasattr(self, "_final_cpet_data"):
+            return self._final_cpet_data
+        else:
+            return None
 
     @property
     def final_demographic_data(self):
@@ -109,6 +141,30 @@ class Cpet_Config:
         :return:
         """
         return self._output_link_query_file
+
+    @property
+    def output_query_file(self):
+        """
+        Function to return filename of output query file.
+        :return:
+        """
+        return self._output_query_file
+
+    @property
+    def omop_data_file(self):
+        """
+        Function to return filename of omop data file.
+        :return:
+        """
+        return self._omop_data_file
+
+    @property
+    def final_data_file(self):
+        """
+        Function to return filename of final data file.
+        :return:
+        """
+        return self._final_data_file
 
     @property
     def username(self):
@@ -182,6 +238,91 @@ class Cpet_Config:
         """
         return self._date_offset
 
+    def _populate_database_variables(self, cfg):
+        """
+        Helper function to populate database-related variables.
+        """
+        db_cfg = cfg.get("database", {})
+        self._schema = db_cfg.get("schema")
+        self._password = db_cfg.get("password")
+        self._username = db_cfg.get("username")
+        self._sqlserver = bool(db_cfg.get("sqlserver"))
+        self._database = self._construct_file_path(db_cfg.get("path"))
+        self._driver = db_cfg.get("driver")
+        self._server = db_cfg.get("server")
+        self._dbname = db_cfg.get("dbname")
+        self._port = db_cfg.get("port")
+
+    def _populate_anonymisation_variables(self, cfg):
+        """
+        Helper function to populate anonymisation-related variables.
+        """
+        anonymisation_cfg = cfg.get("anonymisation", {})
+        self._date_offset = anonymisation_cfg.get("date_offset")
+        self.date_fields = anonymisation_cfg.get("dates")
+        self.age_fields = anonymisation_cfg.get("age")
+
+    def _populate_files_variables(self, cfg):
+        """
+        Helper function to populate files-related variables.
+        """
+        files_cfg = cfg.get("files", {})
+        input_files_cfg = files_cfg.get("input", {})
+        output_files_cfg = files_cfg.get("output", {})
+
+        self._xml_data = self._construct_file_path(
+            input_files_cfg.get("xml_data", {}).get("filename")
+        )
+        self._mapping = self._construct_file_path(
+            input_files_cfg.get("id_mapping", {}).get("filename")
+        )
+        self._link_query_file = self._construct_file_path(
+            input_files_cfg.get("link_query")
+        )
+        self._final_demographic_data = self._construct_file_path(
+            output_files_cfg.get("demographic_data")
+        )
+        self._final_cpet_data = self._construct_file_path(
+            output_files_cfg.get("time_series_data")
+        )
+        self._omop_data_file = self._construct_file_path(
+            output_files_cfg.get("omop_data")
+        )
+        self._output_link_query_file = self._construct_file_path(
+            output_files_cfg.get("link_query")
+        )
+        self._concept_file = self._construct_file_path(
+            input_files_cfg.get("concept_mapping", {}).get("filename")
+        )
+        self._query_file = self._construct_file_path(input_files_cfg.get("db_query"))
+        self._output_query_file = self._construct_file_path(
+            output_files_cfg.get("query")
+        )
+        self._final_data_file = self._construct_file_path(
+            output_files_cfg.get("final_data")
+        )
+        self.headers = output_files_cfg.get("headers")
+
+    def _construct_file_path(self, filename):
+        """
+        Helper function to construct file path.
+        """
+        if filename:
+            return Path(__file__).parent.parent.joinpath(filename)
+        return None
+
+    def _parse_list_variable(self, cfg, file_type, variable_name):
+        """
+        Helper function to parse a list variable from the YAML configuration.
+        """
+        if (
+            "files" in cfg
+            and file_type in cfg["files"]
+            and variable_name in cfg["files"][file_type]
+        ):
+            return cfg["files"][file_type][variable_name]
+        return None
+
     def read_yaml(self):
         """
         Function to read config and populate variables.
@@ -191,48 +332,27 @@ class Cpet_Config:
             cfg = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
 
-        self._schema = cfg["database"]["schema"]
-        self._password = cfg["database"]["password"]
-        self._username = cfg["database"]["username"]
-        self._sqlserver = True if cfg["database"]["sqlserver"] else False
-        self._database = Path(__file__).parent.parent.joinpath(
-            cfg["database"]["path"]
-        )
-        self._driver = cfg["database"]["driver"]
-        self._server = cfg["database"]["server"]
-        self._dbname = cfg["database"]["dbname"]
-        self._port = cfg["database"]["port"]
+        self._populate_database_variables(cfg)
+        self._populate_anonymisation_variables(cfg)
+        self._populate_files_variables(cfg)
 
-        self._xml_data = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["input"]["xml_data"]["filename"]
+        self.headers_exclude = self._parse_list_variable(
+            cfg, "input", "headers_exclude"
         )
-        self._mapping = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["input"]["concept_mapping"]["filename"]
+        self.headers_demographic = self._parse_list_variable(
+            cfg, "output", "headers_demographic"
         )
-        self._final_demographic_data = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["output"]["demographic_data"]
-        )
-        self._final_cpet_data = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["output"]["time_series_data"]
-        )
-        self._omop_data_file = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["output"]["omop_data"]
-        )
-        self.headers_exclude = cfg["files"]["input"]["xml_data"][
-            "headers_exclude"
-        ]
-        self.headers_demographic = cfg["files"]["output"][
-            "headers_demographic"
-        ]
-        self.headers_reading = cfg["files"]["output"]["headers_reading"]
-
-        self._link_query_file = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["input"]["link_query"]
-        )
-        self._output_link_query_file = Path(__file__).parent.parent.joinpath(
-            cfg["files"]["output"]["link_query"]
+        self.headers_reading = self._parse_list_variable(
+            cfg, "output", "headers_reading"
         )
 
-        self._date_offset = cfg["anonymisation"]["date_offset"]
-        self.date_fields = cfg["anonymisation"]["dates"]
-        self.age_fields = cfg["anonymisation"]["age"]
+        if self.data_type == "sql":
+            self.concepts = {
+                "filename": self._concept_file,
+                "concept_index": cfg["files"]["input"]["concept_mapping"][
+                    "concept_index"
+                ],
+                "source_index": cfg["files"]["input"]["concept_mapping"][
+                    "source_index"
+                ],
+            }

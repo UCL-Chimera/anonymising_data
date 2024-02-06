@@ -2,16 +2,16 @@
 files:
   # input files necessary
   input:
-    concept_mapping:
+    id_mapping:
       filename: tests/resources/CPet/expected-input/mapping.csv
     link_query:
       tests/resources/link_query.sql
       # tests/resources/real_link_query.sql
     xml_data:
       filename: tests/resources/CPet/expected-input/
-      headers_exclude:
-        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
-        "Title", "Title:", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters"] 
+    headers_exclude:
+      ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
+      "Title", "Title:", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters"] 
   output:
     link_query:
       tests/output/get_link.sql
