@@ -50,7 +50,7 @@ def xml_config():
 
     :return: An instance of the xml config class fully populated.
     """
-    xml_cfg = Cpet_Config(testing=True)
+    xml_cfg = Cpet_Config(data_type="cpet", testing=True)
     xml_cfg.read_yaml()
     return xml_cfg
 

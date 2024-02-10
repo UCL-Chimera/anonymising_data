@@ -4,9 +4,10 @@ import re
 import os
 from typing import Optional
 
-
 from anonymising_data.anonymise.age import Age
 from anonymising_data.utils.height_weight_helpers import HeightWeightNormalizer
+from anonymising_data.linking.get_person_id import Link
+from anonymising_data.utils.check_filename import extract_and_check_format
 
 
 class Data:
@@ -14,14 +15,33 @@ class Data:
     Class to read omop data and do final data shifting.
     """
 
-    def __init__(self, config):
-        self._xml_file = config._database
+    def __init__(self, config, data_format):
+        self.config = config
+        self._xml_file = config._xml_data
+        self._mapping = config._mapping
         self._omop_data_file = config.omop_data_file
         self._final_demographic_data = config.final_demographic_data
         self._final_cpet_data = config.final_cpet_data
         self._testing = config.testing
         self._headers = config.headers_demographic
         self._headers_reading = config.headers_reading
+        self._data_format = data_format
+
+    @property
+    def xml_file(self):
+        """
+        Function to return file path of xml data.
+        :return:
+        """
+        return self._xml_file
+
+    @property
+    def mapping(self):
+        """
+        Function to return csv file of mapping data.
+        :return:
+        """
+        return self._mapping
 
     @property
     def omop_data_file(self):
@@ -34,7 +54,7 @@ class Data:
     @property
     def final_cpet_data(self):
         """
-        Function to return filename of final data file.
+        Function to return filename of final cpet file.
         :return:
         """
         return self._final_cpet_data
@@ -42,22 +62,23 @@ class Data:
     @property
     def final_demographic_data(self):
         """
-        Function to return filename of final data file.
+        Function to return filename of final demographic file.
         :return:
         """
         return self._final_demographic_data
 
     def _create_new_header(self, csv_lines):
         """
-        Function to create the headers for demographic output
-        :return: the headers for demographic data
+        Function to create the headers for demographic output.
+        :param csv_lines: The contains from the csv.
+        :return: the headers for demographic data.
         """
         new_header = []
         for row in csv_lines:
             for h in self._headers_reading:
                 elements = [element.strip() for element in row.split(",")]
                 if len(elements) > 2 and len(elements) <= 5:
-                    prefix = re.sub(r"[^a-zA-Z'/%2-:]", "", elements[0])
+                    prefix = re.sub(r"[^a-zA-Z'/%2-:()]", "", elements[0])
                     new_header.append(f"{prefix}_{h}")
 
         headers = self._headers + new_header
@@ -65,8 +86,9 @@ class Data:
 
     def _get_demographic_data(self, csv_lines):
         """
-        Function to retrieve the headers and data for demographic output
-        :return: the headers and rows for demographic data
+        Function to retrieve the headers and data for demographic output.
+        :param csv_lines: The contains from the csv.
+        :return: the headers and rows for demographic data.
         """
         data_dict = {}
         i = 0
@@ -92,16 +114,27 @@ class Data:
 
         return data_dict
 
-    def _get_demographic_output(self, csv_lines):
+    def _get_demographic_output(
+        self, csv_lines, person_id: Optional[str] = None
+    ):
         """
         Function to retrieve the headers and data for demographic output
+        :param csv_lines: The contains from the csv.
+        :param person_id: The person ID. Optional defaults to None.
         :return: the headers and rows for demographic data
         """
         headers = self._create_new_header(csv_lines)
         data_dict = self._get_demographic_data(csv_lines)
         new_row = []
-        for i, field in enumerate(headers):
-            if i < len(data_dict):
+        for i, _ in enumerate(headers):
+            if i == 0:
+                if not person_id:
+                    value = self.person_id
+                else:
+                    value = person_id
+                new_row.append(value)
+
+            elif i < len(data_dict):
                 current_values = data_dict[i]
                 while current_values:
                     value = current_values.pop(0)
@@ -120,7 +153,7 @@ class Data:
         self, demographic_output, person_id: Optional[str] = None
     ):
         """
-        Function to retrieve the headers and data for demographic output
+        Function to check if the person_id already in the demographic csv.
         :param demographic_output: The demographic output file.
         :param person_id: The person ID. Optional defaults to None.
         """
@@ -142,22 +175,49 @@ class Data:
                     ):  # Check if the person_id is in the file
                         self.person_id_found = True
 
-    def _get_person_id(self, csv_lines):
+    def _get_person_id(self, cpet_id):
         """
-        Function to retrieve the headers and data for demographic output
-        :param csv_lines: The contains from the csv.
+        Function to map cpet_id to mrn from either csv file or xlsx.
+        Mapping mrn to person_id from the database
+        :param csv_lines: The CPET ID.
         :return: The person ID
         """
-        for row in csv_lines:
-            key, value = row.strip().split(",")
-            lowercase_key = key.lower()
-            if lowercase_key == "id" or lowercase_key == "id.-no.":
-                person_id = value
-                break
+        if self._data_format == "xlsx":
+            import openpyxl
+
+            workbook = openpyxl.load_workbook(self._mapping)
+            sheet = workbook.active
+
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                row_id, _, _, mapped_mrn = row
+                if cpet_id == row_id:
+                    mrn = mapped_mrn
+                    break
+                else:
+                    mrn = cpet_id
+        else:
+            with open(self._mapping, "r") as f:
+                for row in f:
+                    key, value = row.strip().split(",")
+                    if cpet_id == key:
+                        mrn = value
+                        break
+                    else:
+                        mrn = cpet_id
+
+        link = Link(self.config)
+        person_id = link.get_person_id(mrn)
+
+        if person_id:
+            # person_id = str(person_id[0][0])
+            person_id = str(person_id)
+        else:
+            person_id = cpet_id
+
         return person_id
 
     def _create_demographic_output(
-        self, csv_lines, demographic_output: Optional[str] = None
+        self, csv_lines, cpet_id, demographic_output: Optional[str] = None
     ):
         """
         Function to create and write demographic output.
@@ -165,7 +225,7 @@ class Data:
         :param demographic_output: The demographic output file.
                                     Optional defaults to None.
         """
-        self.person_id = self._get_person_id(csv_lines)
+        self.person_id = self._get_person_id(cpet_id)
 
         if not demographic_output:
             demographic_output = self._final_demographic_data
@@ -186,11 +246,13 @@ class Data:
                     lines = file.readlines()
                     file.seek(0)
                     for line in lines:
-                        if line.split(",")[0] in self.person_id:
+                        if line.split(",")[0] == self.person_id:
                             file.write(",".join(new_row) + "\n")
                         else:
                             file.write(line)
                     file.truncate()
+
+        return self.person_id
 
     def _create_time_series_output(self, csv_lines, new_final_cpet_file):
         """
@@ -216,12 +278,20 @@ class Data:
         :param final_cpet_file: The time_series output file.
         :param csv_lines: The contains from the csv. Optional defaults to None.
         """
-        xml_filepaths = self._xml_file.glob("*.xml")
+        if self._data_format == "xlsx":
+            xml_filepaths = self._xml_file.glob("*.xlsx")
+        elif self._data_format == "xml":
+            xml_filepaths = self._xml_file.glob("*.xml")
+        else:
+            print("wrong data format")
         xml_filepaths = list(xml_filepaths)
+
+        person_id_list = []
 
         for xml_filepath in xml_filepaths:
             xml_filename = os.path.basename(xml_filepath)
             xml_filename, _ = os.path.splitext(xml_filename)
+            xml_filename = extract_and_check_format(xml_filename)
             new_filename = str(self._omop_data_file).replace(
                 "x", str(xml_filename)
             )
@@ -232,7 +302,9 @@ class Data:
                     csv_lines = f.readlines()
                 f.close()
 
-            self._create_demographic_output(csv_lines)
+            person_id_list.append(
+                self._create_demographic_output(csv_lines, xml_filename)
+            )
 
             new_final_cpet_file = final_cpet_data.with_name(
                 final_cpet_data.name.replace("x", str(self.person_id))
@@ -241,6 +313,16 @@ class Data:
             self._create_time_series_output(csv_lines, new_final_cpet_file)
 
             csv_lines = None
+
+        person_id_csvfile = Path(__file__).parent.parent.joinpath(
+            "tests/output/person_id_list.csv"
+        )
+        with open(person_id_csvfile, "w") as f:
+            for id_list in person_id_list:
+                f.write(id_list + "\n")
+        f.close
+
+        return person_id_list
 
     def find_age(self, dob):
         """

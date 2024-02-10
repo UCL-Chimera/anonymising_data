@@ -52,7 +52,6 @@ class Config:
         Function to return filename of concept file.
         :return:
         """
-        print(self._concept_file)
         return self._concept_file
 
     @property
