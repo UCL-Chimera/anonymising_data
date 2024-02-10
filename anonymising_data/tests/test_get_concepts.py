@@ -5,7 +5,6 @@ from anonymising_data.retrieve_data.get_concepts import Concepts
 import pytest
 
 
-10
 @pytest.mark.parametrize("line, concept_id, source", [
     ('400, SNOMED, 432, Body temperature, S1, Measurement', '432', 'S1'),
     ('12 - Jul, LOINC, 543, Oxygen[Partial pressure], S2, Measurement', '543', 'S2'),
@@ -54,7 +53,7 @@ def test_create_concepts_cpet(config_cpet):
     assert (con is not None)
     assert (con._filename == Path(__file__).parent.parent.
             joinpath('tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv'))
-    
+
 
 def test_get_concepts_cpet(config_cpet):
     """

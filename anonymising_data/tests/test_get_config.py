@@ -75,7 +75,7 @@ def test_read_config_cpet():
     Tests the Config class reads correctly from test_config_cpet_ehr.yml
     :return:
     """
-    cfg = Config(cpet=True,testing=True)
+    cfg = Config(cpet=True, testing=True)
     assert (cfg is not None)
     cfg.read_yaml()
     # files input
@@ -117,5 +117,5 @@ def test_read_config_cpet():
     assert (cfg.concepts['concept_index'] == 4)
     assert (cfg.concepts['source_index'] == 0)
     if cfg.cpet:
-        assert (cfg.concepts['person_id'] ==  Path(__file__).parent.parent.
+        assert (cfg.concepts['person_id'] == Path(__file__).parent.parent.
                 joinpath('tests/resources/cpet_ehr_data/test_person_id.csv'))

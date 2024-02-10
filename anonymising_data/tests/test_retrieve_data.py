@@ -117,6 +117,7 @@ def test_postgresql_string(config):
     assert (d.pg_connection_string == "DRIVER={some driver};Server=some_server;Database=some_database;"
                                       "Port=111;UID=fred;PWD=flintstone;")
 
+
 def test_cpet_write_data(config_cpet, concepts_cpet, person_id_cpet):
     """
     Functions to test the write_data function.

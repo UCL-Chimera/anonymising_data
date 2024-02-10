@@ -162,8 +162,7 @@ class Data:
         self.person_id_found = False
 
         self.file_exists = (
-            os.path.isfile(demographic_output)
-            and os.path.getsize(demographic_output) > 0
+            os.path.isfile(demographic_output) and os.path.getsize(demographic_output) > 0
         )
 
         if self.file_exists:

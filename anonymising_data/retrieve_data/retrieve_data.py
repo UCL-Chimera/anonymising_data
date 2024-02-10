@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from anonymising_data.retrieve_data.myconnection import MyConnection
 from anonymising_data.retrieve_data.mypostgresconnection import MyPostgresConnection
 from anonymising_data.retrieve_data.create_query import Query
@@ -37,7 +35,6 @@ class RetrieveData:
         self._query = None
         self._data = None
         self._testing = config.testing
-
 
     @property
     def query(self):

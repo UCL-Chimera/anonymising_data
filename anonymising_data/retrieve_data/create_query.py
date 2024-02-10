@@ -47,7 +47,7 @@ class Query:
         if self._person_id:
             for c in self._person_id:
                 self._person_str = self._person_str + str(c) + ', '
-            self._person_str = rreplace(self._person_str, ', ', ')', 1)       
+            self._person_str = rreplace(self._person_str, ', ', ')', 1)
 
     def create_query_file(self):
         """
