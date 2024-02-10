@@ -117,13 +117,13 @@ def test_postgresql_string(config):
     assert (d.pg_connection_string == "DRIVER={some driver};Server=some_server;Database=some_database;"
                                       "Port=111;UID=fred;PWD=flintstone;")
 
-def test_cpet_write_data(config_cpet):
+def test_cpet_write_data(config_cpet, concepts_cpet, person_id_cpet):
     """
     Functions to test the write_data function.
     :param config: Configuration class from Pytest fixtures
     """
     config_cpet.read_yaml()
-    d = RetrieveData(config_cpet)
+    d = RetrieveData(config_cpet, concepts=concepts_cpet, person_id=person_id_cpet)
     d.write_data()
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/omop_data_cpet_measurement.csv')

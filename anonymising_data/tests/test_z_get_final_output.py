@@ -121,7 +121,7 @@ def test_adjust_line_not_test(config, sources, testdata, shifted):
     assert (d.adjust_line(testdata) == shifted)
 
 
-def test_write_data_cpet(config_cpet):
+def test_write_data_cpet(config_cpet, concepts_cpet, person_id_cpet):
     """
 
     :param config: Configuration class from Pytest fixtures
@@ -129,7 +129,7 @@ def test_write_data_cpet(config_cpet):
     """
     # need correct testing data in our output file
     config_cpet.read_yaml()
-    rd = RetrieveData(config_cpet)
+    rd = RetrieveData(config_cpet, concepts_cpet, person_id_cpet)
     rd.write_data()
     # now do test
     d = Data(config_cpet)

@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from anonymising_data.retrieve_data.myconnection import MyConnection
 from anonymising_data.retrieve_data.mypostgresconnection import MyPostgresConnection
+from anonymising_data.retrieve_data.create_query import Query
 
 
 def construct_connection_string(config):
@@ -13,8 +16,16 @@ class RetrieveData:
     Class to retrieve data.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, concepts=None, person_id=None):
+        if person_id is None:
+            person_id = []
+        if concepts is None:
+            concepts = []
         self._query_file = config.output_query_file
+        if config.testing and config.cpet:
+            q = Query(config, concepts, create_link_query=False, person_id=person_id)
+            q.create_query_file()
+
         self.headings = config.headers
         self.pg_connection_string = construct_connection_string(config)
         if config.sqlserver:
@@ -26,6 +37,7 @@ class RetrieveData:
         self._query = None
         self._data = None
         self._testing = config.testing
+
 
     @property
     def query(self):

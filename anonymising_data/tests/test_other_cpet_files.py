@@ -35,7 +35,7 @@ def test_write_data_cpet_devices():
         joinpath('tests/resources/cpet_ehr_data/expected_get_device_exposure.sql')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
     
-    rd = RetrieveData(cfg)
+    rd = RetrieveData(cfg, concepts=con.concepts, person_id=con.person_id)
     rd.write_data()
     newfile = Path(__file__).parent.parent.\
         joinpath('tests/output/omop_data_cpet_device.csv')
@@ -76,7 +76,7 @@ def test_write_data_cpet_drugs():
         joinpath('tests/resources/cpet_ehr_data/expected_get_drug_exposure.sql')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
 
-    rd = RetrieveData(cfg)
+    rd = RetrieveData(cfg, concepts=con.concepts, person_id=con.person_id)
     rd.write_data()
     newfile = Path(__file__).parent.parent. \
         joinpath('tests/output/omop_data_cpet_drug.csv')
@@ -117,7 +117,7 @@ def test_write_data_cpet_admission():
         joinpath('tests/resources/cpet_ehr_data/expected_get_hospital_stay.sql')
     assert (filecmp.cmp(newfile, testfile, shallow=False))
 
-    rd = RetrieveData(cfg)
+    rd = RetrieveData(cfg, concepts=con.concepts, person_id=con.person_id)
     rd.write_data()
     newfile = Path(__file__).parent.parent. \
         joinpath('tests/output/omop_data_cpet_admission.csv')
