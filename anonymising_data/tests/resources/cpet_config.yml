@@ -2,22 +2,41 @@
 files:
   # input files necessary
   input:
-    concept_mapping:
-      filename: tests/resources/CPet
-      headers_exclude:
-        ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
-        "Title", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters", ""] 
+    id_mapping:
+      filename: tests/resources/CPet/expected-input/mapping.csv
+    link_query:
+      tests/resources/link_query.sql
+      # tests/resources/real_link_query.sql
+    xml_data:
+      filename: tests/resources/CPet/expected-input/
+    headers_exclude:
+      ["Patient", "Test", "CPET Results", "Patient data", "Administrative Data", "Start Time", "Workload Protocol",
+      "Title", "Title:", "Name", "Last Name", "First Name", "Biological and Medical Baseline Data", "Variable", "Parameters"] 
   output:
+    link_query:
+      tests/output/get_link.sql
     omop_data:
-      tests/output/omop_x_cpet_data.csv
+      tests/output/omop_x_data.csv
     demographic_data:
       tests/output/cpet_demographic_report_data.csv
     time_series_data:
-      tests/output/OMOP_person_id_x_time_series_cpet.csv
+      tests/output/omop_person_id_x_time_series_cpet.csv
     headers_demographic:
-      ["person_id", "age", "gender", "height", "weight"]
+      ["person_id", "gender", "age", "height", "weight"]
     headers_reading :
       ["Unit", "Rest", "AT", "V'O2peak"]
+
+database:
+  path:
+    tests/resources/CPet/expected-input/test_cpet.sqlite3
+  schema: mock_omop_es
+  username: fred
+  password: flintstone
+  sqlserver: true
+  driver: "{some driver}"
+  server: "some_server"
+  dbname: "some_database"
+  port: 111
 
 anonymisation:
   date_offset: 365

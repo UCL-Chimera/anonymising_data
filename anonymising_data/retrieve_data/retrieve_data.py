@@ -31,7 +31,6 @@ class RetrieveData:
     def query(self):
         """
         Returns the name of the query file.
-
         :return: The query file.
         """
         return self._query

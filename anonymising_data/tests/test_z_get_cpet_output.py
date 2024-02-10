@@ -15,21 +15,21 @@ def instance(xml_config):
     :return: An instance of the Data class.
     """
     xml_config.read_yaml()
-    d = Data(xml_config)
+    d = Data(xml_config, "xml")
     return d
 
 
 # def _get_person_id
 def test_person_id_found(instance):
     """
-    Function to test erson_id existence.
+    Function to test person_id existence.
     :param instance: An instance of Data class.
     """
     demographic_data = Path(__file__).parent.parent.joinpath(
         "tests/resources/CPet/test-files/expected-files/cpet_demographics_report_data.csv"
     )
 
-    instance._check_person_id(demographic_data, "CPET702")
+    instance._check_person_id(demographic_data, "6327")
     assert instance.person_id_found is True
 
 
@@ -69,8 +69,8 @@ def test_file_does_not_exist(instance):
             ],
             [
                 "person_id",
-                "age",
                 "gender",
+                "age",
                 "height",
                 "weight",
                 "t_Unit",
@@ -197,7 +197,7 @@ def test_get_demographic_output(instance, csv_lines, expected_rows):
     Function to test function to get demographic output.
     :param instance: An instance of Data class.
     """
-    headers, rows = instance._get_demographic_output(csv_lines)
+    headers, rows = instance._get_demographic_output(csv_lines, "09")
     assert rows == expected_rows
     assert len(headers) == len(expected_rows)
 
@@ -207,20 +207,21 @@ def test_write_demographic_output(instance):
     Function to test function to get demographic output.
     :param instance: An instance of Data class.
     """
+    cpet_id = ["CPET702", "CPET705"]
     with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
         csvfile = Path(__file__).parent.parent.joinpath(
             "tests/resources/CPet/test-files/expected-files/omop_person_id_01_cpet_data.csv"
         )
         with open(csvfile, "r") as f:
             csv_lines = f.readlines()
-        instance._create_demographic_output(csv_lines, temp_file.name)
+        instance._create_demographic_output(csv_lines, cpet_id[0], temp_file.name)
 
         csvfile = Path(__file__).parent.parent.joinpath(
             "tests/resources/CPet/test-files/expected-files/omop_person_id_02_cpet_data.csv"
         )
         with open(csvfile, "r") as f:
             csv_lines = f.readlines()
-        instance._create_demographic_output(csv_lines, temp_file.name)
+        instance._create_demographic_output(csv_lines, cpet_id[1], temp_file.name)
 
     with open(temp_file.name, "r") as f:
         demographic_output = f.readlines()
@@ -248,8 +249,6 @@ def test_write_time_series_output(instance):
     with open(csvfile, "r") as f:
         csv_lines = f.readlines()
 
-    print(temp_csv)
-
     time_series_output_path = instance._create_time_series_output(
         csv_lines, temp_csv
     )
@@ -260,8 +259,6 @@ def test_write_time_series_output(instance):
         time_series_output = f.readlines()
     f.close()
 
-    print(time_series_output)
-
     assert time_series_output is not None
 
     testfile = Path(__file__).parent.parent.joinpath(
@@ -271,7 +268,6 @@ def test_write_time_series_output(instance):
     with open(testfile, "r", encoding="utf-8-sig") as f:
         time_series_expected = f.readlines()
     f.close()
-    print(time_series_expected)
 
     assert time_series_expected == time_series_output
 
@@ -282,12 +278,12 @@ def test_write_final_output(instance):
     :param instance: An instance of Data class.
     """
     final_cpet_data = Path(__file__).parent.parent.joinpath(
-        "tests/output/omop_person_id_x_time_series.cpt"
+        "tests/output/omop_person_id_x_time_series.csv"
     )
     new_final_cpet_file = final_cpet_data.with_name(
         final_cpet_data.name.replace("x", str("09"))
     )
 
     assert new_final_cpet_file == Path(__file__).parent.parent.joinpath(
-        "tests/output/omop_person_id_09_time_series.cpt"
+        "tests/output/omop_person_id_09_time_series.csv"
     )

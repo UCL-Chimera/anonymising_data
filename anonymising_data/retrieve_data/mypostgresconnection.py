@@ -40,13 +40,13 @@ class MyPostgresConnection:
         """
         self.conn.close()
 
-    def get_data_query(self, sql):
+    def get_data_query(self, sql, mrn=None):
         """
         Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
         """
-        return self.cur.get_data(sql)
+        return self.cur.get_data(sql, mrn)
 
 
 class MyPGCursor:
@@ -57,12 +57,12 @@ class MyPGCursor:
     def __init__(self, conn):
         self.cur = conn.cursor()
 
-    def get_data(self, sql):
+    def get_data(self, sql, mrn=None):
         """
         Function to run an sql query to fetch data.
         :param sql: sql to execute
         :return: data
         """
-        self.cur.execute(sql)
+        self.cur.execute(sql, mrn)
         data = self.cur.fetchall()
         return data
