@@ -244,7 +244,9 @@ class Config:
             self.concepts = {'filename': self._concept_file,
                              'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
                              'source_index': cfg['files']['input']['concept_mapping']['source_index'],
-                             'person_id': Path(__file__).parent.parent.joinpath(cfg['files']['input']['concept_mapping']['person_id'])}
+                             'person_id':
+                                 Path(__file__).parent.parent.joinpath(
+                                     cfg['files']['input']['concept_mapping']['person_id'])}
         else:
             self.concepts = {'filename': self._concept_file,
                              'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
