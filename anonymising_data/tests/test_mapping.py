@@ -115,8 +115,7 @@ def test_write_demographic_output(instance):
 
         is_row_in_output_df = (
             (
-                demographic_output_df[columns_to_check]
-                == demographic_expected_df.iloc[1][columns_to_check]
+                demographic_output_df[columns_to_check] == demographic_expected_df.iloc[1][columns_to_check]
             )
             .all(axis=1)
             .any()

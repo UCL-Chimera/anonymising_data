@@ -8,15 +8,20 @@ class Config:
     Class to assign config variables.
     """
 
-    def __init__(self, testing=False):
+    def __init__(self, cpet=False, testing=False):
         if testing:
-            self.filename = Path(__file__).parent.\
-                parent.joinpath('tests', 'resources', 'test_config.yml')
+            if cpet:
+                self.filename = (
+                    Path(__file__).parent.parent.joinpath('tests', 'resources', 'cpet_ehr_data',
+                                                          'test_config_cpet_ehr.yml'))
+            else:
+                self.filename = Path(__file__).parent.parent.joinpath('tests', 'resources', 'test_config.yml')
         else:
             self.filename = Path(__file__).parent.\
                 parent.parent.joinpath('config.yml')
 
         self._testing = testing
+        self._cpet = cpet
         self._concept_file = ''
         self._query_file = ''
         self._link_query_file = ''
@@ -38,6 +43,9 @@ class Config:
         self._dbname = ''
         self._port = ''
         self.concepts = {}
+
+    def set_filename(self, newfilename):
+        self.filename = newfilename
 
     @property
     def concept_file(self):
@@ -183,6 +191,14 @@ class Config:
         """
         return self._port
 
+    @property
+    def cpet(self):
+        """
+        Function to return cpet flag.
+        :return: _cpet
+        """
+        return self._cpet
+
     def read_yaml(self):
         """
         Function to read config and populate variables.
@@ -224,6 +240,14 @@ class Config:
             joinpath(cfg['files']['output']['omop_data'])
         self.headers = cfg['files']['output']['headers']
 
-        self.concepts = {'filename': self._concept_file,
-                         'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
-                         'source_index': cfg['files']['input']['concept_mapping']['source_index']}
+        if self._cpet:
+            self.concepts = {'filename': self._concept_file,
+                             'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
+                             'source_index': cfg['files']['input']['concept_mapping']['source_index'],
+                             'person_id':
+                                 Path(__file__).parent.parent.joinpath(
+                                     cfg['files']['input']['concept_mapping']['person_id'])}
+        else:
+            self.concepts = {'filename': self._concept_file,
+                             'concept_index': cfg['files']['input']['concept_mapping']['concept_index'],
+                             'source_index': cfg['files']['input']['concept_mapping']['source_index']}

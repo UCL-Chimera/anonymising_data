@@ -1,0 +1,4 @@
+visit,person_id,age,gender,ethnicity,hospital_admission_datetime,admitting_source_value,hospital_discharge_datetime,discharge_to_source_value
+1,1,20/03/1961,Male,Black Caribbean,29/08/2023 15:00:00,Other NHS Hospital,30/08/2023  09:30:00,Usual Place of Residence,
+2,325,27/04/1991,Female,White,21/03/2023  10:00:00,Usual Place of Residence,24/03/2023  15:00:00,NHS Hospital,
+3,325,27/04/1991,Female,White,31/03/2023  22:00:00,Other NHS Hospital,02/04/2023  15:00:00,Usual Place of Residence,

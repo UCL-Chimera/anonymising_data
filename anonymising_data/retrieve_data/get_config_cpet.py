@@ -316,9 +316,7 @@ class Cpet_Config:
         Helper function to parse a list variable from the YAML configuration.
         """
         if (
-            "files" in cfg
-            and file_type in cfg["files"]
-            and variable_name in cfg["files"][file_type]
+            "files" in cfg and file_type in cfg["files"] and variable_name in cfg["files"][file_type]
         ):
             return cfg["files"][file_type][variable_name]
         return None

@@ -6,12 +6,17 @@ class Concepts:
     """
 
     def __init__(self, config):
+        self._cpet = config.cpet
+
         self._filename = config.concepts['filename']
         self._concept_index = config.concepts['concept_index']
         self._source_index = config.concepts['source_index']
+        if self._cpet:
+            self._person_filename = config.concepts['person_id']
 
         self._concepts = []
         self._source = {}
+        self._person_id = []
 
     @property
     def concepts(self):
@@ -30,6 +35,15 @@ class Concepts:
         """
         return self._source
 
+    @property
+    def person_id(self):
+        """
+        Function to return the dictionary of concepts and their source.
+
+        :return: source
+        """
+        return self._person_id
+
     def populate_concepts(self):
         """
         Function to read csv and populate list of concept ids
@@ -46,6 +60,18 @@ class Concepts:
             if con_id != '':
                 self._concepts.append(con_id)
                 self._source[con_id] = source
+        if self._cpet:
+            self.populate_person_id()
+
+    def populate_person_id(self):
+        with open(self._person_filename, 'r') as f:
+            lines = f.readlines()
+        f.close()
+        # put in error checking
+        # if not lines[0].startswith('concept_code'):
+        num_person = len(lines)
+        for i in range(1, num_person):
+            self._person_id.append(lines[i].strip())
 
     def get_concept_id_and_source(self, line):
         """

@@ -1,0 +1,2 @@
+measurement_type,person_id,visit,measurement_datetime,value_as_number,units,value_as_string
+Mean Arterial Blood Pressure,325,3,01/04/2023  09:21:00,80.0,None,None,

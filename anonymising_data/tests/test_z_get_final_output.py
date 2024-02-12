@@ -119,3 +119,23 @@ def test_adjust_line_not_test(config, sources, testdata, shifted):
     d.set_date_fields([3])
     d.set_age_fields([7])
     assert (d.adjust_line(testdata) == shifted)
+
+
+def test_write_data_cpet(config_cpet, concepts_cpet, person_id_cpet):
+    """
+
+    :param config: Configuration class from Pytest fixtures
+    :return:
+    """
+    # need correct testing data in our output file
+    config_cpet.read_yaml()
+    rd = RetrieveData(config_cpet, concepts_cpet, person_id_cpet)
+    rd.write_data()
+    # now do test
+    d = Data(config_cpet)
+    d.create_final_output()
+    newfile = Path(__file__).parent.parent.\
+        joinpath('tests/output/final_data_cpet_measurement.csv')
+    testfile = Path(__file__).parent.parent.\
+        joinpath('tests/resources/cpet_ehr_data/expected_measurement_data.csv')
+    assert (filecmp.cmp(newfile, testfile, shallow=False))

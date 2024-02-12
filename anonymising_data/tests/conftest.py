@@ -53,3 +53,41 @@ def xml_config():
     xml_cfg = Cpet_Config(data_type="cpet", testing=True)
     xml_cfg.read_yaml()
     return xml_cfg
+
+
+@pytest.fixture(scope="session")
+def config_cpet():
+    """
+    Create an instance of the config class and read the appropriate yaml file.
+
+    :return: An instance of the config class fully populated.
+    """
+    cfg = Config(cpet=True, testing=True)
+    cfg.read_yaml()
+    return cfg
+
+
+@pytest.fixture(scope="session")
+def concepts_cpet(config_cpet):
+    """
+    Create an instance of concepts class and populate it.
+
+    :param concept_file: The name of the file containing the concepts
+    :return: The concepts attribute of the concepts class
+    """
+    con = Concepts(config_cpet)
+    con.populate_concepts()
+    return con.concepts
+
+
+@pytest.fixture(scope="session")
+def person_id_cpet(config_cpet):
+    """
+    Create an instance of concepts class and populate it.
+
+    :param concept_file: The name of the file containing the concepts
+    :return: The concepts attribute of the concepts class
+    """
+    con = Concepts(config_cpet)
+    con.populate_concepts()
+    return con.person_id

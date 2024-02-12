@@ -5,17 +5,6 @@ from anonymising_data.retrieve_data.get_concepts import Concepts
 import pytest
 
 
-def test_create_concepts(config):
-    """
-    Function to test creation of a concepts object.
-    :param config: Concepts from Pytest fixtures
-    """
-    con = Concepts(config)
-    assert (con is not None)
-    assert (con._filename == Path(__file__).parent.parent.
-            joinpath('tests/resources/test_concept_codes.csv'))
-
-
 @pytest.mark.parametrize("line, concept_id, source", [
     ('400, SNOMED, 432, Body temperature, S1, Measurement', '432', 'S1'),
     ('12 - Jul, LOINC, 543, Oxygen[Partial pressure], S2, Measurement', '543', 'S2'),
@@ -53,3 +42,26 @@ def test_get_sources(config):
     assert (con.source == {'1': 'TEMPERATURE',
                            '23': 'AQURE TEMPERATURE CORRECTED OXYGEN',
                            '5872': 'Source'})
+
+
+def test_create_concepts_cpet(config_cpet):
+    """
+    Function to test creation of a concepts object.
+    :param config: Concepts from Pytest fixtures
+    """
+    con = Concepts(config_cpet)
+    assert (con is not None)
+    assert (con._filename == Path(__file__).parent.parent.
+            joinpath('tests/resources/cpet_ehr_data/test_concept_codes_cpet.csv'))
+
+
+def test_get_concepts_cpet(config_cpet):
+    """
+    Function to test the populate_concepts function
+    :param config: Concepts from Pytest fixtures
+    :return:
+    """
+    con = Concepts(config_cpet)
+    con.populate_concepts()
+    assert (con.concepts == ['35775967', '4239021', '32817'])
+    assert (con.person_id == ['1', '325'])
