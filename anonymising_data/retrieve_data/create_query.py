@@ -48,6 +48,8 @@ class Query:
             for c in self._person_id:
                 self._person_str = self._person_str + str(c) + ', '
             self._person_str = rreplace(self._person_str, ', ', ')', 1)
+        if len(self._person_id) == 0:
+            self._person_str = '()'
 
     def create_query_file(self):
         """
