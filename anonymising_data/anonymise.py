@@ -70,6 +70,12 @@ def argument_parser() -> argparse.Namespace:
         help="",
     )
     parser.add_argument(
+        "--dates",
+        type=bool,
+        required=True,
+        help="",
+    )
+    parser.add_argument(
         "--data",
         type=str,
         required=True,
